@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:53:13 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 18:21:00 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minirt.h"
@@ -67,13 +67,21 @@ void	draw_sphere(t_data *data)
 	t_tuple	ray_origin = point(0, 0, -5);
 	double	wall_z = 10;
 	double	wall_size = 7;
-	double	canvas_pixel = 100;
+	double	canvas_pixel = 1080;
 	double	pixel_size = wall_size / canvas_pixel;
 	// double	half = wall_size / 2;
 
-	t_sphere	s = sphere(point(0, 0, 0), 1);
-	s.material = material();
-	s.material.color = color(0, 1, 0.2, 1);
+	// t_sphere	s = sphere(point(0, 0, 0), 1);
+	// s.material = material();
+	// s.material.color = color(0, 1, 0.2, 1);
+
+	t_sphere s = sphere(point(0, 0, 0), 1);
+	s.material.color = color(0, 0.8, 1, 0.6);
+	s.material.diffuse = 0.7;
+	s.material.specular = 0.2;
+
+	// t_sphere s = sphere(point(0, 0, 0), 1);
+	// s.transform = scaling(0.5, 0.5, 0.5);
 
 	t_tuple	light_pos = point(-10, 10, -10);
 	t_color	light_color = color(0, 1, 1, 1);
@@ -113,6 +121,23 @@ void	draw_sphere(t_data *data)
 	}
 }
 
+void	test6(void)
+{
+	t_world	w = default_world();
+	t_ray	r = ray(point(0, 0, -5), vector(0, 0, 1));
+	t_list	*xs = intersect_world(w, r);
+	if (xs)
+	{
+		printf("count: %d\n", ft_lstsize(xs));
+		while (xs)
+		{
+			t_intersection	*i = xs->content;
+			printf("t: %f\n", i->t);
+			xs = xs->next;
+		}
+	}
+}
+
 int	main(void)
 {
 	t_data	data;
@@ -127,7 +152,10 @@ int	main(void)
 	// test3();
 	// test4();
 	// test5();
-	draw_sphere(&data);
+	// draw_sphere(&data);
+	test6();
+	
+
 	// put_pixel(data.base_image, 0, 0, color(0, 1, 1, 1));
 	mlx_put_image_to_window(data.base_image.win.mlx,
 		data.base_image.win.win_ptr, data.base_image.img_ptr, 0, 0);

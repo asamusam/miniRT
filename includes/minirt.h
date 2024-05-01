@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 14:50:49 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 17:28:44 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "image.h"
 # include "shapes.h"
 # include "matrix.h"
+# include "world.h"
 # include <math.h>
 
 // # define ESC_KEY 0xff1b

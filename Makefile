@@ -14,7 +14,8 @@ SRC = src/close.c \
 	  src/ray.c \
 	  src/shapes.c \
 	  src/tuples.c \
-	  src/light.c
+	  src/light.c \
+	  src/world.c
 OBJ = $(SRC:src/%c=$(BIN)/%o)
 INCS = includes
 LIBFT_PATH = libft
