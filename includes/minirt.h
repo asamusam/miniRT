@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 13:58:20 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 14:50:49 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include "image.h"
+# include "shapes.h"
+# include "matrix.h"
+# include <math.h>
 
 // # define ESC_KEY 0xff1b
 # define HEIGHT 1080

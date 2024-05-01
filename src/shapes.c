@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 14:01:30 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 15:03:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,13 @@ t_intersection	*hit(t_list *xs)
 		xs = xs->next;
 	}
 	return (res);
+}
+
+t_tuple	normal_at(t_sphere s, t_tuple world_pt)
+{
+	t_tuple	object_pt = matrix_tuple_multiply(inverse(s.transform), world_pt);
+	t_tuple	object_normal = sub_tuples(object_pt, point(0, 0, 0));
+	t_tuple	world_normal = matrix_tuple_multiply(transpose(inverse(s.transform)), object_normal);
+	world_normal.w = 0;
+	return (normalize(world_normal));
 }

@@ -8,7 +8,12 @@ SRC = src/close.c \
 	  src/color.c \
 	  src/image.c \
 	  src/init.c \
-	  src/main.c
+	  src/main.c \
+	  src/matrix.c \
+	  src/matrix_transform.c \
+	  src/ray.c \
+	  src/shapes.c \
+	  src/tuples.c
 OBJ = $(SRC:src/%c=$(BIN)/%o)
 INCS = includes
 LIBFT_PATH = libft
