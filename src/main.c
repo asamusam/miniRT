@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/04/29 13:37:03 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 14:00:34 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minirt.h"
@@ -20,7 +20,7 @@ int	main(void)
 	win = data.base_image.win;
 	data.base_image = new_img(WIDTH, HEIGHT, data.base_image.win);
 
-	put_pixel(data.base_image, 0, 0, 0x0000FF00);
+	put_pixel(data.base_image, 0, 0, color(0, 1, 0, 0));
 	mlx_put_image_to_window(data.base_image.win.mlx,
 		data.base_image.win.win_ptr, data.base_image.img_ptr, 0, 0);
 
