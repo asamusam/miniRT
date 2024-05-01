@@ -6,12 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 18:20:48 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 18:56:58 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "../includes/world.h"
+#include "../includes/ray.h"
 #include <stdlib.h>
 #include <math.h>
 
@@ -86,4 +87,40 @@ t_list *intersect_world(t_world world, t_ray ray)
 	}
 	insertion_sortlist(&result);
 	return (result);
+}
+
+t_comps	prepare_computations(t_intersection intersection, t_ray ray)
+{
+	t_comps	comps;
+
+	comps.t = intersection.t;
+	comps.sphere = intersection.object;
+	comps.point = position(ray, comps.t);
+	comps.eyev = negate_tuple(ray.direction);
+	comps.normalv = normal_at(comps.sphere, comps.point);
+	if (dot(comps.normalv, comps.eyev) < 0)
+	{
+		comps.inside = true;
+		comps.normalv = negate_tuple(comps.normalv);
+	}
+	else
+		comps.inside = false;
+	return (comps);
+}
+
+t_color	shade_hit(t_world world, t_comps comps)
+{
+	return (lighting(comps.sphere.material, world.light, comps.point, comps.eyev, comps.normalv));
+}
+
+t_color	color_at(t_world world, t_ray ray)
+{
+	t_list *intersections;
+	intersections = intersect_world(world, ray);
+	t_intersection	*i = hit(intersections);
+	if (i == NULL)
+		return (color(0, 0, 0, 0));
+	t_comps comps = prepare_computations(*i, ray);
+	t_color	color = shade_hit(world, comps);
+	return (color);
 }

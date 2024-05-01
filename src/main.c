@@ -6,11 +6,12 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 18:21:00 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 19:02:23 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minirt.h"
 #include <math.h>
+#include <stdio.h>
 
 void	test1(void)
 {
@@ -58,7 +59,7 @@ void	test5(void)
 	t_light	light = point_light(point(0, 10, -10), color(0, 1, 1, 1));
 
 	t_color	res = lighting(m, light, p, eyev, normalv);
-	printf("r: %f, g: %f, b:%f\n", res.red, res.green, res.blue);
+	printf("t: %f, r: %f, g: %f, b:%f\n", res.transparent, res.red, res.green, res.blue);
 }
 
 void	draw_sphere(t_data *data)
@@ -138,6 +139,48 @@ void	test6(void)
 	}
 }
 
+void	test7(void)
+{
+	t_ray	r = ray(point(0, 0, 0), vector(0, 0, 1));
+	t_sphere	s = sphere(point(0, 0, 0), 1);
+	t_intersection	*i = intersection(1, s);
+	t_comps	comps = prepare_computations(*i, r);
+
+	printf("t: %f\n", comps.t);
+	printf("radius: %f\n", comps.sphere.radius);
+	print_tuple(comps.sphere.center);
+	print_tuple(comps.point);
+	print_tuple(comps.eyev);
+	print_tuple(comps.normalv);
+	printf("inside: %d\n", comps.inside);
+}
+
+void	test8(void)
+{
+	t_world	w = default_world();
+	w.light = point_light(point(0, 0.25, 0), color(0, 1, 1, 1));
+	t_ray	r = ray(point(0, 0, 0), vector(0, 0, 1));
+	t_sphere s = w.spheres[1];
+	t_intersection *i = intersection(0.5, s);
+	t_comps comps = prepare_computations(*i, r);
+	t_color c = shade_hit(w, comps);
+
+	print_color(c);
+}
+
+void	test9(void)
+{
+	t_world	w = default_world();
+	t_sphere *outer = &w.spheres[0];
+	outer->material.ambient = 1;
+	t_sphere *inner = &w.spheres[1];
+	inner->material.ambient = 1;
+	t_ray	r = ray(point(0, 0, 0.75), vector(0, 0, -1));
+	t_color	c = color_at(w, r);
+	print_color(c);
+	print_color(inner->material.color);
+}
+
 int	main(void)
 {
 	t_data	data;
@@ -153,7 +196,10 @@ int	main(void)
 	// test4();
 	// test5();
 	// draw_sphere(&data);
-	test6();
+	// test6();
+	// test7();
+	// test8();
+	test9();
 	
 
 	// put_pixel(data.base_image, 0, 0, color(0, 1, 1, 1));
