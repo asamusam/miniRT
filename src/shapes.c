@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 15:12:03 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 15:31:14 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_sphere	sphere(t_tuple center, double radius)
 	s.center = center;
 	s.radius = radius;
 	s.transform = init_identitymatrix(4);
+	s.material = material();
 	return (s);
 }
 

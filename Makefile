@@ -13,7 +13,8 @@ SRC = src/close.c \
 	  src/matrix_transform.c \
 	  src/ray.c \
 	  src/shapes.c \
-	  src/tuples.c
+	  src/tuples.c \
+	  src/light.c
 OBJ = $(SRC:src/%c=$(BIN)/%o)
 INCS = includes
 LIBFT_PATH = libft

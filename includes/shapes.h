@@ -6,13 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 15:13:26 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 15:26:40 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHAPES_H
 # define SHAPES_H
 
+#include "light.h"
 #include "matrix.h"
 #include "tuples.h"
 #include "ray.h"
@@ -27,9 +28,10 @@ typedef struct s_tuple_list
 
 typedef struct s_sphere
 {
-	t_tuple	center;
-	double	radius;
+	t_tuple		center;
+	double		radius;
 	t_matrix	transform;
+	t_material	material;
 }	t_sphere;
 
 typedef struct s_intersection
