@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 19:02:23 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 21:52:06 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minirt.h"
@@ -100,7 +100,7 @@ void	draw_sphere(t_data *data)
 			t_list *xs = NULL;
 			// s.transform = scaling(1, 0.5, 1);
 			// s.transform = scaling(0.5, 1, 1);
-			// s.transform = matrix_multiply(rotation_z(M_PI / 4) ,scaling(0.5, 1, 1));
+			s.transform = matrix_multiply(rotation_z(M_PI / 4) ,scaling(0.5, 1, 1));
 			// s.transform = matrix_multiply(shearing(1, 0, 0, 0, 0, 0), scaling(0.5, 1, 1));
 			xs = intersect(s, r);
 			t_intersection	*i = hit(xs);
@@ -181,30 +181,57 @@ void	test9(void)
 	print_color(inner->material.color);
 }
 
+void	test10(void)
+{
+	t_tuple	from = point(1, 3, 2);
+	t_tuple	to = point(4, -2, 8);
+	t_tuple	up = vector(1, 1, 0);
+	t_matrix	t = view_transform(from, to, up);
+	print_matrix(t);
+}
+
+void	test11(void)
+{
+	t_camera	c = camera(200, 125, M_PI / 2);
+	printf("%f\n", c.pixel_size);
+	c = camera(125, 200, M_PI / 2);
+	printf("%f\n", c.pixel_size);
+}
+
+void	test12(void)
+{
+	t_camera	c = camera(201, 101, M_PI / 2);
+	t_ray	r = ray_for_pixel(c, 0, 0);
+	print_tuple(r.origin);
+	print_tuple(r.direction);
+}
+
+void	test13(t_data *data)
+{
+	t_world	w = default_world();
+	t_camera c = camera(110, 110, M_PI / 2);
+	t_tuple	from = point(0, 0, -5);
+	t_tuple	to = point(0, 0, 0);
+	t_tuple	up = vector(0, 1, 0);
+	c.transform = view_transform(from, to, up);
+
+	render(data, c, w);
+}
+
 int	main(void)
 {
 	t_data	data;
 	t_win	win;
 
-	data.base_image.win = new_window(WIDTH, HEIGHT, "miniRT");
+	// data.base_image.win = new_window(WIDTH, HEIGHT, "miniRT");
+	test13(&data);
 	win = data.base_image.win;
-	data.base_image = new_img(WIDTH, HEIGHT, data.base_image.win);
+	// data.base_image = new_img(WIDTH, HEIGHT, data.base_image.win);
 
-	// test1();
-	// test2();
-	// test3();
-	// test4();
-	// test5();
-	// draw_sphere(&data);
-	// test6();
-	// test7();
-	// test8();
-	test9();
-	
 
 	// put_pixel(data.base_image, 0, 0, color(0, 1, 1, 1));
-	mlx_put_image_to_window(data.base_image.win.mlx,
-		data.base_image.win.win_ptr, data.base_image.img_ptr, 0, 0);
+	// mlx_put_image_to_window(data.base_image.win.mlx,
+	// 	data.base_image.win.win_ptr, data.base_image.img_ptr, 0, 0);
 
 	mlx_hook(win.win_ptr, 2, 1L << 0, esc_close_win, &data);
 	mlx_hook(win.win_ptr, 17, 0, cross_close_win, &data);

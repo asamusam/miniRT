@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 17:28:44 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/01 21:34:48 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_data
 t_win	new_window(int w, int h, char *str);
 
 // Render.c
-void	render(t_data *data);
+// void	render(t_data *data);
 void	clear_image(t_data *data);
 
 // control.c
