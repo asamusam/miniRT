@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   light.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:10:56 by asamuilk         ###   ########.fr       */
+/*   Created: 2024/05/01 14:21:25 by asamuilk          #+#    #+#             */
+/*   Updated: 2024/05/01 14:36:35 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
+#ifndef LIGHT_H
+# define LIGHT_H
+# include "tuples.h"
+# include "color.h"
 
-t_color	color(double transparent, double red, double green, double blue)
+typedef struct s_ambient
 {
-	return ((t_color){transparent, red, green, blue});
-}
+	float		intensity;
+	t_color		color;
+}	t_ambient;
 
-int	create_trgb(int t, int r, int g, int b)
+typedef struct s_light
 {
-	return (t << 24 | r << 16 | g << 8 | b);
-}
+	t_tuple		position;
+	float		intensity;
+	t_color		color;
+}	t_light;
+
+#endif

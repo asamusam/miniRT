@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   tuples.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:10:56 by asamuilk         ###   ########.fr       */
+/*   Created: 2024/05/01 13:58:30 by asamuilk          #+#    #+#             */
+/*   Updated: 2024/05/01 14:18:37 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
+#ifndef TUPLES_H
+# define TUPLES_H
 
-t_color	color(double transparent, double red, double green, double blue)
+typedef enum e_tuple_type
 {
-	return ((t_color){transparent, red, green, blue});
-}
+	VECTOR = 0,
+	POINT = 1
+}	t_tuple_type;
 
-int	create_trgb(int t, int r, int g, int b)
+typedef struct s_tuple
 {
-	return (t << 24 | r << 16 | g << 8 | b);
-}
+	double			x;
+	double			y;
+	double			z;
+	t_tuple_type	w;
+}	t_tuple;
+
+#endif

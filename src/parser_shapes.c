@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   parser_shapes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:10:56 by asamuilk         ###   ########.fr       */
+/*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
+/*   Updated: 2024/05/01 20:07:27 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
+#include "parser.h"
 
-t_color	color(double transparent, double red, double green, double blue)
+int	parse_sphere(char *line, t_data *data)
 {
-	return ((t_color){transparent, red, green, blue});
+	(void)line;
+	(void)data;
+	return (SUCCESS);
 }
 
-int	create_trgb(int t, int r, int g, int b)
+int	parse_plane(char *line, t_data *data)
 {
-	return (t << 24 | r << 16 | g << 8 | b);
+	(void)line;
+	(void)data;
+	return (SUCCESS);
+}
+
+int	parse_cylinder(char *line, t_data *data)
+{
+	(void)line;
+	(void)data;
+	return (SUCCESS);
 }

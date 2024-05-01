@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   color.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:10:56 by asamuilk         ###   ########.fr       */
+/*   Created: 2024/05/01 14:17:17 by asamuilk          #+#    #+#             */
+/*   Updated: 2024/05/01 16:11:21 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
+#ifndef COLOR_H
+# define COLOR_H
 
-t_color	color(double transparent, double red, double green, double blue)
+typedef struct s_color
 {
-	return ((t_color){transparent, red, green, blue});
-}
+	float	transparent;
+	float	red;
+	float	green;
+	float	blue;
+}	t_color;
 
-int	create_trgb(int t, int r, int g, int b)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
-}
+#endif

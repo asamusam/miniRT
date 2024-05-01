@@ -1,23 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:10:56 by asamuilk         ###   ########.fr       */
+/*   Created: 2024/05/01 14:02:29 by asamuilk          #+#    #+#             */
+/*   Updated: 2024/05/01 14:41:56 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
+#ifndef SHAPES_H
+# define SHAPES_H
+# include "tuples.h"
+# include "color.h"
 
-t_color	color(double transparent, double red, double green, double blue)
+typedef struct s_sphere
 {
-	return ((t_color){transparent, red, green, blue});
-}
+	t_tuple		center;
+	float		diameter;
+	t_color		color;
+}	t_sphere;
 
-int	create_trgb(int t, int r, int g, int b)
+typedef struct s_cylinder
 {
-	return (t << 24 | r << 16 | g << 8 | b);
-}
+	t_tuple		center;
+	t_tuple		axis;
+	float		diameter;
+	float		height;
+	t_color		color;
+}	t_cylinder;
+
+typedef struct s_plane
+{
+	t_tuple		point;
+	t_tuple		normal;
+	t_color		color;
+}	t_plane;
+
+#endif

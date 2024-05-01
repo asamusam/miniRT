@@ -1,23 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:10:56 by asamuilk         ###   ########.fr       */
+/*   Created: 2024/05/01 14:23:30 by asamuilk          #+#    #+#             */
+/*   Updated: 2024/05/01 17:17:35 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "color.h"
+#ifndef SCENE_H
+# define SCENE_H
+# include "shapes.h"
+# include "light.h"
 
-t_color	color(double transparent, double red, double green, double blue)
+typedef struct s_cam
 {
-	return ((t_color){transparent, red, green, blue});
-}
+	t_tuple		position;
+	t_tuple		rotation;
+	float		distance;
+	float		fov;
+}	t_cam;
 
-int	create_trgb(int t, int r, int g, int b)
+typedef struct s_scene
 {
-	return (t << 24 | r << 16 | g << 8 | b);
-}
+	t_cam		camera;
+	t_light		light;
+	t_ambient	ambient;
+	t_list		*spheres;
+	t_list		*planes;
+	t_list		*cylinders;
+}	t_scene;
+
+#endif
