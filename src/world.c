@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 21:51:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 12:56:31 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,8 @@ t_ray	ray_for_pixel(t_camera camera, double px, double py)
 	double	world_x = camera.half_width - xoffset;
 	double	world_y = camera.half_height - yoffset;
 
-	t_tuple	pixel = matrix_tuple_multiply(camera.transform, point(world_x, world_y, -1));
-	t_tuple	origin = matrix_tuple_multiply(camera.transform, point(0, 0, 0));
+	t_tuple	pixel = matrix_tuple_multiply(inverse(camera.transform), point(world_x, world_y, -1));
+	t_tuple	origin = matrix_tuple_multiply(inverse(camera.transform), point(0, 0, 0));
 	t_tuple	direction = normalize(sub_tuples(pixel, origin));
 
 	return (ray(origin, direction));
@@ -197,7 +197,7 @@ t_ray	ray_for_pixel(t_camera camera, double px, double py)
 
 void	render(t_data *data, t_camera camera, t_world world)
 {
-	(void)world;
+	// (void)world;
 	data->base_image.win = new_window(camera.hsize, camera.vsize, "miniRT");
 	data->base_image = new_img(camera.hsize, camera.vsize, data->base_image.win);
 
