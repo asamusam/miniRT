@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:58:30 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/01 14:18:37 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:49:05 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ typedef enum e_tuple_type
 
 typedef struct s_tuple
 {
-	double			x;
-	double			y;
-	double			z;
+	float			x;
+	float			y;
+	float			z;
 	t_tuple_type	w;
 }	t_tuple;
 

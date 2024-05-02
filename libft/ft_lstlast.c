@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:09:49 by llai              #+#    #+#             */
-/*   Updated: 2024/01/09 15:48:01 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 18:46:56 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 t_list	*ft_lstlast(t_list *lst)
 {
 	if (!lst)
-		return (NULL);
+		return (lst);
 	while (lst != NULL && lst -> next != NULL)
 		lst = lst -> next;
 	return (lst);

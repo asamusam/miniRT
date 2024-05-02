@@ -6,32 +6,64 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 17:29:18 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:06:12 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_win	new_window(int w, int h, char *str)
+void	allocate_data(t_data **data)
 {
-	void	*mlx;
+	*data = malloc(sizeof(t_data));
+	if (!*data)
+	{
+		perror("minirt: allocate_data:");
+		exit(EXIT_FAILURE);
+	}
+}
 
-	mlx = mlx_init();
-	return ((t_win){mlx, mlx_new_window(mlx, w, h, str), w, h});
+void	init_mlx(t_data *data)
+{
+	t_img	*img;
+
+	data->base_image = malloc(sizeof(t_img));
+	img = data->base_image;
+	if (!img)
+	{
+		perror("minirt: init_mlx:");
+		free_data(data);
+		exit(EXIT_FAILURE);
+	}
+	img->mlx = mlx_init();
+	img->win_ptr = mlx_new_window(img->mlx, WIDTH, HEIGHT, "miniRT");
+	img->img_ptr = mlx_new_image(img->mlx, WIDTH, HEIGHT);
+	img->addr = mlx_get_data_addr(img->img_ptr, &img->bpp, \
+								&img->line_len, &img->endian);
+	mlx_hook(img->win_ptr, 2, 1L << 0, esc_close_win, data);
+	mlx_hook(img->win_ptr, 17, 0, cross_close_win, data);
+	mlx_loop(img->mlx);
 }
 
 void	init_data(t_data *data)
 {
-	data->scene.ambient.color = color(0, 0, 0, 0);
-	data->scene.ambient.intensity = 0.0;
-	data->scene.camera.distance = 0.0;
-	data->scene.camera.fov = 0;
-	data->scene.camera.position = (t_tuple){0, 0, 0, POINT};
-	data->scene.camera.rotation = (t_tuple){0, 0, 0, VECTOR};
-	data->scene.light.color = color(0, 0, 0, 0);
-	data->scene.light.intensity = 0.0;
-	data->scene.light.position = (t_tuple){0, 0, 0, POINT};
-	data->scene.cylinders = NULL;
-	data->scene.planes = NULL;
-	data->scene.spheres = NULL;
+	data->scene = malloc(sizeof(t_scene));
+	if (!data->scene)
+	{
+		perror("minirt: init_data:");
+		free(data);
+		exit(EXIT_FAILURE);
+	}
+	data->scene->ambient.color = color(0, 0, 0, 0);
+	data->scene->ambient.intensity = 0.0;
+	data->scene->camera.distance = 0.0;
+	data->scene->camera.fov = 0;
+	data->scene->camera.position = (t_tuple){0, 0, 0, POINT};
+	data->scene->camera.rotation = (t_tuple){0, 0, 0, VECTOR};
+	data->scene->light.color = color(0, 0, 0, 0);
+	data->scene->light.intensity = 0.0;
+	data->scene->light.position = (t_tuple){0, 0, 0, POINT};
+	data->scene->cylinders = NULL;
+	data->scene->planes = NULL;
+	data->scene->spheres = NULL;
+	data->base_image = NULL;
 }

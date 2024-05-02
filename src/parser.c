@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:07:52 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/01 20:10:17 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:05:02 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,22 @@ int	parse_ambient(char *line, t_data *data)
 	int			i;
 
 	if (n)
-		error_and_fail(AMB_NUM_ERR);
+		error_and_fail(AMB, NULL, NUM_ERR);
 	i = 0;
 	skip_space(&line[i], &i, NOT_REQUIRED);
-	if (parse_float(&data->scene.ambient.intensity, &line[i], &i) == FAIL)
-		return (error_and_fail(AMB_FRM_ERR));
-	if (parse_color(&data->scene.ambient.color, &line[i], &i) == FAIL)
-		return (error_and_fail(AMB_FRM_ERR));
-	n ++;
-	return (SUCCESS);
-}
-
-int	parse_light(char *line, t_data *data)
-{
-	static int	n;
-
-	(void)line;
-	(void)data;
-	if (n)
-		error_and_fail("More than one light is present in the file.");
+	if (parse_float(&data->scene->ambient.intensity, &line[i], &i) == FAIL)
+		return (error_and_fail(AMB, "Intensity", FORMAT_ERR));
+	if (skip_space(&line[i], &i, REQUIRED) == FAIL)
+		return (error_and_fail(AMB, "Intensity", FORMAT_ERR));
+	if (check_intensity(data->scene->ambient.intensity) == FAIL)
+		return (error_and_fail(AMB, "Intensity", RANGE_ERR));
+	if (parse_color(&data->scene->ambient.color, &line[i], &i) == FAIL)
+		return (error_and_fail(AMB, "Color", FORMAT_ERR));
+	if (check_color(&data->scene->ambient.color) == FAIL)
+		return (error_and_fail(AMB, "Color", RANGE_ERR));
+	skip_space(&line[i], &i, NOT_REQUIRED);
+	if (line[i])
+		return (error_and_fail(AMB, NULL, EXTRA_ERR));
 	n ++;
 	return (SUCCESS);
 }
@@ -44,11 +41,56 @@ int	parse_light(char *line, t_data *data)
 int	parse_camera(char *line, t_data *data)
 {
 	static int	n;
+	int			i;
 
-	(void)line;
-	(void)data;
 	if (n)
-		return (error_and_fail("More than one camera is present in the file."));
+		return (error_and_fail(CAM, NULL, NUM_ERR));
+	i = 0;
+	skip_space(&line[i], &i, NOT_REQUIRED);
+	if (parse_tuple(&data->scene->camera.position, POINT, &line[i], &i) == FAIL \
+		|| skip_space(&line[i], &i, REQUIRED) == FAIL)
+		return (error_and_fail(CAM, "Position", FORMAT_ERR));
+	if (parse_tuple(&data->scene->camera.rotation, VECTOR, &line[i], &i))
+		return (error_and_fail(CAM, "Rotation", FORMAT_ERR));
+	if (check_normalized_vector(&data->scene->camera.rotation) == FAIL)
+		return (error_and_fail(CAM, "Rotation", RANGE_ERR));
+	if (skip_space(&line[i], &i, REQUIRED) == FAIL)
+		return (error_and_fail(CAM, "Rotation", FORMAT_ERR));
+	if (parse_float(&data->scene->camera.fov, &line[i], &i) == FAIL)
+		return (error_and_fail(CAM, "Field of view", FORMAT_ERR));
+	if (check_fov(data->scene->camera.fov) == FAIL)
+		return (error_and_fail(CAM, "Field of view", RANGE_ERR));
+	skip_space(&line[i], &i, NOT_REQUIRED);
+	if (line[i])
+		return (error_and_fail(CAM, NULL, EXTRA_ERR));
+	n ++;
+	return (SUCCESS);
+}
+
+int	parse_light(char *line, t_data *data)
+{
+	static int	n;
+	int			i;
+
+	if (n)
+		error_and_fail(LIGHT, NULL, NUM_ERR);
+	i = 0;
+	skip_space(&line[i], &i, NOT_REQUIRED);
+	if (parse_tuple(&data->scene->light.position, POINT, &line[i], &i) == FAIL \
+		|| skip_space(&line[i], &i, REQUIRED) == FAIL)
+		return (error_and_fail(LIGHT, "Position", FORMAT_ERR));
+	if (parse_float(&data->scene->light.intensity, &line[i], &i) == FAIL \
+		|| skip_space(&line[i], &i, REQUIRED) == FAIL)
+		return (error_and_fail(LIGHT, "Intensity", FORMAT_ERR));
+	if (check_intensity(data->scene->light.intensity) == FAIL)
+		return (error_and_fail(LIGHT, "Intensity", RANGE_ERR));
+	if (parse_color(&data->scene->light.color, &line[i], &i) == FAIL)
+		return (error_and_fail(LIGHT, "Color", FORMAT_ERR));
+	if (check_color(&data->scene->light.color) == FAIL)
+		return (error_and_fail(LIGHT, "Color", RANGE_ERR));
+	skip_space(&line[i], &i, NOT_REQUIRED);
+	if (line[i])
+		return (error_and_fail(LIGHT, NULL, EXTRA_ERR));
 	n ++;
 	return (SUCCESS);
 }
@@ -80,7 +122,7 @@ int	parse_line(char *line, t_data *data)
 	return (status);
 }
 
-int	parse(t_data *data, char *scene_file)
+void	parse(t_data *data, char *scene_file)
 {
 	char	*line;
 	int		fd;
@@ -88,7 +130,8 @@ int	parse(t_data *data, char *scene_file)
 	fd = open(scene_file, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("minirt: parser");
+		perror("minirt: parse");
+		free_data(data);
 		exit(EXIT_FAILURE);
 	}
 	line = get_next_line(fd);
@@ -96,20 +139,13 @@ int	parse(t_data *data, char *scene_file)
 	{
 		if (parse_line(line, data) == FAIL)
 		{
-			free_scene(data);
-			return (FAIL);
+			close(fd);
+			free(line);
+			free_data(data);
+			exit(EXIT_FAILURE);
 		}
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (SUCCESS);
 }
-
-// TO-DO:
-// 0) check files with no info
-// 1) check range in ambient
-// 2) parse_tuple
-// 3) parse camera and light
-// 4) parse shapes
-// 5) makefile
