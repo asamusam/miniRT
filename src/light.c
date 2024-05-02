@@ -6,12 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 16:09:25 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 21:26:13 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/light.h"
 #include "../includes/shapes.h"
+#include "../includes/world.h"
 #include <math.h>
 
 t_light	point_light(t_tuple position, t_color color)
@@ -31,41 +32,57 @@ t_material	material(void)
 	return (m);
 }
 
-t_color	lighting(t_material m, t_light l, t_tuple p, t_tuple eyev, t_tuple normalv)
+t_color	compute_ambient(t_comps c, t_color effective_color)
 {
-	t_color	effective_color;
+	return (mul_color(
+			effective_color, c.sphere.material.ambient));
+}
+
+t_color	compute_diffuse(t_comps c, t_color effective_color, t_light light)
+{
+	t_tuple	lightv;
+	double	light_dot_normal;
+
+	lightv = normalize(sub_tuples(light.position, c.point));
+	light_dot_normal = dot(lightv, c.normalv);
+	if (light_dot_normal < 0)
+		return (color(0, 0, 0, 0));
+	else
+		return (mul_color(mul_color(
+					effective_color, c.sphere.material.diffuse),
+				light_dot_normal));
+}
+
+t_color	compute_specular(t_comps c, t_light light)
+{
 	t_tuple	lightv;
 	t_tuple	reflectv;
-	double	light_dot_normal;
 	double	reflect_dot_eye;
+	double	factor;
+
+	lightv = normalize(sub_tuples(light.position, c.point));
+	reflectv = reflect(negate_tuple(lightv), c.normalv);
+	reflect_dot_eye = dot(reflectv, c.eyev);
+	if (reflect_dot_eye <= 0)
+		return (color(0, 0, 0, 0));
+	else
+	{
+		factor = pow(reflect_dot_eye, c.sphere.material.shininess);
+		return (mul_color(mul_color(
+					light.color, c.sphere.material.specular), factor));
+	}
+}
+
+t_color	lighting(t_world w, t_comps c)
+{
+	t_color	effective_color;
 	t_color	ambient;
 	t_color	diffuse;
 	t_color	specular;
-	double	factor;
 
-	effective_color = hadamard_product(m.color, l.color);
-	lightv = normalize(sub_tuples(l.position, p));
-	ambient = mul_color(effective_color, m.ambient);
-	light_dot_normal = dot(lightv, normalv);
-
-	if (light_dot_normal < 0)
-	{
-		diffuse = color(0, 0, 0, 0);
-		specular = color(0, 0, 0, 0);
-	}
-	else
-	{
-		diffuse = mul_color(mul_color(effective_color, m.diffuse), light_dot_normal);
-		reflectv = reflect(negate_tuple(lightv), normalv);
-		reflect_dot_eye = dot(reflectv, eyev);
-		if (reflect_dot_eye <= 0)
-			specular = color(0, 0, 0, 0);
-		else
-		{
-			factor = pow(reflect_dot_eye, m.shininess);
-			specular = mul_color(mul_color(l.color, m.specular), factor);
-		}
-	}
-
+	effective_color = hadamard_product(c.sphere.material.color, w.light.color);
+	ambient = compute_ambient(c, effective_color);
+	diffuse = compute_diffuse(c, effective_color, w.light);
+	specular = compute_specular(c, w.light);
 	return (add_colors(ambient, add_colors(diffuse, specular)));
 }

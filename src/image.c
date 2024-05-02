@@ -6,12 +6,12 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:51 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 16:55:56 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 20:16:27 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minirt.h"
-# include "../includes/color.h"
+#include "../includes/minirt.h"
+#include "../includes/color.h"
 
 // Convert x and y to center origin (0,0)
 void	put_pixel(t_img img, int x, int y, t_color color)
@@ -22,7 +22,8 @@ void	put_pixel(t_img img, int x, int y, t_color color)
 
 	new_x = (WIDTH / 2) + x;
 	new_y = (HEIGHT / 2) - y;
-	color_val = create_trgb_color(color.transparent, color.red, color.green, color.blue);
+	color_val = create_trgb_color(
+			color.transparent, color.red, color.green, color.blue);
 	put_pixel_img(img, new_x, new_y, color_val);
 }
 
@@ -31,7 +32,8 @@ void	put_pixel2(t_img img, int x, int y, t_color color)
 {
 	int	color_val;
 
-	color_val = create_trgb_color(color.transparent, color.red, color.green, color.blue);
+	color_val = create_trgb_color(
+			color.transparent, color.red, color.green, color.blue);
 	put_pixel_img(img, x, y, color_val);
 }
 

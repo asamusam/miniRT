@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:56:27 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 20:25:14 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "color.h"
 # include "tuples.h"
+
+typedef struct s_world	t_world;
+typedef struct s_comps	t_comps;
 
 typedef struct s_ambient
 {
@@ -40,6 +43,7 @@ typedef struct s_material
 
 t_light		point_light(t_tuple position, t_color intensity);
 t_material	material(void);
-t_color		lighting(t_material m, t_light l, t_tuple p, t_tuple eyev, t_tuple normalv);
+// t_color		lighting(t_material m, t_light l, t_tuple p, t_tuple eyev, t_tuple normalv);
+t_color		lighting(t_world w, t_comps c);
 
 #endif // !LIGHT_H

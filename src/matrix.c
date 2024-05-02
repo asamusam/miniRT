@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 18:53:33 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 20:16:57 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,16 +238,11 @@ void	assign_sub(t_matrix *sub, t_matrix m, int rowToRemove, int colToRemove)
 		{
 			if (j == colToRemove)
 				continue ;
-			// printf("i: %d j: %d rowR: %d colR: %d\n", i, j, rowToRemove, colToRemove);
-			// printf("%f\n", m.data[i][j]);
-			// printf("%f\n", sub->data[sub_row][sub_col++]);
 			sub->data[sub_row][sub_col++] = m.data[i][j];
 		}
 		sub_row++;
 		sub_col = 0;
 	}
-	// (void)sub;
-	// (void)sub_col;
 }
 
 t_matrix	submatrix(t_matrix m, int rowToRemove, int colToRemove)
