@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 17:52:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 19:28:16 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,44 +47,47 @@ t_intersection	*intersection(double t, t_sphere object)
 	return (i);
 }
 
-t_list *intersect(t_sphere s, t_ray ray)
+int	calc_t(t_sphere s, t_ray ray, double *t1, double *t2)
 {
-    // Calculate the vector from the sphere's center to the ray origin
+	t_tuple	sphere_to_ray;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+
+	sphere_to_ray = sub_tuples(ray.origin, s.center);
+	a = dot(ray.direction, ray.direction);
+	b = 2 * dot(ray.direction, sphere_to_ray);
+	c = dot(sphere_to_ray, sphere_to_ray) - (s.radius * s.radius);
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+		return (-1);
+	*t1 = (-b - sqrt(discriminant)) / (2 * a);
+	*t2 = (-b + sqrt(discriminant)) / (2 * a);
+	return (0);
+}
+
+t_list	*intersect(t_sphere s, t_ray ray)
+{
+	t_list	*interections_list;
+	double	t1;
+	double	t2;
+
 	ray = transform(ray, inverse(s.transform));
-    t_tuple sphere_to_ray = sub_tuples(ray.origin, s.center);
-
-
-
-    // Calculate coefficients for quadratic equation
-    double a = dot(ray.direction, ray.direction);
-    double b = 2 * dot(ray.direction, sphere_to_ray);
-    double c = dot(sphere_to_ray, sphere_to_ray) - (s.radius * s.radius);
-
-    // Calculate the discriminant
-    double discriminant = b * b - 4 * a * c;
-
-    // If the discriminant is negative, the ray misses the sphere
-	t_list	*interections_list = NULL;
-    if (discriminant < 0)
-	{
+	interections_list = NULL;
+	if (calc_t(s, ray, &t1, &t2) == -1)
 		return (interections_list);
-    }
-
-    // Calculate the intersections
-    double t1 = (-b - sqrt(discriminant)) / (2 * a);
-    double t2 = (-b + sqrt(discriminant)) / (2 * a);
-
 	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t1, s)));
 	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t2, s)));
-
 	return (interections_list);
 }
 
 t_intersection	*hit(t_list *xs)
 {
-	t_intersection	*res = NULL;
+	t_intersection	*res;
 	t_intersection	*content;
 
+	res = NULL;
 	while (xs)
 	{
 		content = xs->content;
@@ -105,15 +108,21 @@ t_intersection	*hit(t_list *xs)
 
 t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 {
-	t_tuple	object_pt = matrix_tuple_multiply(inverse(s.transform), world_pt);
-	t_tuple	object_normal = sub_tuples(object_pt, point(0, 0, 0));
-	t_tuple	world_normal = matrix_tuple_multiply(transpose(inverse(s.transform)), object_normal);
+	t_tuple	object_pt;
+	t_tuple	object_normal;
+	t_tuple	world_normal;
+
+	object_pt = matrix_tuple_multiply(inverse(s.transform), world_pt);
+	object_normal = sub_tuples(object_pt, point(0, 0, 0));
+	world_normal = matrix_tuple_multiply(transpose(inverse(s.transform)), object_normal);
 	world_normal.w = 0;
 	return (normalize(world_normal));
 }
 
 t_tuple	reflect(t_tuple in, t_tuple normal)
 {
-	double	in_dot_norm = dot(in, normal);
+	double	in_dot_norm;
+
+	in_dot_norm = dot(in, normal);
 	return (sub_tuples(in, scalar_mul_tuple(in_dot_norm, scalar_mul_tuple(2, normal))));
 }
