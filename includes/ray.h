@@ -6,15 +6,15 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:31:07 by llai              #+#    #+#             */
-/*   Updated: 2024/04/30 14:57:00 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:41:53 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RAY_H
-#define RAY_H
+# define RAY_H
 
-#include "tuples.h"
-#include "matrix.h"
+# include "tuples.h"
+# include "matrix.h"
 
 typedef struct s_ray
 {

@@ -6,18 +6,18 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:00:39 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:57:16 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHAPES_H
 # define SHAPES_H
 
-#include "light.h"
-#include "matrix.h"
-#include "tuples.h"
-#include "ray.h"
-#include "../libft/libft.h"
+# include "light.h"
+# include "matrix.h"
+# include "tuples.h"
+# include "ray.h"
+# include "../libft/libft.h"
 
 typedef struct s_tuple_list
 {

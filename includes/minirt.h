@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:17:12 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:59:11 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	init_data(t_data *data);
 void	clear_image(t_data *data);
 
 // control.c
-int	key_down(int keycode, t_data *data);
+int		key_down(int keycode, t_data *data);
 
 // close.c
 

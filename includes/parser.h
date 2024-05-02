@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:39:50 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/02 15:32:34 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:59:33 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include "color.h"
 # include "tuples.h"
 
-typedef struct s_data t_data;
+typedef struct s_data	t_data;
 // parser_utils.c
 
 int	skip_space(const char *line, int *i, int flag);

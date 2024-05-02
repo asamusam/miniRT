@@ -6,16 +6,16 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:52:34 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 14:58:25 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:56:57 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TUPLES_H
-#define TUPLES_H
+# define TUPLES_H
 
-#define EPSILON 0.00001
+# include <stdbool.h>
 
-#include <stdbool.h>
+# define EPSILON 0.00001
 # define TUPLES_H
 
 typedef enum e_tuple_type
@@ -26,9 +26,9 @@ typedef enum e_tuple_type
 
 typedef struct s_tuple
 {
-	double	x;
-	double	y;
-	double	z;
+	double			x;
+	double			y;
+	double			z;
 	t_tuple_type	w;
 }	t_tuple;
 

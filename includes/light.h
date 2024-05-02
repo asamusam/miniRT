@@ -6,15 +6,15 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 14:57:27 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:56:27 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIGHT_H
 # define LIGHT_H
 
-#include "color.h"
-#include "tuples.h"
+# include "color.h"
+# include "tuples.h"
 
 typedef struct s_ambient
 {
@@ -24,9 +24,9 @@ typedef struct s_ambient
 
 typedef struct s_light
 {
-	t_tuple	position;
+	t_tuple		position;
 	float		intensity;
-	t_color	color;
+	t_color		color;
 }	t_light;
 
 typedef struct s_material

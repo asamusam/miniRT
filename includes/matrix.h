@@ -6,21 +6,21 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:45:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 13:57:13 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:42:39 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATRIX_H
 # define MATRIX_H
 
-#include <stdbool.h>
-#include "tuples.h"
+# include <stdbool.h>
+# include "tuples.h"
 
 typedef struct s_matrix
 {
-	int	rows;
-	int	cols;
-	double **data;
+	int		rows;
+	int		cols;
+	double	**data;
 }	t_matrix;
 
 t_matrix	create_matrix(int rows, int cols);
@@ -39,10 +39,10 @@ double		cofactor(t_matrix A, int row, int col);
 t_matrix	inverse(t_matrix M);
 
 // matrix_transform.c
-t_matrix translation(double x, double y, double z);
-t_matrix scaling(double x, double y, double z);
-t_matrix rotation_x(double theta);
-t_matrix rotation_y(double theta);
-t_matrix rotation_z(double theta);
-t_matrix shearing(double xy, double xz, double yx, double yz, double zx, double zy);
+t_matrix	translation(double x, double y, double z);
+t_matrix	scaling(double x, double y, double z);
+t_matrix	rotation_x(double theta);
+t_matrix	rotation_y(double theta);
+t_matrix	rotation_z(double theta);
+t_matrix	shearing(double xy, double xz, double yx, double yz, double zx, double zy);
 #endif // !MATRIX_H

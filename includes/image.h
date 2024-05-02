@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 21:35:30 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 21:45:32 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:58:21 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,5 @@ void	put_pixel(t_img img, int x, int y, t_color color);
 void	put_pixel2(t_img img, int x, int y, t_color color);
 void	put_pixel_img(t_img img, int x, int y, int color);
 t_img	new_img(int width, int height, t_win window);
-
 
 #endif // !IMAGE_H
