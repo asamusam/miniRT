@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:21:34 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 16:35:42 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minirt.h"
@@ -299,6 +299,16 @@ void	draw_scene(t_data *data)
 	printf("done\n");
 }
 
+void	test14(void)
+{
+	t_tuple v1 = vector(4, 0, 0);
+	t_tuple v2 = vector(-4, 3, 9);
+	// printf("%f\n", magnitude(v));
+	// printf("%f\n", magnitude(normalize(v)));
+	// print_tuple(normalize(v));
+	printf("%f %f\n", dot(v1, v2), dot(normalize(v1), normalize(v2)));
+}
+
 int	main(int ac, char **av)
 {
 	t_data	data;
@@ -309,11 +319,11 @@ int	main(int ac, char **av)
 		init_data(&data);
 		if (parse(&data, av[1]) == EXIT_FAILURE)
 			exit(EXIT_FAILURE);
-	draw_scene(&data);
-	win = data.base_image.win;
-	mlx_hook(win.win_ptr, 2, 1L << 0, esc_close_win, &data);
-	mlx_hook(win.win_ptr, 17, 0, cross_close_win, &data);
-	mlx_loop(data. base_image.win.mlx);
+		draw_scene(&data);
+		win = data.base_image.win;
+		mlx_hook(win.win_ptr, 2, 1L << 0, esc_close_win, &data);
+		mlx_hook(win.win_ptr, 17, 0, cross_close_win, &data);
+		mlx_loop(data. base_image.win.mlx);
 	}
-
+	test14();
 }

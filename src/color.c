@@ -6,12 +6,12 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:03:25 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 16:03:24 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/color.h"
-# include <stdio.h>
+#include "../includes/color.h"
+#include <stdio.h>
 
 t_color	color(double transparent, double red, double green, double blue)
 {
@@ -49,7 +49,6 @@ t_color	mul_color(t_color c, double scalar)
 	res.green = c.green * scalar;
 	res.blue = c.blue * scalar;
 	return (res);
-
 }
 
 t_color	hadamard_product(t_color c1, t_color c2)
@@ -80,7 +79,6 @@ int	limit_color(double color)
 
 int	create_trgb_color(double t, double r, double g, double b)
 {
-
 	int	it;
 	int	ir;
 	int	ig;
@@ -90,12 +88,10 @@ int	create_trgb_color(double t, double r, double g, double b)
 	r = r * 255;
 	g = g * 255;
 	b = b * 255;
-
 	it = limit_color(t);
 	ir = limit_color(r);
 	ig = limit_color(g);
 	ib = limit_color(b);
-
 	return (it << 24 | ir << 16 | ig << 8 | ib);
 }
 
@@ -121,5 +117,6 @@ int	get_b(int trgb)
 
 void	print_color(t_color color)
 {
-	printf("t: %f, r: %f, g: %f, b:%f\n", color.transparent, color.red, color.green, color.blue);
+	printf("t: %f, r: %f, g: %f, b:%f\n",
+		color.transparent, color.red, color.green, color.blue);
 }
