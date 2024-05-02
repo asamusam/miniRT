@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 21:15:41 by llai              #+#    #+#             */
-/*   Updated: 2024/04/29 22:27:58 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 19:14:56 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,98 +21,113 @@ double	radians(double deg)
 	return (res);
 }
 
-t_matrix translation(double x, double y, double z) {
-    t_matrix trans = create_matrix(4, 4);
-
-    // Initialize the matrix as an identity matrix
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            trans.data[i][j] = (i == j) ? 1.0 : 0.0;
-        }
-    }
-
-    // Set translation components
-    trans.data[0][3] = x;
-    trans.data[1][3] = y;
-    trans.data[2][3] = z;
-
-    return trans;
-}
-
-t_matrix scaling(double x, double y, double z)
+t_matrix	translation(double x, double y, double z)
 {
-    t_matrix scale = create_matrix(4, 4);
+	t_matrix	trans;
+	int			i;
+	int			j;
 
-    // Initialize the matrix as an identity matrix
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            scale.data[i][j] = (i == j) ? 1.0 : 0.0;
-        }
-    }
-
-    // Set scaling components
-    scale.data[0][0] = x;
-    scale.data[1][1] = y;
-    scale.data[2][2] = z;
-
-    return scale;
+	trans = create_matrix(4, 4);
+	i = -1;
+	while (++i < 4)
+	{
+		j = -1;
+		while (++j < 4)
+		{
+			if (i == j)
+				trans.data[i][j] = 1.0;
+			trans.data[i][j] = 0.0;
+		}
+	}
+	trans.data[0][3] = x;
+	trans.data[1][3] = y;
+	trans.data[2][3] = z;
+	return (trans);
 }
 
-t_matrix rotation_x(double theta)
+t_matrix	scaling(double x, double y, double z)
 {
-    t_matrix rot_x = init_identitymatrix(4);
+	t_matrix	scale;
+	int			i;
+	int			j;
 
-    double cos_theta = cos(theta);
-    double sin_theta = sin(theta);
-
-    rot_x.data[1][1] = cos_theta;
-    rot_x.data[1][2] = -sin_theta;
-    rot_x.data[2][1] = sin_theta;
-    rot_x.data[2][2] = cos_theta;
-
-    return rot_x;
+	scale = create_matrix(4, 4);
+	i = -1;
+	while (++i < 4)
+	{
+		j = -1;
+		while (++j < 4)
+		{
+			if (i == j)
+				scale.data[i][j] = 1.0;
+			scale.data[i][j] = 0.0;
+		}
+	}
+	scale.data[0][0] = x;
+	scale.data[1][1] = y;
+	scale.data[2][2] = z;
+	return (scale);
 }
 
-t_matrix rotation_y(double theta)
+t_matrix	rotation_x(double theta)
 {
-    t_matrix rot_y = init_identitymatrix(4);
+	t_matrix	rot_x;
+	double		cos_theta;
+	double		sin_theta;
 
-    double cos_theta = cos(theta);
-    double sin_theta = sin(theta);
-
-    rot_y.data[0][0] = cos_theta;
-    rot_y.data[0][2] = sin_theta;
-    rot_y.data[2][0] = -sin_theta;
-    rot_y.data[2][2] = cos_theta;
-
-    return rot_y;
+	rot_x = init_identitymatrix(4);
+	cos_theta = cos(theta);
+	sin_theta = sin(theta);
+	rot_x.data[1][1] = cos_theta;
+	rot_x.data[1][2] = -sin_theta;
+	rot_x.data[2][1] = sin_theta;
+	rot_x.data[2][2] = cos_theta;
+	return (rot_x);
 }
 
-t_matrix rotation_z(double theta)
+t_matrix	rotation_y(double theta)
 {
-    t_matrix rot_z = init_identitymatrix(4);
+	t_matrix	rot_y;
+	double		cos_theta;
+	double		sin_theta;
 
-    double cos_theta = cos(theta);
-    double sin_theta = sin(theta);
-
-    rot_z.data[0][0] = cos_theta;
-    rot_z.data[0][1] = -sin_theta;
-    rot_z.data[1][0] = sin_theta;
-    rot_z.data[1][1] = cos_theta;
-
-    return rot_z;
+	rot_y = init_identitymatrix(4);
+	cos_theta = cos(theta);
+	sin_theta = sin(theta);
+	rot_y.data[0][0] = cos_theta;
+	rot_y.data[0][2] = sin_theta;
+	rot_y.data[2][0] = -sin_theta;
+	rot_y.data[2][2] = cos_theta;
+	return (rot_y);
 }
 
-t_matrix shearing(double xy, double xz, double yx, double yz, double zx, double zy)
+t_matrix	rotation_z(double theta)
 {
-    t_matrix shear = init_identitymatrix(4);
+	t_matrix	rot_z;
+	double		cos_theta;
+	double		sin_theta;
 
-    shear.data[0][1] = xy;
-    shear.data[0][2] = xz;
-    shear.data[1][0] = yx;
-    shear.data[1][2] = yz;
-    shear.data[2][0] = zx;
-    shear.data[2][1] = zy;
-
-    return shear;
+	rot_z = init_identitymatrix(4);
+	cos_theta = cos(theta);
+	sin_theta = sin(theta);
+	rot_z.data[0][0] = cos_theta;
+	rot_z.data[0][1] = -sin_theta;
+	rot_z.data[1][0] = sin_theta;
+	rot_z.data[1][1] = cos_theta;
+	return (rot_z);
 }
+//
+// t_matrix	shearing(double xy, double xz, double yx,
+// double yz, double zx, double zy)
+// {
+// 	t_matrix shear;
+//
+// 	shear = init_identitymatrix(4);
+// 	shear.data[0][1] = xy;
+// 	shear.data[0][2] = xz;
+// 	shear.data[1][0] = yx;
+// 	shear.data[1][2] = yz;
+// 	shear.data[2][0] = zx;
+// 	shear.data[2][1] = zy;
+// 	return (shear);
+// }
