@@ -6,13 +6,13 @@
 #    By: llai <llai@student.42london.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/31 09:38:33 by llai              #+#    #+#              #
-#    Updated: 2024/03/26 18:03:02 by llai             ###   ########.fr        #
+#    Updated: 2024/05/02 15:20:25 by llai             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g -fPIE
 AR = ar rcs
 SRC = ft_isalpha.c \
       ft_isdigit.c \

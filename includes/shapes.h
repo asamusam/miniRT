@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 15:26:40 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:00:39 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,28 @@ typedef struct s_tuple_list
 	double	t2;
 }	t_tuple_list;
 
+typedef struct s_cylinder
+{
+	t_tuple		center;
+	t_tuple		axis;
+	float		diameter;
+	float		height;
+	t_color		color;
+}	t_cylinder;
+
+typedef struct s_plane
+{
+	t_tuple		point;
+	t_tuple		normal;
+	t_color		color;
+}	t_plane;
+// typedef struct s_sphere
+// {
+// 	t_tuple		center;
+// 	float		diameter;
+// 	t_color		color;
+// }	t_sphere;
+//
 typedef struct s_sphere
 {
 	t_tuple		center;

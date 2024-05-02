@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 21:34:48 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:17:12 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include "shapes.h"
 # include "matrix.h"
 # include "world.h"
+# include "scene.h"
+# include "parser.h"
 # include <math.h>
 
 // # define ESC_KEY 0xff1b
@@ -35,9 +37,13 @@ typedef enum e_keycode
 typedef struct s_data
 {
 	t_img	base_image;
+	t_scene	scene;
 }	t_data;
 
+// init.c
+
 t_win	new_window(int w, int h, char *str);
+void	init_data(t_data *data);
 
 // Render.c
 // void	render(t_data *data);
@@ -47,8 +53,19 @@ void	clear_image(t_data *data);
 int	key_down(int keycode, t_data *data);
 
 // close.c
+
+void	free_scene(t_data *data);
 int		destroy_window(t_data *data);
 int		esc_close_win(int keycode, t_data *data);
 int		cross_close_win(t_data *data);
+
+// parse.c
+
+int		parse(t_data *data, char *scene_file);
+
+// ft_atof.c
+
+int		ft_isspace(int c);
+double	ft_atof(const char *str);
 
 #endif // !MINIRT_H

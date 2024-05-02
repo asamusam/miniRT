@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:38:44 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 15:04:44 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "../includes/shapes.h"
 #include <math.h>
 
-t_light	point_light(t_tuple position, t_color intensity)
+t_light	point_light(t_tuple position, t_color color)
 {
-	return ((t_light){position, intensity});
+	return ((t_light){position, 0, color});
 }
 
 t_material	material(void)
@@ -43,7 +43,7 @@ t_color	lighting(t_material m, t_light l, t_tuple p, t_tuple eyev, t_tuple norma
 	t_color	specular;
 	double	factor;
 
-	effective_color = hadamard_product(m.color, l.intensity);
+	effective_color = hadamard_product(m.color, l.color);
 	lightv = normalize(sub_tuples(l.position, p));
 	ambient = mul_color(effective_color, m.ambient);
 	light_dot_normal = dot(lightv, normalv);
@@ -63,7 +63,7 @@ t_color	lighting(t_material m, t_light l, t_tuple p, t_tuple eyev, t_tuple norma
 		else
 		{
 			factor = pow(reflect_dot_eye, m.shininess);
-			specular = mul_color(mul_color(l.intensity, m.specular), factor);
+			specular = mul_color(mul_color(l.color, m.specular), factor);
 		}
 	}
 

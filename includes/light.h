@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/01 16:38:59 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 14:57:27 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,17 @@
 #include "color.h"
 #include "tuples.h"
 
+typedef struct s_ambient
+{
+	float		intensity;
+	t_color		color;
+}	t_ambient;
+
 typedef struct s_light
 {
 	t_tuple	position;
-	t_color	intensity;
+	float		intensity;
+	t_color	color;
 }	t_light;
 
 typedef struct s_material

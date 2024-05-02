@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:52:34 by llai              #+#    #+#             */
-/*   Updated: 2024/04/29 17:27:13 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 14:58:25 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #define EPSILON 0.00001
 
 #include <stdbool.h>
+# define TUPLES_H
 
 typedef enum e_tuple_type
 {
