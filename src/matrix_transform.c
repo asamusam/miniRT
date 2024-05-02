@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 21:15:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:14:56 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 19:36:18 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ t_matrix	translation(double x, double y, double z)
 		{
 			if (i == j)
 				trans.data[i][j] = 1.0;
-			trans.data[i][j] = 0.0;
+			else
+				trans.data[i][j] = 0.0;
 		}
 	}
 	trans.data[0][3] = x;
@@ -60,7 +61,8 @@ t_matrix	scaling(double x, double y, double z)
 		{
 			if (i == j)
 				scale.data[i][j] = 1.0;
-			scale.data[i][j] = 0.0;
+			else
+				scale.data[i][j] = 0.0;
 		}
 	}
 	scale.data[0][0] = x;

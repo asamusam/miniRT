@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:28:16 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/02 19:37:43 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 
 	object_pt = matrix_tuple_multiply(inverse(s.transform), world_pt);
 	object_normal = sub_tuples(object_pt, point(0, 0, 0));
-	world_normal = matrix_tuple_multiply(transpose(inverse(s.transform)), object_normal);
+	world_normal = matrix_tuple_multiply(
+			transpose(inverse(s.transform)), object_normal);
 	world_normal.w = 0;
 	return (normalize(world_normal));
 }
@@ -124,5 +125,6 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	double	in_dot_norm;
 
 	in_dot_norm = dot(in, normal);
-	return (sub_tuples(in, scalar_mul_tuple(in_dot_norm, scalar_mul_tuple(2, normal))));
+	return (sub_tuples(in, scalar_mul_tuple(
+				in_dot_norm, scalar_mul_tuple(2, normal))));
 }
