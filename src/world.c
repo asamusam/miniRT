@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:15:10 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 19:31:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	insertion_sortlist(t_list **head)
 	*head = sorted;
 }
 
+// It returns intersections with the ray through the world
 t_list	*intersect_world(t_world world, t_ray ray)
 {
 	t_list	*result;
@@ -94,6 +95,8 @@ t_list	*intersect_world(t_world world, t_ray ray)
 	return (result);
 }
 
+// It precomputes the point in the world space where the intersection 
+// occurred, the eye veector, and the normal vector
 t_comps	prepare_computations(t_intersection intersection, t_ray ray)
 {
 	t_comps	comps;
@@ -158,6 +161,10 @@ t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forword)
 	return (orientation);
 }
 
+// It mimics the eye/camera moves instead of the world
+// from where the eye in the scene
+// to where you want to look at
+// and a vector indicates which direction is up
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
 	t_tuple		forword;
@@ -175,6 +182,8 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 			translation(-from.x, -from.y, -from.z)));
 }
 
+// The camera pixel size is calculated with the horizontal aspect
+// and vertical aspect
 t_camera	camera(float hsize, float vsize, float field_of_view)
 {
 	t_camera	c;
@@ -206,6 +215,8 @@ float	calc_offset(t_camera camera, float p)
 	return ((p + 0.5) * camera.pixel_size);
 }
 
+// It returns new ray from the camera and passes through 
+// the indicated (x, y) pixel on the canvas
 t_ray	ray_for_pixel(t_camera camera, float px, float py)
 {
 	float	world_x;
