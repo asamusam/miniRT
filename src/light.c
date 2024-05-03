@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:16:05 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:25:04 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_color	compute_ambient(t_comps c, t_color effective_color)
 			effective_color, c.sphere.material.ambient));
 }
 
+// A negative number means the light is on the other side of the surface
 t_color	compute_diffuse(t_comps c, t_color effective_color, t_light light)
 {
 	t_tuple	lightv;
@@ -53,6 +54,7 @@ t_color	compute_diffuse(t_comps c, t_color effective_color, t_light light)
 				light_dot_normal));
 }
 
+// A negative number means the light reflects away from the eye.
 t_color	compute_specular(t_comps c, t_light light)
 {
 	t_tuple	lightv;
@@ -73,6 +75,8 @@ t_color	compute_specular(t_comps c, t_light light)
 	}
 }
 
+// First it finds the surface color with light's color 
+// then it adds up with ambient, diffuse and specular.
 t_color	lighting(t_world w, t_comps c)
 {
 	t_color	effective_color;
