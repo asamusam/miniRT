@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:37:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 16:32:44 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ t_intersection	*intersection(double t, t_sphere object)
 	return (i);
 }
 
+// Calculate the ray and sphere intersecting points t1 & t2.
+// Negative number means the point is behind the ray origin
 int	calc_t(t_sphere s, t_ray ray, double *t1, double *t2)
 {
 	t_tuple	sphere_to_ray;
@@ -67,6 +69,9 @@ int	calc_t(t_sphere s, t_ray ray, double *t1, double *t2)
 	return (0);
 }
 
+// Create a list for the ray intersecting spheres and its t1 & t2
+// Instead of moving the sphere, apply the inverse of that transformation
+// to the ray.
 t_list	*intersect(t_sphere s, t_ray ray)
 {
 	t_list	*interections_list;
@@ -82,6 +87,7 @@ t_list	*intersect(t_sphere s, t_ray ray)
 	return (interections_list);
 }
 
+// Idetify which one of all the intersections is visible from the ray's origin
 t_intersection	*hit(t_list *xs)
 {
 	t_intersection	*res;
@@ -106,6 +112,10 @@ t_intersection	*hit(t_list *xs)
 	return (res);
 }
 
+// For a sphere, an arrow from origin to the point is perpendicular 
+// to the surface of the circle at the point where it intersects.
+// Since object is assumed always at world origin and radii is 1,
+// converting is needed.
 t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 {
 	t_tuple	object_pt;
