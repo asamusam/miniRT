@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:07:52 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/02 19:05:02 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:05:34 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	parse_ambient(char *line, t_data *data)
 	int			i;
 
 	if (n)
-		error_and_fail(AMB, NULL, NUM_ERR);
+		return (error_and_fail(AMB, NULL, NUM_ERR));
 	i = 0;
 	skip_space(&line[i], &i, NOT_REQUIRED);
 	if (parse_float(&data->scene->ambient.intensity, &line[i], &i) == FAIL)
@@ -31,7 +31,6 @@ int	parse_ambient(char *line, t_data *data)
 		return (error_and_fail(AMB, "Color", FORMAT_ERR));
 	if (check_color(&data->scene->ambient.color) == FAIL)
 		return (error_and_fail(AMB, "Color", RANGE_ERR));
-	skip_space(&line[i], &i, NOT_REQUIRED);
 	if (line[i])
 		return (error_and_fail(AMB, NULL, EXTRA_ERR));
 	n ++;
@@ -73,7 +72,7 @@ int	parse_light(char *line, t_data *data)
 	int			i;
 
 	if (n)
-		error_and_fail(LIGHT, NULL, NUM_ERR);
+		return (error_and_fail(LIGHT, NULL, NUM_ERR));
 	i = 0;
 	skip_space(&line[i], &i, NOT_REQUIRED);
 	if (parse_tuple(&data->scene->light.position, POINT, &line[i], &i) == FAIL \
@@ -88,7 +87,6 @@ int	parse_light(char *line, t_data *data)
 		return (error_and_fail(LIGHT, "Color", FORMAT_ERR));
 	if (check_color(&data->scene->light.color) == FAIL)
 		return (error_and_fail(LIGHT, "Color", RANGE_ERR));
-	skip_space(&line[i], &i, NOT_REQUIRED);
 	if (line[i])
 		return (error_and_fail(LIGHT, NULL, EXTRA_ERR));
 	n ++;

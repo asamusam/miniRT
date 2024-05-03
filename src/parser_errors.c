@@ -6,18 +6,16 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:44:32 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/02 19:29:51 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:42:16 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	check_shape_status(void *shape, int status)
+int	free_shape_fail(char *object, char *part, char *error, void *shape)
 {
-	if (status == SUCCESS)
-		return (SUCCESS);
 	free(shape);
-	return (FAIL);
+	return (error_and_fail(object, part, error));
 }
 
 int	error_and_fail(char *object, char *part, char *error)

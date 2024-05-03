@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:09:49 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 18:46:56 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:48:26 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 t_list	*ft_lstlast(t_list *lst)
 {
 	if (!lst)
-		return (lst);
+		return (NULL);
 	while (lst != NULL && lst -> next != NULL)
 		lst = lst -> next;
 	return (lst);

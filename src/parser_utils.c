@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:38:51 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/02 16:02:41 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:29:29 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,19 @@ int	skip_space(const char *line, int *i, int flag)
 
 int	parse_color(t_color *color, char *line, int *i)
 {
-	int	start;
 	int	j;
 
-	start = 0;
 	j = 0;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL || line[j] != ',')
+	if (parse_float(&color->red, &line[j], &j) == FAIL || line[j] != ',')
 		return (FAIL);
 	j ++;
-	color->red = ft_atoi(&line[start]);
-	start = j;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL || line[j] != ',')
+	if (parse_float(&color->green, &line[j], &j) == FAIL || line[j] != ',')
 		return (FAIL);
 	j ++;
-	color->green = ft_atoi(&line[start]);
-	start = j;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL || \
-		skip_space(&line[j], &j, REQUIRED) == FAIL)
+	if (parse_float(&color->blue, &line[j], &j) == FAIL || \
+		(line[j] && skip_space(&line[j], &j, REQUIRED) == FAIL))
 		return (FAIL);
-	color->blue = ft_atoi(&line[start]);
+	color->transparent = 0.0;
 	*i += j;
 	return (SUCCESS);
 }

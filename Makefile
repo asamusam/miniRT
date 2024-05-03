@@ -4,7 +4,8 @@ INCLUDE := -Iincludes -Iminilibx-linux -Ilibft
 LIBFT := libft/libft.a
 MINILIBX := minilibx-linux/libmlx_Linux.a
 CFILES := src/main.c src/init.c src/close.c src/color.c src/image.c \
-		  src/parser.c src/parser_utils.c src/parser_shapes.c src/parser_errors.c src/parser_range.c src/ft_atof.c
+		  src/parser.c src/parser_utils.c src/parser_shapes.c src/parser_errors.c src/parser_range.c src/ft_atof.c \
+		  src/print_scene.c
 OFILES := $(CFILES:.c=.o)
 NAME := miniRT
 

@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 18:41:04 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:36:12 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,6 @@ void	allocate_data(t_data **data);
 void	init_mlx(t_data *data);
 void	init_data(t_data *data);
 
-// color.c
-
-int		create_trgb(int t, int r, int g, int b);
-t_color	color(double transparent, double red, double green, double blue);
-
 // image.c
 
 void	put_pixel_img(t_img *img, int x, int y, int color);
@@ -71,13 +66,8 @@ int		cross_close_win(t_data *data);
 
 void	parse(t_data *data, char *scene_file);
 
-// color.c
+// print.c
 
-t_color	color(double transparent, double red, double green, double blue);
-
-// ft_atof.c
-
-int		ft_isspace(int c);
-double	ft_atof(const char *str);
+void	print_scene(t_data *data);
 
 #endif // !MINIRT_H
