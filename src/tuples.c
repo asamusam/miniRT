@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:55:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 16:44:57 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:14:58 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <math.h>
 #include "../includes/tuples.h"
 
-bool	equal(double a, double b)
+bool	equal(float a, float b)
 {
 	if (fabs(a - b) < EPSILON)
 		return (true);
@@ -22,12 +22,12 @@ bool	equal(double a, double b)
 		return (false);
 }
 
-t_tuple	point(double x, double y, double z)
+t_tuple	point(float x, float y, float z)
 {
 	return ((t_tuple){x, y, z, POINT});
 }
 
-t_tuple	vector(double x, double y, double z)
+t_tuple	vector(float x, float y, float z)
 {
 	return ((t_tuple){x, y, z, VECTOR});
 }
@@ -65,7 +65,7 @@ t_tuple	negate_tuple(t_tuple tup)
 	return (res);
 }
 
-t_tuple	scalar_mul_tuple(double lhs, t_tuple rhs)
+t_tuple	scalar_mul_tuple(float lhs, t_tuple rhs)
 {
 	t_tuple	res;
 
@@ -76,7 +76,7 @@ t_tuple	scalar_mul_tuple(double lhs, t_tuple rhs)
 	return (res);
 }
 
-t_tuple	scalar_dev_tuple(t_tuple lhs, double rhs)
+t_tuple	scalar_dev_tuple(t_tuple lhs, float rhs)
 {
 	t_tuple	res;
 
@@ -90,7 +90,7 @@ t_tuple	scalar_dev_tuple(t_tuple lhs, double rhs)
 // Magnitude, or length, is the distance represented by a vector.
 // It's how far you would travel in a straight line if you were
 // to walk from one end of the vector to the other.
-double	magnitude(t_tuple vec)
+float	magnitude(t_tuple vec)
 {
 	return (sqrt(vec.x * vec.x
 			+ vec.y * vec.y
@@ -118,7 +118,7 @@ t_tuple	normalize(t_tuple vec)
 // While the dot product with normalization only considers the direction.
 // ie: 1 means the vectors are identical, 
 // -1 means they point in opposite directions.
-double	dot(t_tuple v1, t_tuple v2)
+float	dot(t_tuple v1, t_tuple v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w);
 }

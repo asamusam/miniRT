@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:31:07 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:41:53 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:12:27 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_ray
 }	t_ray;
 
 t_ray	ray(t_tuple origin, t_tuple direction);
-t_tuple	position(t_ray ray, double t);
+t_tuple	position(t_ray ray, float t);
 t_ray	transform(t_ray r, t_matrix m);
 
 #endif // !RAY_H

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 14:16:01 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:14:08 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ t_matrix	create_matrix(int rows, int cols)
 
 	mat.rows = rows;
 	mat.cols = cols;
-	mat.data = (double **)malloc(rows * sizeof(double *));
+	mat.data = (float **)malloc(rows * sizeof(float *));
 	i = -1;
 	while (++i < rows)
-		mat.data[i] = (double *)malloc(cols * sizeof(double));
+		mat.data[i] = (float *)malloc(cols * sizeof(float));
 	return (mat);
 }
 
@@ -199,9 +199,9 @@ t_matrix	transpose(t_matrix A)
 // Determinant is used to determine whether or not the system has a solution.
 // It the determinant is zero, then the corresponding system of equations has
 // no solution.
-double	determinant(t_matrix m)
+float	determinant(t_matrix m)
 {
-	double	det;
+	float	det;
 	int		column;
 
 	det = 0;
@@ -223,10 +223,10 @@ t_matrix	init_submatrix(t_matrix m)
 
 	sub.rows = m.rows - 1;
 	sub.cols = m.cols - 1;
-	sub.data = (double **)malloc(sub.rows * sizeof(double *));
+	sub.data = (float **)malloc(sub.rows * sizeof(float *));
 	i = -1;
 	while (++i < sub.rows)
-		sub.data[i] = (double *)malloc(sub.cols * sizeof(double));
+		sub.data[i] = (float *)malloc(sub.cols * sizeof(float));
 	return (sub);
 }
 
@@ -274,10 +274,10 @@ t_matrix	submatrix(t_matrix m, int rowToRemove, int colToRemove)
 
 // The minor of an element at row i and col j is the determinant of 
 // the submatrix at (i, j).
-double	minor(t_matrix m, int row, int col)
+float	minor(t_matrix m, int row, int col)
 {
 	t_matrix	sub;
-	double		det;
+	float		det;
 
 	sub = submatrix(m, row, col);
 	det = determinant(sub);
@@ -286,9 +286,9 @@ double	minor(t_matrix m, int row, int col)
 }
 
 // Cofactor is to check if the minors that have had their sign changed.
-double	cofactor(t_matrix m, int row, int col)
+float	cofactor(t_matrix m, int row, int col)
 {
-	double	minor_value;
+	float	minor_value;
 
 	minor_value = minor(m, row, col);
 	if ((row + col) % 2 == 0)
@@ -296,19 +296,19 @@ double	cofactor(t_matrix m, int row, int col)
 	return (-minor_value);
 }
 
-t_matrix	make_inv(t_matrix m, double det)
+t_matrix	make_inv(t_matrix m, float det)
 {
 	t_matrix	m_inv;
 	int			i;
 	int			j;
-	double		c;
+	float		c;
 
 	m_inv.rows = m.rows;
 	m_inv.cols = m.cols;
-	m_inv.data = (double **)malloc(m.rows * sizeof(double *));
+	m_inv.data = (float **)malloc(m.rows * sizeof(float *));
 	i = -1;
 	while (++i < m.rows)
-		m_inv.data[i] = (double *)malloc(m.cols * sizeof(double));
+		m_inv.data[i] = (float *)malloc(m.cols * sizeof(float));
 	i = -1;
 	while (++i < m.rows)
 	{
@@ -327,7 +327,7 @@ t_matrix	make_inv(t_matrix m, double det)
 t_matrix	inverse(t_matrix m)
 {
 	t_matrix	m_inv;
-	double		det;
+	float		det;
 
 	det = determinant(m);
 	if (det == 0)

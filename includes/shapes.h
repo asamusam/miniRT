@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:57:16 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:12:52 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 typedef struct s_tuple_list
 {
 	int		count;
-	double	t1;
-	double	t2;
+	float	t1;
+	float	t2;
 }	t_tuple_list;
 
 typedef struct s_cylinder
@@ -51,20 +51,20 @@ typedef struct s_plane
 typedef struct s_sphere
 {
 	t_tuple		center;
-	double		radius;
+	float		radius;
 	t_matrix	transform;
 	t_material	material;
 }	t_sphere;
 
 typedef struct s_intersection
 {
-	double		t;
+	float		t;
 	t_sphere	object;
 }	t_intersection;
 
-t_sphere		sphere(t_tuple center, double radius);
+t_sphere		sphere(t_tuple center, float radius);
 void			set_transform(t_sphere *shpere, t_matrix t);
-t_intersection	*intersection(double t, t_sphere object);
+t_intersection	*intersection(float t, t_sphere object);
 t_list			*intersect(t_sphere sphere, t_ray ray);
 t_intersection	*hit(t_list *xs);
 t_tuple			normal_at(t_sphere s, t_tuple p);

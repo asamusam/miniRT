@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 21:26:13 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:16:05 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_color	compute_ambient(t_comps c, t_color effective_color)
 t_color	compute_diffuse(t_comps c, t_color effective_color, t_light light)
 {
 	t_tuple	lightv;
-	double	light_dot_normal;
+	float	light_dot_normal;
 
 	lightv = normalize(sub_tuples(light.position, c.point));
 	light_dot_normal = dot(lightv, c.normalv);
@@ -57,8 +57,8 @@ t_color	compute_specular(t_comps c, t_light light)
 {
 	t_tuple	lightv;
 	t_tuple	reflectv;
-	double	reflect_dot_eye;
-	double	factor;
+	float	reflect_dot_eye;
+	float	factor;
 
 	lightv = normalize(sub_tuples(light.position, c.point));
 	reflectv = reflect(negate_tuple(lightv), c.normalv);

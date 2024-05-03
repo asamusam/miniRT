@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 20:25:14 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:11:47 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ typedef struct s_light
 typedef struct s_material
 {
 	t_color	color;
-	double	ambient;
-	double	diffuse;
-	double	specular;
-	double	shininess;
+	float	ambient;
+	float	diffuse;
+	float	specular;
+	float	shininess;
 }	t_material;
 
-t_light		point_light(t_tuple position, t_color intensity);
+t_light		point_light(t_tuple position, t_color color);
 t_material	material(void);
 // t_color		lighting(t_material m, t_light l, t_tuple p, t_tuple eyev, t_tuple normalv);
 t_color		lighting(t_world w, t_comps c);

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:59:00 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:13:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_world
 
 typedef struct s_comps
 {
-	double		t;
+	float		t;
 	t_sphere	sphere;
 	t_tuple		point;
 	t_tuple		eyev;
@@ -38,12 +38,12 @@ typedef struct s_comps
 
 typedef struct s_camera
 {
-	double		hsize;
-	double		vsize;
-	double		field_of_view;
-	double		half_width;
-	double		half_height;
-	double		pixel_size;
+	float		hsize;
+	float		vsize;
+	float		field_of_view;
+	float		half_width;
+	float		half_height;
+	float		pixel_size;
 	t_matrix	transform;
 }	t_camera;
 
@@ -54,8 +54,8 @@ t_comps		prepare_computations(t_intersection intersection, t_ray ray);
 t_color		shade_hit(t_world world, t_comps comps);
 t_color		color_at(t_world world, t_ray ray);
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up);
-t_camera	camera(double hsize, double vsize, double field_of_view);
-t_ray		ray_for_pixel(t_camera camera, double px, double py);
+t_camera	camera(float hsize, float vsize, float field_of_view);
+t_ray		ray_for_pixel(t_camera camera, float px, float py);
 void		render(t_data *data, t_camera camera, t_world world);
 
 #endif // !WORLD_H

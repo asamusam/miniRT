@@ -6,14 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 16:03:24 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:13:24 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/color.h"
 #include <stdio.h>
 
-t_color	color(double transparent, double red, double green, double blue)
+t_color	color(float transparent, float red, float green, float blue)
 {
 	return ((t_color){transparent, red, green, blue});
 }
@@ -40,7 +40,7 @@ t_color	sub_colors(t_color c1, t_color c2)
 	return (res);
 }
 
-t_color	mul_color(t_color c, double scalar)
+t_color	mul_color(t_color c, float scalar)
 {
 	t_color	res;
 
@@ -67,7 +67,7 @@ int	create_trgb(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int	limit_color(double color)
+int	limit_color(float color)
 {
 	if (color >= 255)
 		return (255);
@@ -77,7 +77,7 @@ int	limit_color(double color)
 		return (color);
 }
 
-int	create_trgb_color(double t, double r, double g, double b)
+int	create_trgb_color(float t, float r, float g, float b)
 {
 	int	it;
 	int	ir;

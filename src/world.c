@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 20:27:53 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:15:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	insert_sorted(t_list **sorted, t_list *node)
 	t_list	*temp;
 
 	if (*sorted == NULL
-		|| *(double *)(*sorted)->content >= *(double *)node->content)
+		|| *(float *)(*sorted)->content >= *(float *)node->content)
 	{
 		node->next = *sorted;
 		*sorted = node;
@@ -59,7 +59,7 @@ void	insert_sorted(t_list **sorted, t_list *node)
 	{
 		temp = *sorted;
 		while (temp->next != NULL
-			&& *(double *)temp->next->content < *(double *)node->content)
+			&& *(float *)temp->next->content < *(float *)node->content)
 			temp = temp->next;
 		node->next = temp->next;
 		temp->next = node;
@@ -175,11 +175,11 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 			translation(-from.x, -from.y, -from.z)));
 }
 
-t_camera	camera(double hsize, double vsize, double field_of_view)
+t_camera	camera(float hsize, float vsize, float field_of_view)
 {
 	t_camera	c;
-	double		half_view;
-	double		aspect;
+	float		half_view;
+	float		aspect;
 
 	c.hsize = hsize;
 	c.vsize = vsize;
@@ -201,15 +201,15 @@ t_camera	camera(double hsize, double vsize, double field_of_view)
 	return (c);
 }
 
-double	calc_offset(t_camera camera, double p)
+float	calc_offset(t_camera camera, float p)
 {
 	return ((p + 0.5) * camera.pixel_size);
 }
 
-t_ray	ray_for_pixel(t_camera camera, double px, double py)
+t_ray	ray_for_pixel(t_camera camera, float px, float py)
 {
-	double	world_x;
-	double	world_y;
+	float	world_x;
+	float	world_y;
 	t_tuple	pixel;
 	t_tuple	origin;
 	t_tuple	direction;

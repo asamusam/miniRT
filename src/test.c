@@ -56,11 +56,11 @@ void	test4(void)
 // {
 // 	(void)data;
 // 	t_tuple	ray_origin = point(0, 0, -5);
-// 	double	wall_z = 10;
-// 	double	wall_size = 7;
-// 	double	canvas_pixel = 1080;
-// 	double	pixel_size = wall_size / canvas_pixel;
-// 	// double	half = wall_size / 2;
+// 	float	wall_z = 10;
+// 	float	wall_size = 7;
+// 	float	canvas_pixel = 1080;
+// 	float	pixel_size = wall_size / canvas_pixel;
+// 	// float	half = wall_size / 2;
 //
 // 	// t_sphere	s = sphere(point(0, 0, 0), 1);
 // 	// s.material = material();
@@ -80,10 +80,10 @@ void	test4(void)
 //
 // 	for (int y = -canvas_pixel / 2; y < canvas_pixel / 2; y++)
 // 	{
-// 		double	world_y = pixel_size * y;
+// 		float	world_y = pixel_size * y;
 // 		for (int x = -canvas_pixel / 2; x < canvas_pixel / 2; x++)
 // 		{
-// 			double	world_x = pixel_size * x;
+// 			float	world_x = pixel_size * x;
 // 			t_tuple	pos = point(world_x, world_y, wall_z);
 // 			// t_tuple	position = point(x, y, wall_z);
 // 			t_ray	r = ray(ray_origin, normalize(sub_tuples(pos, ray_origin)));
@@ -278,8 +278,8 @@ void	draw_scene(t_data *data)
 	// (void)right;
 	// (void)left;
 	// (void)middle;
-	// t_camera c = camera(100 * 6, 50 * 6, M_PI / 3);
-	t_camera c = camera(1920, 1080, M_PI / 3);
+	t_camera c = camera(100 * 6, 50 * 6, M_PI / 3);
+	// t_camera c = camera(1920, 1080, M_PI / 3);
 	t_tuple	from = point(0, 1.5, -5);
 	t_tuple	to = point(0, 1, 0);
 	t_tuple	up = vector(0, 1, 0);

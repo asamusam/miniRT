@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 16:32:44 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:14:39 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include <math.h>
 #include <stdlib.h>
 
-t_tuple_list	tuple_list(int count, double t1, double t2)
+t_tuple_list	tuple_list(int count, float t1, float t2)
 {
 	return ((t_tuple_list){count, t1, t2});
 }
 
-t_sphere	sphere(t_tuple center, double radius)
+t_sphere	sphere(t_tuple center, float radius)
 {
 	t_sphere	s;
 
@@ -37,7 +37,7 @@ void	set_transform(t_sphere *shpere, t_matrix t)
 	shpere->transform = t;
 }
 
-t_intersection	*intersection(double t, t_sphere object)
+t_intersection	*intersection(float t, t_sphere object)
 {
 	t_intersection	*i;
 
@@ -49,13 +49,13 @@ t_intersection	*intersection(double t, t_sphere object)
 
 // Calculate the ray and sphere intersecting points t1 & t2.
 // Negative number means the point is behind the ray origin
-int	calc_t(t_sphere s, t_ray ray, double *t1, double *t2)
+int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
 {
 	t_tuple	sphere_to_ray;
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
 
 	sphere_to_ray = sub_tuples(ray.origin, s.center);
 	a = dot(ray.direction, ray.direction);
@@ -75,8 +75,8 @@ int	calc_t(t_sphere s, t_ray ray, double *t1, double *t2)
 t_list	*intersect(t_sphere s, t_ray ray)
 {
 	t_list	*interections_list;
-	double	t1;
-	double	t2;
+	float	t1;
+	float	t2;
 
 	ray = transform(ray, inverse(s.transform));
 	interections_list = NULL;
@@ -132,7 +132,7 @@ t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 
 t_tuple	reflect(t_tuple in, t_tuple normal)
 {
-	double	in_dot_norm;
+	float	in_dot_norm;
 
 	in_dot_norm = dot(in, normal);
 	return (sub_tuples(in, scalar_mul_tuple(

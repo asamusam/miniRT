@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:32:54 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 15:11:46 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:15:33 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_ray	ray(t_tuple origin, t_tuple direction)
 }
 
 // The position will be along the ray after t time.
-t_tuple	position(t_ray ray, double t)
+t_tuple	position(t_ray ray, float t)
 {
 	return (add_tuples(ray.origin, (scalar_mul_tuple(t, ray.direction))));
 }

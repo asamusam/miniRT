@@ -6,22 +6,22 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 21:15:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:36:18 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:14:16 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/matrix.h"
 #include <math.h>
 
-double	radians(double deg)
+float	radians(float deg)
 {
-	double	res;
+	float	res;
 
 	res = deg / 180 * M_PI;
 	return (res);
 }
 
-t_matrix	translation(double x, double y, double z)
+t_matrix	translation(float x, float y, float z)
 {
 	t_matrix	trans;
 	int			i;
@@ -46,7 +46,7 @@ t_matrix	translation(double x, double y, double z)
 	return (trans);
 }
 
-t_matrix	scaling(double x, double y, double z)
+t_matrix	scaling(float x, float y, float z)
 {
 	t_matrix	scale;
 	int			i;
@@ -71,11 +71,11 @@ t_matrix	scaling(double x, double y, double z)
 	return (scale);
 }
 
-t_matrix	rotation_x(double theta)
+t_matrix	rotation_x(float theta)
 {
 	t_matrix	rot_x;
-	double		cos_theta;
-	double		sin_theta;
+	float		cos_theta;
+	float		sin_theta;
 
 	rot_x = init_identitymatrix(4);
 	cos_theta = cos(theta);
@@ -87,11 +87,11 @@ t_matrix	rotation_x(double theta)
 	return (rot_x);
 }
 
-t_matrix	rotation_y(double theta)
+t_matrix	rotation_y(float theta)
 {
 	t_matrix	rot_y;
-	double		cos_theta;
-	double		sin_theta;
+	float		cos_theta;
+	float		sin_theta;
 
 	rot_y = init_identitymatrix(4);
 	cos_theta = cos(theta);
@@ -103,11 +103,11 @@ t_matrix	rotation_y(double theta)
 	return (rot_y);
 }
 
-t_matrix	rotation_z(double theta)
+t_matrix	rotation_z(float theta)
 {
 	t_matrix	rot_z;
-	double		cos_theta;
-	double		sin_theta;
+	float		cos_theta;
+	float		sin_theta;
 
 	rot_z = init_identitymatrix(4);
 	cos_theta = cos(theta);
@@ -119,8 +119,8 @@ t_matrix	rotation_z(double theta)
 	return (rot_z);
 }
 //
-// t_matrix	shearing(double xy, double xz, double yx,
-// double yz, double zx, double zy)
+// t_matrix	shearing(float xy, float xz, float yx,
+// float yz, float zx, float zy)
 // {
 // 	t_matrix shear;
 //
