@@ -278,7 +278,8 @@ void	draw_scene(t_data *data)
 	// (void)right;
 	// (void)left;
 	// (void)middle;
-	t_camera c = camera(100 * 6, 50 * 6, M_PI / 3);
+	// t_camera c = camera(100 * 6, 50 * 6, M_PI / 3);
+	t_camera c = camera(1920, 1080, M_PI / 3);
 	t_tuple	from = point(0, 1.5, -5);
 	t_tuple	to = point(0, 1, 0);
 	t_tuple	up = vector(0, 1, 0);

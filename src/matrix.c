@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 20:16:57 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/03 14:16:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// Matrix  is used to represent and manipulate linear transformations 
+// and systems of linear equations. 
 t_matrix	create_matrix(int rows, int cols)
 {
 	t_matrix	mat;
@@ -73,6 +75,8 @@ bool	compare_matrix(t_matrix mat1, t_matrix mat2)
 	return (true);
 }
 
+// Multiplying matrix is used to perform transformations like
+// scaling, rotation, and translation.
 t_matrix	matrix_multiply(t_matrix A, t_matrix B)
 {
 	int			row;
@@ -101,6 +105,7 @@ t_matrix	matrix_multiply(t_matrix A, t_matrix B)
 	return (m);
 }
 
+// Identity matrix is default transformation of any object in the scene.
 t_matrix	identity_matrix(t_matrix m)
 {
 	t_matrix	i;
@@ -128,6 +133,7 @@ t_matrix	identity_matrix(t_matrix m)
 	return (res);
 }
 
+// Identity matrix is default transformation of any object in the scene.
 t_matrix	init_identitymatrix(int size)
 {
 	t_matrix	mat;
@@ -171,6 +177,8 @@ for tuple multiplication.\n");
 	return (result);
 }
 
+// Matrix transposition flips a matrix over its diagonal.
+// The rows becomes columns.
 t_matrix	transpose(t_matrix A)
 {
 	t_matrix	result;
@@ -188,6 +196,9 @@ t_matrix	transpose(t_matrix A)
 	return (result);
 }
 
+// Determinant is used to determine whether or not the system has a solution.
+// It the determinant is zero, then the corresponding system of equations has
+// no solution.
 double	determinant(t_matrix m)
 {
 	double	det;
@@ -245,6 +256,8 @@ void	assign_sub(t_matrix *sub, t_matrix m, int rowToRemove, int colToRemove)
 	}
 }
 
+// A submatrix is what is left when deleting a single row and column
+// from a matrix.
 t_matrix	submatrix(t_matrix m, int rowToRemove, int colToRemove)
 {
 	t_matrix	sub;
@@ -259,6 +272,8 @@ t_matrix	submatrix(t_matrix m, int rowToRemove, int colToRemove)
 	return (sub);
 }
 
+// The minor of an element at row i and col j is the determinant of 
+// the submatrix at (i, j).
 double	minor(t_matrix m, int row, int col)
 {
 	t_matrix	sub;
@@ -270,6 +285,7 @@ double	minor(t_matrix m, int row, int col)
 	return (det);
 }
 
+// Cofactor is to check if the minors that have had their sign changed.
 double	cofactor(t_matrix m, int row, int col)
 {
 	double	minor_value;
@@ -306,6 +322,8 @@ t_matrix	make_inv(t_matrix m, double det)
 	return (m_inv);
 }
 
+// The idea of inverting matrices is to undo an operation.
+// ie: 5 * 4 = 20 => 20 * inverse(4) or 1/4 = 5.
 t_matrix	inverse(t_matrix m)
 {
 	t_matrix	m_inv;
