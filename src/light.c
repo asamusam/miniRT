@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 00:03:07 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 00:32:54 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_color	compute_specular(t_comps c, t_light light)
 	t_tuple	lightv;
 	t_tuple	reflectv;
 	float	reflect_dot_eye;
-	double	factor;
+	float	factor;
 
 	lightv = normalize(sub_tuples(light.position, c.point));
 	reflectv = reflect(negate_tuple(lightv), c.normalv);
@@ -71,12 +71,9 @@ t_color	compute_specular(t_comps c, t_light light)
 		return (color(0, 0, 0, 0));
 	else
 	{
-		// printf("here\n");
 		factor = pow(reflect_dot_eye, c.sphere.material.shininess);
-		printf("%f %f\n", reflect_dot_eye, c.sphere.material.shininess);
-		printf("%f\n", factor);
 		return (mul_color(mul_color(
-					light.color, c.sphere.material.specular), factor));
+					light.color, c.sphere.material.specular), factor * 255));
 	}
 }
 
@@ -101,9 +98,5 @@ t_color	lighting(t_world w, t_comps c)
 	ambient = compute_ambient(w, effective_color);
 	diffuse = compute_diffuse(c, effective_color, w.light);
 	specular = compute_specular(c, w.light);
-	// printf("specular: ");
-	// print_color(&specular);
-	// printf("\n");
-	// printf("IN: %f\n", w.light.intensity);
 	return (mul_color(add_colors(ambient, add_colors(diffuse, specular)), w.light.intensity));
 }
