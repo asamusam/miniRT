@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:22:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 13:56:15 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 00:02:45 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_color	color(float transparent, float red, float green, float blue);
 int		create_trgb_color(float t, float r, float g, float b);
 t_color	add_colors(t_color c1, t_color c2);
 t_color	sub_colors(t_color c1, t_color c2);
-t_color	mul_color(t_color c, float scalar);
+t_color	mul_color(t_color c, double scalar);
 t_color	hadamard_product(t_color c1, t_color c2);
 // void	print_color(t_color color);
 void	print_color(t_color *color);

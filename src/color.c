@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 21:20:48 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 00:01:30 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_color	sub_colors(t_color c1, t_color c2)
 	return (res);
 }
 
-t_color	mul_color(t_color c, float scalar)
+t_color	mul_color(t_color c, double scalar)
 {
 	t_color	res;
 
@@ -90,10 +90,10 @@ int	create_trgb_color(float t, float r, float g, float b)
 	int	ig;
 	int	ib;
 
-	// t = t * 255;
-	// r = r * 255;
-	// g = g * 255;
-	// b = b * 255;
+	t = t / 255;
+	r = r / 255;
+	g = g / 255;
+	b = b / 255;
 	it = limit_color(t);
 	ir = limit_color(r);
 	ig = limit_color(g);
