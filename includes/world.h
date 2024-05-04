@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 17:33:19 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 21:32:37 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_world
 	// t_sphere	*spheres;
 	t_list		*objects;
 	t_light		light;
+	t_ambient	ambient;
 }	t_world;
 
 typedef struct s_comps

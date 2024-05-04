@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 21:29:46 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 21:34:22 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,7 @@ void	render(t_data *data, t_cam camera, t_world world)
 
 void	init_world(t_data *data)
 {
+	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = point_light(data->scene->light.position, data->scene->light.intensity, data->scene->light.color);
 	// data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
 	configure_camera(&data->scene->camera);
