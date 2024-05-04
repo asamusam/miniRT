@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:10:57 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 17:43:11 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../includes/ray.h"
 #include "../includes/matrix.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -96,7 +97,8 @@ t_list	*intersect_world(t_world world, t_ray ray)
 	tmp = world.objects;
 	while (tmp)
 	{
-		printf("here\n");
+		// t_sphere	*content = tmp->content;
+		// print_tuple2(content->center);
 		ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
 		tmp = tmp->next;
 	}
@@ -141,6 +143,7 @@ t_color	color_at(t_world world, t_ray ray)
 	i = hit(intersections);
 	if (i == NULL)
 		return (color(0, 0, 0, 0));
+	printf("yes\n");
 	comps = prepare_computations(*i, ray);
 	c = shade_hit(world, comps);
 	return (c);
@@ -191,6 +194,32 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 			translation(-from.x, -from.y, -from.z)));
 }
 
+t_cam	camera(float hsize, float vsize, float field_of_view)
+{
+	t_cam	c;
+	float		half_view;
+	float		aspect;
+
+	c.hsize = hsize;
+	c.vsize = vsize;
+	c.rfov = field_of_view;
+	c.transform = init_identitymatrix(4);
+	half_view = tan(c.rfov / 2);
+	aspect = c.hsize / c.vsize;
+	if (aspect >= 1)
+	{
+		c.half_width = half_view;
+		c.half_height = half_view / aspect;
+	}
+	else
+	{
+		c.half_width = half_view * aspect;
+		c.half_height = half_view;
+	}
+	c.pixel_size = (c.half_width * 2) / c.hsize;
+	return (c);
+}
+
 // The camera pixel size is calculated with the horizontal aspect
 // and vertical aspect
 // t_camera	camera(float hsize, float vsize, float field_of_view)
@@ -235,6 +264,7 @@ t_ray	ray_for_pixel(t_cam camera, float px, float py)
 	t_tuple	origin;
 	t_tuple	direction;
 
+	// printf("%f %f\n", camera.half_width, camera.half_height);
 	world_x = camera.half_width - calc_offset(camera, px);
 	world_y = camera.half_height - calc_offset(camera, py);
 	pixel = matrix_tuple_multiply(
@@ -255,6 +285,7 @@ void	render(t_data *data, t_cam camera, t_world world)
 	// data->base_image.win = new_window(camera.hsize, camera.vsize, "miniRT");
 	// data->base_image = new_img(
 	// 		camera.hsize, camera.vsize, data->base_image.win);
+	// printf("%f %f\n", camera.vsize, camera.hsize);
 	y = -1;
 	while (++y < camera.vsize)
 	{
@@ -263,6 +294,7 @@ void	render(t_data *data, t_cam camera, t_world world)
 		{
 			r = ray_for_pixel(camera, x, y);
 			color = color_at(world, r);
+			// print_color(&color);
 			put_pixel2(data->base_image, x, y, color);
 		}
 	}
@@ -273,6 +305,16 @@ void	render(t_data *data, t_cam camera, t_world world)
 
 void	init_world(t_data *data)
 {
-	data->scene->world.light = data->scene->light;
+	// data->scene->world.light = data->scene->light;
+	data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
+	configure_camera(&data->scene->camera);
 	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
+	// t_list	*node = data->scene->world.objects;
+	// while (node)
+	// {
+	// 	t_sphere	*content = node->content;
+	// 	print_tuple2(content->center);
+	// 	node = node->next;
+	// }
+	// printf("end\n");
 }

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:06:40 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 17:33:19 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_color		shade_hit(t_world world, t_comps comps);
 t_color		color_at(t_world world, t_ray ray);
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up);
 // t_camera	camera(float hsize, float vsize, float field_of_view);
+t_cam		camera(float hsize, float vsize, float field_of_view);
 void		configure_camera(t_cam *c);
 // t_ray		ray_for_pixel(t_camera camera, float px, float py);
 t_ray		ray_for_pixel(t_cam camera, float px, float py);

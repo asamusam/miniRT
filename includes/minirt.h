@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 15:29:20 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:50:00 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 # include <math.h>
 
 // # define ESC_KEY 0xff1b
-# define HEIGHT 1080
-# define WIDTH 1080
+# define HEIGHT 400
+# define WIDTH 400
 # define BG_COLOR 0x000000
 # define FAIL 1
 # define SUCCESS 0

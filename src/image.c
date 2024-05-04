@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:51 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 15:04:03 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:30:05 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,9 @@ void	put_pixel2(t_img *img, int x, int y, t_color color)
 void	put_pixel_img(t_img *img, int x, int y, int color)
 {
 	char	*dst;
-	int		new_x;
-	int		new_y;
 
 	if (color == (int)0xFF000000)
 		return ;
-	new_x = (WIDTH / 2) + x;
-	new_y = (HEIGHT / 2) - y;
-	dst = img->addr + (new_y * img->line_len + new_x * (img->bpp / 8));
+	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
 }

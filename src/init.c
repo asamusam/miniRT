@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:13:08 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:31:51 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	init_mlx(t_data *data)
 	img->img_ptr = mlx_new_image(img->mlx, WIDTH, HEIGHT);
 	img->addr = mlx_get_data_addr(img->img_ptr, &img->bpp, \
 								&img->line_len, &img->endian);
+	mlx_hook(img->win_ptr, 2, 1L << 0, esc_close_win, data);
+	mlx_hook(img->win_ptr, 17, 0, cross_close_win, data);
 }
 
 void	init_data(t_data *data)

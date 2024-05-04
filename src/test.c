@@ -289,16 +289,6 @@ void	draw_scene(t_data *data)
 	printf("done\n");
 }
 
-void	sphere_scene(t_data *data)
-{
-	t_tuple	from = point(0, 0, -5);
-	t_tuple	to = point(0, 0, 0);
-	t_tuple	up = vector(0, 1, 0);
-	data->scene->camera = view_transform(from, to, up);
-	render(data, data->scene->camera, data->scene->world);
-	printf("done\n");
-}
-
 void	test14(void)
 {
 	t_tuple v1 = vector(4, 0, 0);
