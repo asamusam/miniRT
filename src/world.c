@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 21:19:10 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 21:29:46 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_world	world(void)
 
 	// world.spheres = NULL;
 	world.objects = NULL;
-	world.light = point_light(point(0, 0, 0), color(0, 1, 1, 1));
+	world.light = point_light(point(0, 0, 0), 1,color(0, 1, 1, 1));
 	return (world);
 }
 
@@ -43,7 +43,7 @@ t_world	default_world(void)
 	// new_world.spheres[0].material.specular = 0.2;
 	// new_world.spheres[1] = sphere(point(0, 0, 0), 1);
 	// new_world.spheres[1].transform = scaling(0.5, 0.5, 0.5);
-	new_world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
+	new_world.light = point_light(point(-10, 10, -10), 1, color(0, 1, 1, 1));
 	return (new_world);
 }
 
@@ -292,7 +292,7 @@ void	render(t_data *data, t_cam camera, t_world world)
 
 void	init_world(t_data *data)
 {
-	data->scene->world.light = point_light(data->scene->light.position, data->scene->light.color);
+	data->scene->world.light = point_light(data->scene->light.position, data->scene->light.intensity, data->scene->light.color);
 	// data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
 	configure_camera(&data->scene->camera);
 	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);

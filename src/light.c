@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:58:09 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 21:28:41 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "../includes/world.h"
 #include <math.h>
 
-t_light	point_light(t_tuple position, t_color color)
+t_light	point_light(t_tuple position, float intensity,t_color color)
 {
-	return ((t_light){position, 0, color});
+	return ((t_light){position, intensity, color});
 }
 
 t_material	material(void)
@@ -88,5 +88,6 @@ t_color	lighting(t_world w, t_comps c)
 	ambient = compute_ambient(c, effective_color);
 	diffuse = compute_diffuse(c, effective_color, w.light);
 	specular = compute_specular(c, w.light);
-	return (add_colors(ambient, add_colors(diffuse, specular)));
+	// printf("IN: %f\n", w.light.intensity);
+	return (mul_color(add_colors(ambient, add_colors(diffuse, specular)), w.light.intensity));
 }
