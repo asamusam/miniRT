@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 21:38:05 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 00:54:40 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,8 +221,8 @@ void	configure_camera(t_cam *c)
 	float		half_view;
 	float		aspect;
 
-	c->hsize = HEIGHT;
-	c->vsize = WIDTH;
+	c->hsize = WIDTH;
+	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
 	c->transform = init_identitymatrix(4);
 	half_view = tan(c->rfov / 2);
@@ -289,6 +289,15 @@ void	render(t_data *data, t_cam camera, t_world world)
 		data->base_image->win_ptr, data->base_image->img_ptr, 0, 0);
 }
 
+void	*sphere_transform(void *content)
+{
+	t_sphere	*sphere;
+
+	sphere = content;
+	sphere->radius = sphere->diameter / 2;
+	sphere->transform = translation(sphere->center.x, sphere->center.y, sphere->center.z);
+	return (sphere);
+}
 
 void	init_world(t_data *data)
 {
@@ -296,13 +305,6 @@ void	init_world(t_data *data)
 	data->scene->world.light = point_light(data->scene->light.position, data->scene->light.intensity, data->scene->light.color);
 	// data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
 	configure_camera(&data->scene->camera);
-	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
-	// t_list	*node = data->scene->world.objects;
-	// while (node)
-	// {
-	// 	t_sphere	*content = node->content;
-	// 	print_tuple2(content->center);
-	// 	node = node->next;
-	// }
-	// printf("end\n");
+	// ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
+	data->scene->world.objects = ft_lstmap(data->scene->spheres, sphere_transform, free);
 }
