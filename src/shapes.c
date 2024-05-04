@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:04:51 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 21:12:37 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_sphere	sphere(t_tuple center, float radius)
 	t_sphere	s;
 
 	s.center = center;
+	s.o_center = center;
 	s.radius = radius;
 	s.transform = init_identitymatrix(4);
 	s.material = material();
@@ -94,6 +95,7 @@ t_list	*intersect(t_sphere s, t_ray ray)
 	interections_list = NULL;
 	if (calc_t(s, ray, &t1, &t2) == -1)
 		return (interections_list);
+	// printf("t: %f t: %f\n", t1, t2);
 	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t1, s)));
 	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t2, s)));
 	return (interections_list);

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 17:43:11 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 21:19:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,15 @@ void	insertion_sortlist(t_list **head)
 	*head = sorted;
 }
 
-// It returns intersections with the ray through the world
 t_list	*intersect_world(t_world world, t_ray ray)
 {
 	t_list	*result;
-	// int		i;
 	t_list	*tmp;
 
 	result = NULL;
-	// i = -1;
-	// while (++i < world.obj_nb)
-	// 	ft_lstadd_back(&result, intersect(world.spheres[i], ray));
 	tmp = world.objects;
 	while (tmp)
 	{
-		// t_sphere	*content = tmp->content;
-		// print_tuple2(content->center);
 		ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
 		tmp = tmp->next;
 	}
@@ -143,7 +136,6 @@ t_color	color_at(t_world world, t_ray ray)
 	i = hit(intersections);
 	if (i == NULL)
 		return (color(0, 0, 0, 0));
-	printf("yes\n");
 	comps = prepare_computations(*i, ray);
 	c = shade_hit(world, comps);
 	return (c);
@@ -282,10 +274,6 @@ void	render(t_data *data, t_cam camera, t_world world)
 	int		x;
 	int		y;
 
-	// data->base_image.win = new_window(camera.hsize, camera.vsize, "miniRT");
-	// data->base_image = new_img(
-	// 		camera.hsize, camera.vsize, data->base_image.win);
-	// printf("%f %f\n", camera.vsize, camera.hsize);
 	y = -1;
 	while (++y < camera.vsize)
 	{
@@ -294,7 +282,6 @@ void	render(t_data *data, t_cam camera, t_world world)
 		{
 			r = ray_for_pixel(camera, x, y);
 			color = color_at(world, r);
-			// print_color(&color);
 			put_pixel2(data->base_image, x, y, color);
 		}
 	}
@@ -305,8 +292,8 @@ void	render(t_data *data, t_cam camera, t_world world)
 
 void	init_world(t_data *data)
 {
-	// data->scene->world.light = data->scene->light;
-	data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
+	data->scene->world.light = point_light(data->scene->light.position, data->scene->light.color);
+	// data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
 	configure_camera(&data->scene->camera);
 	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
 	// t_list	*node = data->scene->world.objects;
