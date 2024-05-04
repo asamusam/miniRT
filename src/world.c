@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 14:14:01 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:10:57 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_world	world(void)
 {
 	t_world	world;
 
-	world.spheres = NULL;
+	// world.spheres = NULL;
+	world.objects = NULL;
 	world.light = point_light(point(0, 0, 0), color(0, 1, 1, 1));
 	return (world);
 }
@@ -33,14 +34,14 @@ t_world	default_world(void)
 	t_world	new_world;
 
 	new_world = world();
-	new_world.obj_nb = 2;
-	new_world.spheres = malloc(2 * sizeof(t_sphere));
-	new_world.spheres[0] = sphere(point(0, 0, 0), 1);
-	new_world.spheres[0].material.color = color(0, 0.8, 1, 0.6);
-	new_world.spheres[0].material.diffuse = 0.7;
-	new_world.spheres[0].material.specular = 0.2;
-	new_world.spheres[1] = sphere(point(0, 0, 0), 1);
-	new_world.spheres[1].transform = scaling(0.5, 0.5, 0.5);
+	// new_world.obj_nb = 2;
+	// new_world.spheres = malloc(2 * sizeof(t_sphere));
+	// new_world.spheres[0] = sphere(point(0, 0, 0), 1);
+	// new_world.spheres[0].material.color = color(0, 0.8, 1, 0.6);
+	// new_world.spheres[0].material.diffuse = 0.7;
+	// new_world.spheres[0].material.specular = 0.2;
+	// new_world.spheres[1] = sphere(point(0, 0, 0), 1);
+	// new_world.spheres[1].transform = scaling(0.5, 0.5, 0.5);
 	new_world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
 	return (new_world);
 }
@@ -85,12 +86,20 @@ void	insertion_sortlist(t_list **head)
 t_list	*intersect_world(t_world world, t_ray ray)
 {
 	t_list	*result;
-	int		i;
+	// int		i;
+	t_list	*tmp;
 
 	result = NULL;
-	i = -1;
-	while (++i < world.obj_nb)
-		ft_lstadd_back(&result, intersect(world.spheres[i], ray));
+	// i = -1;
+	// while (++i < world.obj_nb)
+	// 	ft_lstadd_back(&result, intersect(world.spheres[i], ray));
+	tmp = world.objects;
+	while (tmp)
+	{
+		printf("here\n");
+		ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
+		tmp = tmp->next;
+	}
 	insertion_sortlist(&result);
 	return (result);
 }
@@ -184,40 +193,41 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 
 // The camera pixel size is calculated with the horizontal aspect
 // and vertical aspect
-t_camera	camera(float hsize, float vsize, float field_of_view)
+// t_camera	camera(float hsize, float vsize, float field_of_view)
+void	configure_camera(t_cam *c)
 {
-	t_camera	c;
+	// t_camera	c;
 	float		half_view;
 	float		aspect;
 
-	c.hsize = hsize;
-	c.vsize = vsize;
-	c.field_of_view = field_of_view;
-	c.transform = init_identitymatrix(4);
-	half_view = tan(c.field_of_view / 2);
-	aspect = c.hsize / c.vsize;
+	c->hsize = HEIGHT;
+	c->vsize = WIDTH;
+	c->rfov = radians(c->fov);
+	c->transform = init_identitymatrix(4);
+	half_view = tan(c->rfov / 2);
+	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
 	{
-		c.half_width = half_view;
-		c.half_height = half_view / aspect;
+		c->half_width = half_view;
+		c->half_height = half_view / aspect;
 	}
 	else
 	{
-		c.half_width = half_view * aspect;
-		c.half_height = half_view;
+		c->half_width = half_view * aspect;
+		c->half_height = half_view;
 	}
-	c.pixel_size = (c.half_width * 2) / c.hsize;
-	return (c);
+	c->pixel_size = (c->half_width * 2) / c->hsize;
+	// return (c);
 }
 
-float	calc_offset(t_camera camera, float p)
+float	calc_offset(t_cam camera, float p)
 {
 	return ((p + 0.5) * camera.pixel_size);
 }
 
 // It returns new ray from the camera and passes through 
 // the indicated (x, y) pixel on the canvas
-t_ray	ray_for_pixel(t_camera camera, float px, float py)
+t_ray	ray_for_pixel(t_cam camera, float px, float py)
 {
 	float	world_x;
 	float	world_y;
@@ -235,7 +245,7 @@ t_ray	ray_for_pixel(t_camera camera, float px, float py)
 	return (ray(origin, direction));
 }
 
-void	render(t_data *data, t_camera camera, t_world world)
+void	render(t_data *data, t_cam camera, t_world world)
 {
 	t_ray	r;
 	t_color	color;
@@ -258,4 +268,11 @@ void	render(t_data *data, t_camera camera, t_world world)
 	}
 	mlx_put_image_to_window(data->base_image->mlx,
 		data->base_image->win_ptr, data->base_image->img_ptr, 0, 0);
+}
+
+
+void	init_world(t_data *data)
+{
+	data->scene->world.light = data->scene->light;
+	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
 }

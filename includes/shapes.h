@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 14:12:34 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:04:17 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_plane
 typedef struct s_sphere
 {
 	t_tuple		center;
+	t_tuple		o_center;
 	float		radius;
 	float		diameter;
 	t_matrix	transform;
@@ -65,6 +66,7 @@ typedef struct s_intersection
 }	t_intersection;
 
 t_sphere		sphere(t_tuple center, float radius);
+t_sphere		*malloc_sphere(void);
 void			set_transform(t_sphere *shpere, t_matrix t);
 t_intersection	*intersection(float t, t_sphere object);
 t_list			*intersect(t_sphere sphere, t_ray ray);

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:45:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:11:56 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 15:47:37 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ float		cofactor(t_matrix A, int row, int col);
 t_matrix	inverse(t_matrix M);
 
 // matrix_transform.c
+float		radians(float deg);
 t_matrix	translation(float x, float y, float z);
 t_matrix	scaling(float x, float y, float z);
 t_matrix	rotation_x(float theta);

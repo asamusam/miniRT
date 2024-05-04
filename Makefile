@@ -20,8 +20,10 @@ SRC = src/close.c \
 	  src/parser_utils.c \
 	  src/parser_shapes.c \
 	  src/parser_errors.c \
+	  src/parser_range.c \
+	  src/print_scene.c \
 	  src/ft_atof.c \
-	  src/test.c
+
 OBJ = $(SRC:src/%c=$(BIN)/%o)
 INCS = includes
 LIBFT_PATH = libft

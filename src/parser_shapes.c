@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/04 14:07:57 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:04:24 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	parse_sphere(char *line, t_data *data)
 	t_sphere	*sphere;
 
 	i = 0;
-	sphere = malloc(sizeof(t_sphere));
+	// sphere = malloc(sizeof(t_sphere));
+	sphere = malloc_sphere();
 	if (!sphere)
 		return (error_and_fail(SP, NULL, strerror(errno)));
 	skip_space(&line[i], &i, NOT_REQUIRED);

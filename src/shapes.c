@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 14:12:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:04:51 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@ t_sphere	sphere(t_tuple center, float radius)
 	s.radius = radius;
 	s.transform = init_identitymatrix(4);
 	s.material = material();
+	return (s);
+}
+
+t_sphere	*malloc_sphere(void)
+{
+	t_sphere	*s;
+
+	s = malloc(sizeof(t_sphere));
+	s->o_center = point(0, 0, 0);
+	s->radius = 1;
+	s->transform = init_identitymatrix(4);
+	s->material = material();
 	return (s);
 }
 
@@ -57,7 +69,7 @@ int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
 	float	c;
 	float	discriminant;
 
-	sphere_to_ray = sub_tuples(ray.origin, s.center);
+	sphere_to_ray = sub_tuples(ray.origin, s.o_center);
 	a = dot(ray.direction, ray.direction);
 	b = 2 * dot(ray.direction, sphere_to_ray);
 	c = dot(sphere_to_ray, sphere_to_ray) - (s.radius * s.radius);

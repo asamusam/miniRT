@@ -279,13 +279,23 @@ void	draw_scene(t_data *data)
 	// (void)left;
 	// (void)middle;
 	t_camera c = camera(100 * 6, 50 * 6, M_PI / 3);
-	// t_camera c = camera(1920, 1080, M_PI / 3);
+	// t_camera c = camera(1919, 1080, M_PI / 3);
 	t_tuple	from = point(0, 1.5, -5);
 	t_tuple	to = point(0, 1, 0);
 	t_tuple	up = vector(0, 1, 0);
 	c.transform = view_transform(from, to, up);
 	// c.transform = view_transform(point(0, 1.5, -5), point(0, 1, 0), vector(0, 1, 0));
 	render(data, c, w);
+	printf("done\n");
+}
+
+void	sphere_scene(t_data *data)
+{
+	t_tuple	from = point(0, 0, -5);
+	t_tuple	to = point(0, 0, 0);
+	t_tuple	up = vector(0, 1, 0);
+	data->scene->camera = view_transform(from, to, up);
+	render(data, data->scene->camera, data->scene->world);
 	printf("done\n");
 }
 

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 13:56:00 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:19:28 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	print_color(t_color *color)
 			color->transparent, color->red, color->green, color->blue);
 }
 
->>>>>>> parser
 t_color	color(float transparent, float red, float green, float blue)
 {
 	return ((t_color){transparent, red, green, blue});

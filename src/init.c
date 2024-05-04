@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 14:01:20 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 16:13:08 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ void	init_mlx(t_data *data)
 	img->img_ptr = mlx_new_image(img->mlx, WIDTH, HEIGHT);
 	img->addr = mlx_get_data_addr(img->img_ptr, &img->bpp, \
 								&img->line_len, &img->endian);
-	mlx_hook(img->win_ptr, 2, 1L << 0, esc_close_win, data);
-	mlx_hook(img->win_ptr, 17, 0, cross_close_win, data);
-	mlx_loop(img->mlx);
 }
 
 void	init_data(t_data *data)
@@ -55,7 +52,7 @@ void	init_data(t_data *data)
 	}
 	data->scene->ambient.color = color(0, 0, 0, 0);
 	data->scene->ambient.intensity = 0.0;
-	data->scene->camera.distance = 0.0;
+	// data->scene->camera.distance = 0.0;
 	data->scene->camera.fov = 0;
 	data->scene->camera.position = (t_tuple){0, 0, 0, POINT};
 	data->scene->camera.rotation = (t_tuple){0, 0, 0, VECTOR};
@@ -65,5 +62,6 @@ void	init_data(t_data *data)
 	data->scene->cylinders = NULL;
 	data->scene->planes = NULL;
 	data->scene->spheres = NULL;
+	data->scene->world = world();
 	data->base_image = NULL;
 }
