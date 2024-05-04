@@ -6,16 +6,26 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:44:32 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/02 15:34:12 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:07:22 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include "parser.h"
 
-int	error_and_fail(char *error)
+int	free_shape_fail(char *object, char *part, char *error, void *shape)
 {
-	printf("Error\n%s\n", error);
+	free(shape);
+	return (error_and_fail(object, part, error));
+}
+
+int	error_and_fail(char *object, char *part, char *error)
+{
+	if (object && part)
+		printf("Error\n%s: %s: %s\n", object, part, error);
+	else if (object)
+		printf("Error\n%s: %s\n", object, error);
+	else
+		printf("Error\n%s\n", error);
 	return (FAIL);
 }
 

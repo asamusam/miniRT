@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:52:34 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:13:03 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:12:02 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ t_tuple	normalize(t_tuple vec);
 float	dot(t_tuple v1, t_tuple v2);
 t_tuple	cross(t_tuple v1, t_tuple v2);
 
-void	print_tuple(t_tuple t);
+void	print_tuple2(t_tuple t);
 
 #endif // !TUPLES_H

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 20:15:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:14:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,9 +242,9 @@ void	render(t_data *data, t_camera camera, t_world world)
 	int		x;
 	int		y;
 
-	data->base_image.win = new_window(camera.hsize, camera.vsize, "miniRT");
-	data->base_image = new_img(
-			camera.hsize, camera.vsize, data->base_image.win);
+	// data->base_image.win = new_window(camera.hsize, camera.vsize, "miniRT");
+	// data->base_image = new_img(
+	// 		camera.hsize, camera.vsize, data->base_image.win);
 	y = -1;
 	while (++y < camera.vsize)
 	{
@@ -256,6 +256,6 @@ void	render(t_data *data, t_camera camera, t_world world)
 			put_pixel2(data->base_image, x, y, color);
 		}
 	}
-	mlx_put_image_to_window(data->base_image.win.mlx,
-		data->base_image.win.win_ptr, data->base_image.img_ptr, 0, 0);
+	mlx_put_image_to_window(data->base_image->mlx,
+		data->base_image->win_ptr, data->base_image->img_ptr, 0, 0);
 }

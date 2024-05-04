@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:51 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 20:16:27 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:00:41 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../includes/color.h"
 
 // Convert x and y to center origin (0,0)
-void	put_pixel(t_img img, int x, int y, t_color color)
+void	put_pixel(t_img *img, int x, int y, t_color color)
 {
 	int	new_x;
 	int	new_y;
@@ -28,7 +28,7 @@ void	put_pixel(t_img img, int x, int y, t_color color)
 }
 
 // (0, 0) starts at top left corner
-void	put_pixel2(t_img img, int x, int y, t_color color)
+void	put_pixel2(t_img *img, int x, int y, t_color color)
 {
 	int	color_val;
 
@@ -37,25 +37,16 @@ void	put_pixel2(t_img img, int x, int y, t_color color)
 	put_pixel_img(img, x, y, color_val);
 }
 
-void	put_pixel_img(t_img img, int x, int y, int color)
+void	put_pixel_img(t_img *img, int x, int y, int color)
 {
 	char	*dst;
+	int		new_x;
+	int		new_y;
 
 	if (color == (int)0xFF000000)
 		return ;
-	dst = img.addr + (y * img.line_len + x * (img.bpp / 8));
+	new_x = (WIDTH / 2) + x;
+	new_y = (HEIGHT / 2) - y;
+	dst = img->addr + (new_y * img->line_len + new_x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
-}
-
-t_img	new_img(int width, int height, t_win window)
-{
-	t_img	image;
-
-	image.win = window;
-	image.img_ptr = mlx_new_image(window.mlx, width, height);
-	image.addr = mlx_get_data_addr(image.img_ptr,
-			&(image.bpp), &(image.line_len), &(image.endian));
-	image.w = width;
-	image.h = height;
-	return (image);
 }

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 15:59:11 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:06:59 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include "world.h"
 # include "scene.h"
 # include "parser.h"
+# include "color.h"
 # include <math.h>
 
 // # define ESC_KEY 0xff1b
 # define HEIGHT 1080
 # define WIDTH 1080
 # define BG_COLOR 0x000000
+# define FAIL 1
+# define SUCCESS 0
 
 // typedef struct s_vec3 t_vec3;
 typedef enum e_keycode
@@ -36,13 +39,14 @@ typedef enum e_keycode
 
 typedef struct s_data
 {
-	t_img	base_image;
-	t_scene	scene;
+	t_img	*base_image;
+	t_scene	*scene;
 }	t_data;
 
 // init.c
 
-t_win	new_window(int w, int h, char *str);
+void	allocate_data(t_data **data);
+void	init_mlx(t_data *data);
 void	init_data(t_data *data);
 
 // Render.c
@@ -51,21 +55,23 @@ void	clear_image(t_data *data);
 
 // control.c
 int		key_down(int keycode, t_data *data);
+// image.c
+
+// void	put_pixel_img(t_img *img, int x, int y, int color);
 
 // close.c
 
-void	free_scene(t_data *data);
+void	free_data(t_data *data);
 int		destroy_window(t_data *data);
 int		esc_close_win(int keycode, t_data *data);
 int		cross_close_win(t_data *data);
 
 // parse.c
 
-int		parse(t_data *data, char *scene_file);
+void	parse(t_data *data, char *scene_file);
 
-// ft_atof.c
+// print.c
 
-int		ft_isspace(int c);
-double	ft_atof(const char *str);
+void	print_scene(t_data *data);
 
 #endif // !MINIRT_H

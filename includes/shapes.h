@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:12:52 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:12:34 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ typedef struct s_sphere
 {
 	t_tuple		center;
 	float		radius;
+	float		diameter;
 	t_matrix	transform;
+	t_color		color;
 	t_material	material;
 }	t_sphere;
 

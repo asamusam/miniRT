@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:55:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:14:58 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:12:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ t_tuple	cross(t_tuple v1, t_tuple v2)
 	return (res);
 }
 
-void	print_tuple(t_tuple t)
+void	print_tuple2(t_tuple t)
 {
 	printf("tuple: x:%.2f y:%.2f z:%.2f w:%d\n", t.x, t.y, t.z, t.w);
 }

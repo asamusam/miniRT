@@ -6,20 +6,24 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:38:51 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/02 15:33:44 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/04 14:10:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include "parser.h"
 
 static int	skip_digits(const char *line, int *i, int flag)
 {
 	int	j;
 
 	j = 0;
-	if (!ft_isdigit(line[j]) && flag == REQUIRED)
-		return (FAIL);
+	if (flag == REQUIRED)
+	{
+		if (line[j] == '+' || line[j] == '-')
+			j ++;
+		if (!ft_isdigit(line[j]))
+			return (FAIL);
+	}
 	while (ft_isdigit(line[j]))
 		j ++;
 	*i += j;
@@ -41,28 +45,19 @@ int	skip_space(const char *line, int *i, int flag)
 
 int	parse_color(t_color *color, char *line, int *i)
 {
-	int	start;
 	int	j;
 
-	start = 0;
 	j = 0;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL || line[j] != ',')
+	if (parse_float(&color->red, &line[j], &j) == FAIL || line[j] != ',')
 		return (FAIL);
 	j ++;
-	color->red = ft_atoi(&line[start]);
-	start = j;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL)
-		return (FAIL);
-	if (line[j] != ',')
+	if (parse_float(&color->green, &line[j], &j) == FAIL || line[j] != ',')
 		return (FAIL);
 	j ++;
-	color->green = ft_atoi(&line[start]);
-	start = j;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL)
+	if (parse_float(&color->blue, &line[j], &j) == FAIL || \
+		(line[j] && skip_space(&line[j], &j, REQUIRED) == FAIL))
 		return (FAIL);
-	if (skip_space(&line[j], &j, REQUIRED) == FAIL)
-		return (FAIL);
-	color->blue = ft_atoi(&line[start]);
+	color->transparent = 0.0;
 	*i += j;
 	return (SUCCESS);
 }
@@ -74,16 +69,31 @@ int	parse_float(float *f, char *line, int *i)
 	j = 0;
 	if (skip_digits(&line[j], &j, REQUIRED) == FAIL)
 		return (FAIL);
-	if (line[j] != '.')
-		return (FAIL);
-	j ++;
-	if (skip_digits(&line[j], &j, REQUIRED) == FAIL)
-		return (FAIL);
+	if (line[j] == '.')
+	{
+		j ++;
+		if (skip_digits(&line[j], &j, REQUIRED) == FAIL)
+			return (FAIL);
+	}
 	*f = ft_atof(line);
-	if (skip_space(&line[j], &j, REQUIRED) == FAIL)
-		return (FAIL);
 	*i += j;
 	return (SUCCESS);
 }
 
-int	parse_tuple(t_tuple *t, int type, char *line, int *i);
+int	parse_tuple(t_tuple *t, int type, char *line, int *i)
+{
+	int	j;
+
+	j = 0;
+	t->w = type;
+	if (parse_float(&t->x, &line[j], &j) == FAIL || line[j] != ',')
+		return (FAIL);
+	j ++;
+	if (parse_float(&t->y, &line[j], &j) == FAIL || line[j] != ',')
+		return (FAIL);
+	j ++;
+	if (parse_float(&t->z, &line[j], &j) == FAIL || !ft_isspace(line[j]))
+		return (FAIL);
+	*i += j;
+	return (SUCCESS);
+}
