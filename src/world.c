@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 01:25:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 02:21:36 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ t_world	world(void)
 {
 	t_world	world;
 
-	// world.spheres = NULL;
 	world.objects = NULL;
-	world.light = point_light(point(0, 0, 0), 1,color(0, 1, 1, 1));
+	world.light = point_light(point(0, 0, 0), 1, color(0, 1, 1, 1));
 	return (world);
 }
 
@@ -35,14 +34,6 @@ t_world	default_world(void)
 	t_world	new_world;
 
 	new_world = world();
-	// new_world.obj_nb = 2;
-	// new_world.spheres = malloc(2 * sizeof(t_sphere));
-	// new_world.spheres[0] = sphere(point(0, 0, 0), 1);
-	// new_world.spheres[0].material.color = color(0, 0.8, 1, 0.6);
-	// new_world.spheres[0].material.diffuse = 0.7;
-	// new_world.spheres[0].material.specular = 0.2;
-	// new_world.spheres[1] = sphere(point(0, 0, 0), 1);
-	// new_world.spheres[1].transform = scaling(0.5, 0.5, 0.5);
 	new_world.light = point_light(point(-10, 10, -10), 1, color(0, 1, 1, 1));
 	return (new_world);
 }
@@ -188,7 +179,7 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 
 t_cam	camera(float hsize, float vsize, float field_of_view)
 {
-	t_cam	c;
+	t_cam		c;
 	float		half_view;
 	float		aspect;
 
@@ -217,7 +208,6 @@ t_cam	camera(float hsize, float vsize, float field_of_view)
 // t_camera	camera(float hsize, float vsize, float field_of_view)
 void	configure_camera(t_cam *c)
 {
-	// t_camera	c;
 	float		half_view;
 	float		aspect;
 
@@ -238,7 +228,6 @@ void	configure_camera(t_cam *c)
 		c->half_height = half_view;
 	}
 	c->pixel_size = (c->half_width * 2) / c->hsize;
-	// return (c);
 }
 
 float	calc_offset(t_cam camera, float p)
@@ -256,7 +245,6 @@ t_ray	ray_for_pixel(t_cam camera, float px, float py)
 	t_tuple	origin;
 	t_tuple	direction;
 
-	// printf("%f %f\n", camera.half_width, camera.half_height);
 	world_x = camera.half_width - calc_offset(camera, px);
 	world_y = camera.half_height - calc_offset(camera, py);
 	pixel = matrix_tuple_multiply(
@@ -295,16 +283,19 @@ void	*sphere_transform(void *content)
 
 	sphere = content;
 	sphere->radius = sphere->diameter / 2;
-	sphere->transform = translation(sphere->center.x, sphere->center.y, sphere->center.z);
+	sphere->transform = translation(
+			sphere->center.x, sphere->center.y, sphere->center.z);
 	return (sphere);
 }
 
 void	init_world(t_data *data)
 {
 	data->scene->world.ambient = data->scene->ambient;
-	data->scene->world.light = point_light(data->scene->light.position, data->scene->light.intensity, data->scene->light.color);
-	// data->scene->world.light = point_light(point(-10, 10, -10), color(0, 1, 1, 1));
+	data->scene->world.light = point_light(
+			data->scene->light.position,
+			data->scene->light.intensity,
+			data->scene->light.color);
 	configure_camera(&data->scene->camera);
-	// ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
-	data->scene->world.objects = ft_lstmap(data->scene->spheres, sphere_transform, free);
+	data->scene->world.objects = ft_lstmap(
+			data->scene->spheres, sphere_transform, free);
 }

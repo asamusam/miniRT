@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:45:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 15:47:37 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 02:29:03 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,4 @@ t_matrix	scaling(float x, float y, float z);
 t_matrix	rotation_x(float theta);
 t_matrix	rotation_y(float theta);
 t_matrix	rotation_z(float theta);
-t_matrix	shearing(float xy, float xz, float yx, float yz, float zx, float zy);
 #endif // !MATRIX_H

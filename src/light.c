@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 01:10:18 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 02:25:05 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../includes/world.h"
 #include <math.h>
 
-t_light	point_light(t_tuple position, float intensity,t_color color)
+t_light	point_light(t_tuple position, float intensity, t_color color)
 {
 	return ((t_light){position, intensity, color});
 }
@@ -35,7 +35,8 @@ t_material	material(void)
 // t_color	compute_ambient(t_comps c, t_color effective_color)
 t_color	compute_ambient(t_world w, t_color effective_color)
 {
-	return (hadamard_product(effective_color, mul_color(w.ambient.color, w.ambient.intensity)));
+	return (hadamard_product(effective_color, mul_color(
+				w.ambient.color, w.ambient.intensity)));
 }
 
 // A negative number means the light is on the other side of the surface
@@ -84,17 +85,10 @@ t_color	lighting(t_world w, t_comps c)
 	t_color	diffuse;
 	t_color	specular;
 
-	// printf("one:");
-	// print_color(&c.sphere.material.color);
-	// printf("\ntwo:");
-	// print_color(&c.sphere.color);
-	// printf("\nthree:");
-	// print_color(&w.light.color);
-	// printf("\n");
-	// effective_color = hadamard_product(c.sphere.material.color, w.light.color);
 	effective_color = hadamard_product(c.sphere.color, w.light.color);
 	ambient = compute_ambient(w, effective_color);
 	diffuse = compute_diffuse(c, effective_color, w.light);
 	specular = compute_specular(c, w.light);
-	return (add_colors(ambient, mul_color(add_colors(diffuse, specular), w.light.intensity)));
+	return (add_colors(ambient, mul_color(
+				add_colors(diffuse, specular), w.light.intensity)));
 }
