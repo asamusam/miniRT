@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 00:32:54 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/05 01:10:18 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ t_material	material(void)
 // t_color	compute_ambient(t_comps c, t_color effective_color)
 t_color	compute_ambient(t_world w, t_color effective_color)
 {
-	return (mul_color(
-			hadamard_product(effective_color, w.ambient.color),
-			w.ambient.intensity));
+	return (hadamard_product(effective_color, mul_color(w.ambient.color, w.ambient.intensity)));
 }
 
 // A negative number means the light is on the other side of the surface
@@ -98,5 +96,5 @@ t_color	lighting(t_world w, t_comps c)
 	ambient = compute_ambient(w, effective_color);
 	diffuse = compute_diffuse(c, effective_color, w.light);
 	specular = compute_specular(c, w.light);
-	return (mul_color(add_colors(ambient, add_colors(diffuse, specular)), w.light.intensity));
+	return (add_colors(ambient, mul_color(add_colors(diffuse, specular), w.light.intensity)));
 }
