@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 21:35:30 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 13:58:11 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:40:37 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 # define IMAGE_H
 
 # include "color.h"
-
-typedef struct s_win
-{
-	void	*mlx;
-	void	*win_ptr;
-	int		width;
-	int		height;
-}	t_win;
 
 typedef struct s_img
 {
@@ -40,6 +32,5 @@ typedef struct s_img
 void	put_pixel(t_img *img, int x, int y, t_color color);
 void	put_pixel2(t_img *img, int x, int y, t_color color);
 void	put_pixel_img(t_img *img, int x, int y, int color);
-t_img	new_img(int width, int height, t_win window);
 
 #endif // !IMAGE_H

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:22:51 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:56:42 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,6 @@
 #include "../libft/libft.h"
 #include <math.h>
 #include <stdlib.h>
-
-t_tuple_list	tuple_list(int count, float t1, float t2)
-{
-	return ((t_tuple_list){count, t1, t2});
-}
-
-t_sphere	sphere(t_tuple center, float radius)
-{
-	t_sphere	s;
-
-	s.center = center;
-	s.o_center = center;
-	s.radius = radius;
-	s.transform = init_identitymatrix(4);
-	s.material = material();
-	return (s);
-}
 
 t_sphere	*malloc_sphere(void)
 {
@@ -43,11 +26,6 @@ t_sphere	*malloc_sphere(void)
 	s->transform = init_identitymatrix(4);
 	s->material = material();
 	return (s);
-}
-
-void	set_transform(t_sphere *shpere, t_matrix t)
-{
-	shpere->transform = t;
 }
 
 t_intersection	*intersection(float t, t_sphere object)

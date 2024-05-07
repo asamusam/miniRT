@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 14:17:33 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:49:40 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ t_color	color_at(t_world world, t_ray ray)
 	return (c);
 }
 
-t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forword)
+t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
 {
 	t_matrix	orientation;
 
@@ -145,9 +145,9 @@ t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forword)
 	orientation.data[1][1] = true_up.y;
 	orientation.data[1][2] = true_up.z;
 	orientation.data[1][3] = 0;
-	orientation.data[2][0] = -forword.x;
-	orientation.data[2][1] = -forword.y;
-	orientation.data[2][2] = -forword.z;
+	orientation.data[2][0] = -forward.x;
+	orientation.data[2][1] = -forward.y;
+	orientation.data[2][2] = -forward.z;
 	orientation.data[2][3] = 0;
 	orientation.data[3][0] = 0;
 	orientation.data[3][1] = 0;
@@ -162,17 +162,17 @@ t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forword)
 // and a vector indicates which direction is up
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
-	t_tuple		forword;
+	t_tuple		forward;
 	t_tuple		upn;
 	t_tuple		left;
 	t_tuple		true_up;
 	t_matrix	orientation;
 
-	forword = normalize(sub_tuples(to, from));
+	forward = normalize(sub_tuples(to, from));
 	upn = normalize(up);
-	left = cross(forword, upn);
-	true_up = cross(left, forword);
-	orientation = make_orientation(left, true_up, forword);
+	left = cross(forward, upn);
+	true_up = cross(left, forward);
+	orientation = make_orientation(left, true_up, forward);
 	return (matrix_multiply(orientation,
 			translation(-from.x, -from.y, -from.z)));
 }
