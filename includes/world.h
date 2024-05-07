@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 21:32:37 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:35:50 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_camera
 	float		half_width;
 	float		half_height;
 	float		pixel_size;
-	t_matrix	transform;
+	t_matrix	*transform;
 }	t_camera;
 
 t_world		world(void);
@@ -57,7 +57,8 @@ t_list		*intersect_world(t_world world, t_ray ray);
 t_comps		prepare_computations(t_intersection intersection, t_ray ray);
 t_color		shade_hit(t_world world, t_comps comps);
 t_color		color_at(t_world world, t_ray ray);
-t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up);
+// t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up);
+t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up);
 // t_camera	camera(float hsize, float vsize, float field_of_view);
 t_cam		camera(float hsize, float vsize, float field_of_view);
 void		configure_camera(t_cam *c);

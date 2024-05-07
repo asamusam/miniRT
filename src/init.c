@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:24:37 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:20:30 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ void	init_data(t_data *data)
 	data->scene->cylinders = NULL;
 	data->scene->planes = NULL;
 	data->scene->spheres = NULL;
-	data->scene->world = world();
+	data->scene->world.objects = NULL;
 	data->base_image = NULL;
 }

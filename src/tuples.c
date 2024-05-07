@@ -6,12 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:55:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 14:12:09 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 13:50:49 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <math.h>
+#include <stdbool.h>
 #include "../includes/tuples.h"
 
 bool	equal(float a, float b)
@@ -141,4 +142,9 @@ t_tuple	cross(t_tuple v1, t_tuple v2)
 void	print_tuple2(t_tuple t)
 {
 	printf("tuple: x:%.2f y:%.2f z:%.2f w:%d\n", t.x, t.y, t.z, t.w);
+}
+
+bool	equal_tuple(t_tuple a, t_tuple b)
+{
+	return (equal(a.x, a.y) && equal(a.y, b.y) && equal(a.z, b.z) && equal(a.w, b.w));
 }

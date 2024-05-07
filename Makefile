@@ -2,8 +2,6 @@ BIN = bin
 NAME = miniRT
 CC = cc
 CFLAG = -Wall -Werror -Wextra -g3
-#SRC_PATH = ./src/
-# SRC = $(wildcard $(SRC_PATH)*.c)
 SRC = src/close.c \
 	  src/color.c \
 	  src/image.c \
@@ -23,9 +21,11 @@ SRC = src/close.c \
 	  src/parser_range.c \
 	  src/print_scene.c \
 	  src/ft_atof.c \
-	  src/generalized.c
+	  src/generalized.c \
+	  src/error.c
 
 OBJ = $(SRC:src/%c=$(BIN)/%o)
+OBJ = $(patsubst src/%c,$(BIN)/%o,$(SRC))
 INCS = includes
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)
@@ -78,7 +78,7 @@ fclean: clean
 re: fclean all
 
 test:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) ./map/map.ber
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) ./scenes/sphere_scene.rt
 
 show:
 	@printf "UNAME		: $(UNAME)\n"

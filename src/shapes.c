@@ -6,38 +6,23 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:22:51 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 18:13:46 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/shapes.h"
+#include "../includes/error.h"
 #include "../includes/ray.h"
 #include "../libft/libft.h"
 #include <math.h>
 #include <stdlib.h>
-
-t_tuple_list	tuple_list(int count, float t1, float t2)
-{
-	return ((t_tuple_list){count, t1, t2});
-}
-
-t_sphere	sphere(t_tuple center, float radius)
-{
-	t_sphere	s;
-
-	s.center = center;
-	s.o_center = center;
-	s.radius = radius;
-	s.transform = init_identitymatrix(4);
-	s.material = material();
-	return (s);
-}
 
 t_sphere	*malloc_sphere(void)
 {
 	t_sphere	*s;
 
 	s = malloc(sizeof(t_sphere));
+	malloc_errcheck(s);
 	s->o_center = point(0, 0, 0);
 	s->radius = 1;
 	s->transform = init_identitymatrix(4);
@@ -45,16 +30,12 @@ t_sphere	*malloc_sphere(void)
 	return (s);
 }
 
-void	set_transform(t_sphere *shpere, t_matrix t)
-{
-	shpere->transform = t;
-}
-
 t_intersection	*intersection(float t, t_sphere object)
 {
 	t_intersection	*i;
 
 	i = malloc(sizeof(t_intersection));
+	malloc_errcheck(i);
 	i->t = t;
 	i->object = object;
 	return (i);
@@ -85,18 +66,21 @@ int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
 // Create a list for the ray intersecting spheres and its t1 & t2
 // Instead of moving the sphere, apply the inverse of that transformation
 // to the ray.
-t_list	*intersect(t_sphere s, t_ray ray)
+t_list	*intersect(t_sphere *s, t_ray ray)
 {
-	t_list	*interections_list;
-	float	t1;
-	float	t2;
+	t_list		*interections_list;
+	float		t1;
+	float		t2;
+	t_matrix	*inv_m;
 
-	ray = transform(ray, inverse(s.transform));
+	inv_m = inverse(*s->transform);
+	ray = transform(ray, *inv_m);
+	free_matrix(inv_m);
 	interections_list = NULL;
-	if (calc_t(s, ray, &t1, &t2) == -1)
+	if (calc_t(*s, ray, &t1, &t2) == -1)
 		return (interections_list);
-	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t1, s)));
-	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t2, s)));
+	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t1, *s)));
+	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t2, *s)));
 	return (interections_list);
 }
 
@@ -134,12 +118,18 @@ t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 	t_tuple	object_pt;
 	t_tuple	object_normal;
 	t_tuple	world_normal;
+	t_matrix	*inv_m;
+	t_matrix	*trans_m;
 
-	object_pt = matrix_tuple_multiply(inverse(s.transform), world_pt);
+	inv_m = inverse(*s.transform);
+	object_pt = matrix_tuple_multiply(*inv_m, world_pt);
 	object_normal = sub_tuples(object_pt, point(0, 0, 0));
+	trans_m = transpose(*inv_m);
 	world_normal = matrix_tuple_multiply(
-			transpose(inverse(s.transform)), object_normal);
+			*trans_m, object_normal);
 	world_normal.w = 0;
+	free_matrix(inv_m);
+	free_matrix(trans_m);
 	return (normalize(world_normal));
 }
 

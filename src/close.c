@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 13:55:25 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 16:44:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	free_data(t_data *data)
 		free(data->scene);
 	}
 	free(data);
+}
+
+void	free_world(t_world *world)
+{
+	if (world->objects)
+		ft_lstclear(&world->objects, free);
 }
 
 int	destroy_window(t_data *data)
