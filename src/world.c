@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:21:36 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 13:38:08 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,17 +162,19 @@ t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forword)
 // and a vector indicates which direction is up
 t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
-	t_tuple		forword;
+	t_tuple		forward;
 	t_tuple		upn;
 	t_tuple		left;
 	t_tuple		true_up;
 	t_matrix	orientation;
 
-	forword = normalize(sub_tuples(to, from));
+	forward = normalize(to);
+	printf("forward\n");
+	print_tuple2(forward);
 	upn = normalize(up);
-	left = cross(forword, upn);
-	true_up = cross(left, forword);
-	orientation = make_orientation(left, true_up, forword);
+	left = cross(forward, upn);
+	true_up = cross(left, forward);
+	orientation = make_orientation(left, true_up, forward);
 	return (matrix_multiply(orientation,
 			translation(-from.x, -from.y, -from.z)));
 }
