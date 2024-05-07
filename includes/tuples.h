@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:52:34 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 14:12:02 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 13:50:57 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ float	dot(t_tuple v1, t_tuple v2);
 t_tuple	cross(t_tuple v1, t_tuple v2);
 
 void	print_tuple2(t_tuple t);
+bool	equal_tuple(t_tuple a, t_tuple b);
 
 #endif // !TUPLES_H
