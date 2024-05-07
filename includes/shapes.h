@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:04:17 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:32:57 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_sphere
 	t_tuple		o_center;
 	float		radius;
 	float		diameter;
-	t_matrix	transform;
+	t_matrix	*transform;
 	t_color		color;
 	t_material	material;
 }	t_sphere;
@@ -69,7 +69,8 @@ t_sphere		sphere(t_tuple center, float radius);
 t_sphere		*malloc_sphere(void);
 void			set_transform(t_sphere *shpere, t_matrix t);
 t_intersection	*intersection(float t, t_sphere object);
-t_list			*intersect(t_sphere sphere, t_ray ray);
+// t_list			*intersect(t_sphere sphere, t_ray ray);
+t_list			*intersect(t_sphere *sphere, t_ray ray);
 t_intersection	*hit(t_list *xs);
 t_tuple			normal_at(t_sphere s, t_tuple p);
 t_tuple			reflect(t_tuple in, t_tuple normal);

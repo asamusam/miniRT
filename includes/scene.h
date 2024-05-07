@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:23:30 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/04 15:46:17 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:36:17 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_cam
 	float		half_width;
 	float		half_height;
 	float		pixel_size;
-	t_matrix	transform;
+	t_matrix	*transform;
 }	t_cam;
 
 typedef struct s_scene

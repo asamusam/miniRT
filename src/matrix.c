@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 15:50:39 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 18:12:02 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,33 @@
 
 // Matrix  is used to represent and manipulate linear transformations 
 // and systems of linear equations. 
-t_matrix	create_matrix(int rows, int cols)
+t_matrix	*create_matrix(int rows, int cols)
 {
-	t_matrix	mat;
+	t_matrix	*mat;
 	int			i;
 
-	mat.rows = rows;
-	mat.cols = cols;
-	mat.data = (float **)malloc(rows * sizeof(float *));
-	malloc_errcheck(mat.data);
+	mat = malloc(sizeof(t_matrix));
+	mat->rows = rows;
+	mat->cols = cols;
+	mat->data = (float **)malloc(rows * sizeof(float *));
+	malloc_errcheck(mat->data);
 	i = -1;
 	while (++i < rows)
 	{
-		mat.data[i] = (float *)malloc(cols * sizeof(float));
-		malloc_errcheck(mat.data[i]);
+		mat->data[i] = (float *)malloc(cols * sizeof(float));
+		malloc_errcheck(mat->data[i]);
 	}
 	return (mat);
 }
 
-void	free_matrix(t_matrix mat)
+void	free_matrix(t_matrix *mat)
 {
 	int	i;
 
 	i = -1;
-	while (++i < mat.rows)
-		free(mat.data[i]);
-	free(mat.data);
+	while (++i < mat->rows)
+		free(mat->data[i]);
+	free(mat->data);
 }
 
 void	print_matrix(t_matrix mat)
@@ -82,12 +83,12 @@ bool	compare_matrix(t_matrix mat1, t_matrix mat2)
 
 // Multiplying matrix is used to perform transformations like
 // scaling, rotation, and translation.
-t_matrix	matrix_multiply(t_matrix A, t_matrix B)
+t_matrix	*matrix_multiply(t_matrix A, t_matrix B)
 {
 	int			row;
 	int			col;
 	int			k;
-	t_matrix	m;
+	t_matrix	*m;
 
 	if (A.cols != B.rows)
 	{
@@ -102,46 +103,18 @@ t_matrix	matrix_multiply(t_matrix A, t_matrix B)
 		while (++col < B.cols)
 		{
 			k = -1;
-			m.data[row][col] = 0.0;
+			m->data[row][col] = 0.0;
 			while (++k < A.cols)
-				m.data[row][col] += A.data[row][k] * B.data[k][col];
+				m->data[row][col] += A.data[row][k] * B.data[k][col];
 		}
 	}
 	return (m);
 }
 
 // Identity matrix is default transformation of any object in the scene.
-t_matrix	identity_matrix(t_matrix m)
+t_matrix	*init_identitymatrix(int size)
 {
-	t_matrix	i;
-	t_matrix	res;
-
-	i = create_matrix(4, 4);
-	i.data[0][0] = 1;
-	i.data[0][1] = 0;
-	i.data[0][2] = 0;
-	i.data[0][3] = 0;
-	i.data[1][0] = 0;
-	i.data[1][1] = 1;
-	i.data[1][2] = 0;
-	i.data[1][3] = 0;
-	i.data[2][0] = 0;
-	i.data[2][1] = 0;
-	i.data[2][2] = 1;
-	i.data[2][3] = 0;
-	i.data[3][0] = 0;
-	i.data[3][1] = 0;
-	i.data[3][2] = 0;
-	i.data[3][3] = 1;
-	res = matrix_multiply(m, i);
-	free_matrix(i);
-	return (res);
-}
-
-// Identity matrix is default transformation of any object in the scene.
-t_matrix	init_identitymatrix(int size)
-{
-	t_matrix	mat;
+	t_matrix	*mat;
 	int			i;
 	int			j;
 
@@ -153,9 +126,9 @@ t_matrix	init_identitymatrix(int size)
 		while (++j < size)
 		{
 			if (i == j)
-				mat.data[i][j] = 1.0;
+				mat->data[i][j] = 1.0;
 			else
-				mat.data[i][j] = 0.0;
+				mat->data[i][j] = 0.0;
 		}
 	}
 	return (mat);
@@ -184,9 +157,9 @@ for tuple multiplication.\n");
 
 // Matrix transposition flips a matrix over its diagonal.
 // The rows becomes columns.
-t_matrix	transpose(t_matrix A)
+t_matrix	*transpose(t_matrix A)
 {
-	t_matrix	result;
+	t_matrix	*result;
 	int			i;
 	int			j;
 
@@ -196,7 +169,7 @@ t_matrix	transpose(t_matrix A)
 	{
 		j = -1;
 		while (++j < A.cols)
-			result.data[j][i] = A.data[i][j];
+			result->data[j][i] = A.data[i][j];
 	}
 	return (result);
 }
@@ -290,7 +263,7 @@ float	minor(t_matrix m, int row, int col)
 
 	sub = submatrix(m, row, col);
 	det = determinant(sub);
-	free_matrix(sub);
+	free_matrix(&sub);
 	return (det);
 }
 
@@ -305,22 +278,23 @@ float	cofactor(t_matrix m, int row, int col)
 	return (-minor_value);
 }
 
-t_matrix	make_inv(t_matrix m, float det)
+t_matrix	*make_inv(t_matrix m, float det)
 {
-	t_matrix	m_inv;
+	t_matrix	*m_inv;
 	int			i;
 	int			j;
 	float		c;
 
-	m_inv.rows = m.rows;
-	m_inv.cols = m.cols;
-	m_inv.data = (float **)malloc(m.rows * sizeof(float *));
-	malloc_errcheck(m_inv.data);
+	m_inv = malloc(sizeof(t_matrix));
+	m_inv->rows = m.rows;
+	m_inv->cols = m.cols;
+	m_inv->data = (float **)malloc(m.rows * sizeof(float *));
+	malloc_errcheck(m_inv->data);
 	i = -1;
 	while (++i < m.rows)
 	{
-		m_inv.data[i] = (float *)malloc(m.cols * sizeof(float));
-		malloc_errcheck(m_inv.data);
+		m_inv->data[i] = (float *)malloc(m.cols * sizeof(float));
+		malloc_errcheck(m_inv->data);
 	}
 	i = -1;
 	while (++i < m.rows)
@@ -329,7 +303,7 @@ t_matrix	make_inv(t_matrix m, float det)
 		while (++j < m.cols)
 		{
 			c = cofactor(m, i, j);
-			m_inv.data[j][i] = c / det;
+			m_inv->data[j][i] = c / det;
 		}
 	}
 	return (m_inv);
@@ -337,9 +311,9 @@ t_matrix	make_inv(t_matrix m, float det)
 
 // The idea of inverting matrices is to undo an operation.
 // ie: 5 * 4 = 20 => 20 * inverse(4) or 1/4 = 5.
-t_matrix	inverse(t_matrix m)
+t_matrix	*inverse(t_matrix m)
 {
-	t_matrix	m_inv;
+	t_matrix	*m_inv;
 	float		det;
 
 	det = determinant(m);

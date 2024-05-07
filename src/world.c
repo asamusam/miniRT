@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 15:52:53 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 18:17:19 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-t_world	world(void)
-{
-	t_world	world;
-
-	world.objects = NULL;
-	world.light = point_light(point(-1, 0, 0), 1, color(0, 1, 1, 1));
-	return (world);
-}
-
-t_world	default_world(void)
-{
-	t_world	new_world;
-
-	new_world = world();
-	new_world.light = point_light(point(-10, 10, -10), 1, color(0, 1, 1, 1));
-	return (new_world);
-}
 
 void	insert_sorted(t_list **sorted, t_list *node)
 {
@@ -83,7 +65,7 @@ t_list	*intersect_world(t_world world, t_ray ray)
 	tmp = world.objects;
 	while (tmp)
 	{
-		ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
+		ft_lstadd_back(&result, intersect((t_sphere *)tmp->content, ray));
 		tmp = tmp->next;
 	}
 	insertion_sortlist(&result);
@@ -132,27 +114,27 @@ t_color	color_at(t_world world, t_ray ray)
 	return (c);
 }
 
-t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
+t_matrix	*make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
 {
-	t_matrix	orientation;
+	t_matrix	*orientation;
 
 	orientation = create_matrix(4, 4);
-	orientation.data[0][0] = left.x;
-	orientation.data[0][1] = left.y;
-	orientation.data[0][2] = left.z;
-	orientation.data[0][3] = 0;
-	orientation.data[1][0] = true_up.x;
-	orientation.data[1][1] = true_up.y;
-	orientation.data[1][2] = true_up.z;
-	orientation.data[1][3] = 0;
-	orientation.data[2][0] = -forward.x;
-	orientation.data[2][1] = -forward.y;
-	orientation.data[2][2] = -forward.z;
-	orientation.data[2][3] = 0;
-	orientation.data[3][0] = 0;
-	orientation.data[3][1] = 0;
-	orientation.data[3][2] = 0;
-	orientation.data[3][3] = 1;
+	orientation->data[0][0] = left.x;
+	orientation->data[0][1] = left.y;
+	orientation->data[0][2] = left.z;
+	orientation->data[0][3] = 0;
+	orientation->data[1][0] = true_up.x;
+	orientation->data[1][1] = true_up.y;
+	orientation->data[1][2] = true_up.z;
+	orientation->data[1][3] = 0;
+	orientation->data[2][0] = -forward.x;
+	orientation->data[2][1] = -forward.y;
+	orientation->data[2][2] = -forward.z;
+	orientation->data[2][3] = 0;
+	orientation->data[3][0] = 0;
+	orientation->data[3][1] = 0;
+	orientation->data[3][2] = 0;
+	orientation->data[3][3] = 1;
 	return (orientation);
 }
 
@@ -160,13 +142,15 @@ t_matrix	make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
 // from where the eye in the scene
 // to where you want to look at
 // and a vector indicates which direction is up
-t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
+t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
 	t_tuple		forward;
 	t_tuple		upn;
 	t_tuple		left;
 	t_tuple		true_up;
-	t_matrix	orientation;
+	t_matrix	*orientation;
+	t_matrix	*trans_m;
+	t_matrix	*res;
 
 	forward = normalize(to);
 	if (equal_tuple(forward, vector(0, 1, 0)) || equal_tuple(forward, vector(0, -1, 0)))
@@ -178,8 +162,13 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	left = cross(forward, upn);
 	true_up = cross(left, forward);
 	orientation = make_orientation(left, true_up, forward);
-	return (matrix_multiply(orientation,
-			translation(-from.x, -from.y, -from.z)));
+	trans_m = translation(-from.x, -from.y, -from.z);
+	res = matrix_multiply(*orientation, *trans_m);
+	free_matrix(trans_m);
+	return (res);
+
+	// return (matrix_multiply(*orientation,
+	// 		translation(-from.x, -from.y, -from.z)));
 }
 
 t_cam	camera(float hsize, float vsize, float field_of_view)
@@ -187,11 +176,14 @@ t_cam	camera(float hsize, float vsize, float field_of_view)
 	t_cam		c;
 	float		half_view;
 	float		aspect;
+	t_matrix	*m;
 
 	c.hsize = hsize;
 	c.vsize = vsize;
 	c.rfov = field_of_view;
-	c.transform = init_identitymatrix(4);
+	m = init_identitymatrix(4);
+	// c.transform = init_identitymatrix(4);
+	c.transform = m;
 	half_view = tan(c.rfov / 2);
 	aspect = c.hsize / c.vsize;
 	if (aspect >= 1)
@@ -215,11 +207,14 @@ void	configure_camera(t_cam *c)
 {
 	float		half_view;
 	float		aspect;
+	t_matrix	*m;
 
 	c->hsize = WIDTH;
 	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
-	c->transform = init_identitymatrix(4);
+	m = init_identitymatrix(4);
+	// c->transform = init_identitymatrix(4);
+	c->transform = m;
 	half_view = tan(c->rfov / 2);
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
@@ -249,13 +244,16 @@ t_ray	ray_for_pixel(t_cam camera, float px, float py)
 	t_tuple	pixel;
 	t_tuple	origin;
 	t_tuple	direction;
+	t_matrix	*inv_m;
 
+	inv_m = inverse(*camera.transform);
 	world_x = camera.half_width - calc_offset(camera, px);
 	world_y = camera.half_height - calc_offset(camera, py);
 	pixel = matrix_tuple_multiply(
-			inverse(camera.transform), point(world_x, world_y, -1));
+			*inv_m, point(world_x, world_y, -1));
 	origin = matrix_tuple_multiply(
-			inverse(camera.transform), point(0, 0, 0));
+			*inv_m, point(0, 0, 0));
+	free_matrix(inv_m);
 	direction = normalize(sub_tuples(pixel, origin));
 	return (ray(origin, direction));
 }
@@ -309,11 +307,14 @@ void	render(t_data *data, t_cam camera, t_world world)
 void	*sphere_transform(void *content)
 {
 	t_sphere	*sphere;
+	// t_matrix	*trans_m;
 
 	sphere = content;
 	sphere->radius = sphere->diameter / 2;
-	sphere->transform = translation(
-			sphere->center.x, sphere->center.y, sphere->center.z);
+	// trans_m = translation(sphere->center.x, sphere->center.y, sphere->center.z);
+	sphere->transform = translation(sphere->center.x, sphere->center.y, sphere->center.z);
+	// sphere->transform = translation(
+	// 		sphere->center.x, sphere->center.y, sphere->center.z);
 	return (sphere);
 }
 
