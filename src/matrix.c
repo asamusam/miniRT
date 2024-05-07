@@ -6,12 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 14:50:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:50:39 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/matrix.h"
 #include "../includes/tuples.h"
+#include "../includes/error.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,9 +27,13 @@ t_matrix	create_matrix(int rows, int cols)
 	mat.rows = rows;
 	mat.cols = cols;
 	mat.data = (float **)malloc(rows * sizeof(float *));
+	malloc_errcheck(mat.data);
 	i = -1;
 	while (++i < rows)
+	{
 		mat.data[i] = (float *)malloc(cols * sizeof(float));
+		malloc_errcheck(mat.data[i]);
+	}
 	return (mat);
 }
 
@@ -164,7 +169,7 @@ t_tuple	matrix_tuple_multiply(t_matrix A, t_tuple b)
 	{
 		printf("Error: Matrix should have 4 columns \
 for tuple multiplication.\n");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	result.x = A.data[0][0] * b.x + A.data[0][1] * b.y
 		+ A.data[0][2] * b.z + A.data[0][3] * b.w;
@@ -224,9 +229,13 @@ t_matrix	init_submatrix(t_matrix m)
 	sub.rows = m.rows - 1;
 	sub.cols = m.cols - 1;
 	sub.data = (float **)malloc(sub.rows * sizeof(float *));
+	malloc_errcheck(sub.data);
 	i = -1;
 	while (++i < sub.rows)
+	{
 		sub.data[i] = (float *)malloc(sub.cols * sizeof(float));
+		malloc_errcheck(sub.data[i]);
+	}
 	return (sub);
 }
 
@@ -306,9 +315,13 @@ t_matrix	make_inv(t_matrix m, float det)
 	m_inv.rows = m.rows;
 	m_inv.cols = m.cols;
 	m_inv.data = (float **)malloc(m.rows * sizeof(float *));
+	malloc_errcheck(m_inv.data);
 	i = -1;
 	while (++i < m.rows)
+	{
 		m_inv.data[i] = (float *)malloc(m.cols * sizeof(float));
+		malloc_errcheck(m_inv.data);
+	}
 	i = -1;
 	while (++i < m.rows)
 	{
@@ -333,7 +346,7 @@ t_matrix	inverse(t_matrix m)
 	if (det == 0)
 	{
 		printf("Error: Matrix is not invertible.\n");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	m_inv = make_inv(m, det);
 	return (m_inv);

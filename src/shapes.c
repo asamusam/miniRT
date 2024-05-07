@@ -6,11 +6,12 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 14:56:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:51:56 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/shapes.h"
+#include "../includes/error.h"
 #include "../includes/ray.h"
 #include "../libft/libft.h"
 #include <math.h>
@@ -21,6 +22,7 @@ t_sphere	*malloc_sphere(void)
 	t_sphere	*s;
 
 	s = malloc(sizeof(t_sphere));
+	malloc_errcheck(s);
 	s->o_center = point(0, 0, 0);
 	s->radius = 1;
 	s->transform = init_identitymatrix(4);
@@ -33,6 +35,7 @@ t_intersection	*intersection(float t, t_sphere object)
 	t_intersection	*i;
 
 	i = malloc(sizeof(t_intersection));
+	malloc_errcheck(i);
 	i->t = t;
 	i->object = object;
 	return (i);
