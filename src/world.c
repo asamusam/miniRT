@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 14:49:40 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 15:17:41 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,12 @@ t_matrix	view_transform(t_tuple from, t_tuple to, t_tuple up)
 	t_tuple		true_up;
 	t_matrix	orientation;
 
-	forward = normalize(sub_tuples(to, from));
+	forward = normalize(to);
+	if (equal_tuple(forward, vector(0, 1, 0)) || equal_tuple(forward, vector(0, -1, 0)))
+	{
+		perror("Invalid orientation vector:gimbal lock");
+		exit(EXIT_FAILURE);
+	}
 	upn = normalize(up);
 	left = cross(forward, upn);
 	true_up = cross(left, forward);
@@ -255,12 +260,33 @@ t_ray	ray_for_pixel(t_cam camera, float px, float py)
 	return (ray(origin, direction));
 }
 
+void	print_progress(float progress)
+{
+	int	bar_len;
+	int	completed_len;
+	int	i;
+
+	bar_len = 20;
+	completed_len = progress * bar_len;
+	printf("\r[");
+	i = -1;
+	while (++i < completed_len)
+		printf("#");
+	i = completed_len;
+	while (i++ < bar_len)
+		printf(" ");
+	printf("] %.2f%%", progress * 100);
+	fflush(stdout);
+}
+
 void	render(t_data *data, t_cam camera, t_world world)
 {
 	t_ray	r;
 	t_color	color;
 	int		x;
 	int		y;
+	int		total_pixels = camera.vsize * camera.hsize;
+	int		current_pixel = 0;
 
 	y = -1;
 	while (++y < camera.vsize)
@@ -271,6 +297,9 @@ void	render(t_data *data, t_cam camera, t_world world)
 			r = ray_for_pixel(camera, x, y);
 			color = color_at(world, r);
 			put_pixel2(data->base_image, x, y, color);
+			current_pixel++;
+			float	progress = (float)current_pixel / total_pixels;
+			print_progress(progress);
 		}
 	}
 	mlx_put_image_to_window(data->base_image->mlx,
