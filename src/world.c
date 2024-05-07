@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:21:36 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 14:17:33 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_world	world(void)
 	t_world	world;
 
 	world.objects = NULL;
-	world.light = point_light(point(0, 0, 0), 1, color(0, 1, 1, 1));
+	world.light = point_light(point(-1, 0, 0), 1, color(0, 1, 1, 1));
 	return (world);
 }
 
@@ -291,10 +291,7 @@ void	*sphere_transform(void *content)
 void	init_world(t_data *data)
 {
 	data->scene->world.ambient = data->scene->ambient;
-	data->scene->world.light = point_light(
-			data->scene->light.position,
-			data->scene->light.intensity,
-			data->scene->light.color);
+	data->scene->world.light = data->scene->light;
 	configure_camera(&data->scene->camera);
 	data->scene->world.objects = ft_lstmap(
 			data->scene->spheres, sphere_transform, free);
