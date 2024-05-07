@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:21:36 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:53:36 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ t_list	*intersect_world(t_world world, t_ray ray)
 	tmp = world.objects;
 	while (tmp)
 	{
-		ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
+		// ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
+		ft_lstadd_back(&result, shape_intersect(tmp->content, ray));
 		tmp = tmp->next;
 	}
 	insertion_sortlist(&result);
@@ -255,12 +256,33 @@ t_ray	ray_for_pixel(t_cam camera, float px, float py)
 	return (ray(origin, direction));
 }
 
+void	print_progress(float progress)
+{
+	int	bar_len;
+	int	completed_len;
+	int	i;
+
+	bar_len = 20;
+	completed_len = progress * bar_len;
+	printf("\r[");
+	i = -1;
+	while (++i < completed_len)
+		printf("#");
+	i = completed_len;
+	while (i++ < bar_len)
+		printf(" ");
+	printf("] %.2f%%", progress * 100);
+	fflush(stdout);
+}
+
 void	render(t_data *data, t_cam camera, t_world world)
 {
 	t_ray	r;
 	t_color	color;
 	int		x;
 	int		y;
+	int		total_pixels = camera.vsize * camera.hsize;
+	int		current_pixel = 0;
 
 	y = -1;
 	while (++y < camera.vsize)
@@ -271,6 +293,9 @@ void	render(t_data *data, t_cam camera, t_world world)
 			r = ray_for_pixel(camera, x, y);
 			color = color_at(world, r);
 			put_pixel2(data->base_image, x, y, color);
+			current_pixel++;
+			float	progress = (float)current_pixel / total_pixels;
+			print_progress(progress);
 		}
 	}
 	mlx_put_image_to_window(data->base_image->mlx,

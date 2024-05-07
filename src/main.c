@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:27:01 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/07 17:57:55 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minirt.h"
 
 void	draw_scene(t_data *data);
@@ -53,6 +54,7 @@ int	main(int ac, char **av)
 		print_scene(data);
 		init_mlx(data);
 		printf("render\n");
+		init_objects(data);
 		sphere_scene(data);
 		mlx_loop(data->base_image->mlx);
 	}

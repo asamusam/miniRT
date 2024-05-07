@@ -22,7 +22,8 @@ SRC = src/close.c \
 	  src/parser_errors.c \
 	  src/parser_range.c \
 	  src/print_scene.c \
-	  src/ft_atof.c
+	  src/ft_atof.c \
+	  src/generalized.c
 
 OBJ = $(SRC:src/%c=$(BIN)/%o)
 INCS = includes
