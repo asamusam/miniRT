@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 20:45:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 20:50:43 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	free_object_matrix(void *content)
 {
 	t_sphere	*s;
 	
-	printf("here\n");
 	s = content;
 	if (s->transform)
 	{
@@ -33,7 +32,6 @@ void	free_data(t_data *data)
 	{
 		if (data->scene->spheres)
 		{
-			printf("scene sphere\n");
 			ft_lstiter(data->scene->spheres, free_object_matrix);
 			ft_lstclear(&data->scene->spheres, free);
 		}
@@ -48,7 +46,6 @@ void	free_data(t_data *data)
 		}
 		if (data->scene->world.objects)
 		{
-			printf("world object\n");
 			free(data->scene->world.objects);
 			// ft_lstiter(data->scene->world.objects, free_object_matrix);
 			// ft_lstclear(&data->scene->world.objects, free);

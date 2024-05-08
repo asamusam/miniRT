@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 20:41:08 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 20:50:16 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ t_color	color_at(t_world world, t_ray ray)
 		ft_lstclear(&intersections, free);
 		return (color(0, 0, 0, 0));
 	}
-	ft_lstclear(&intersections, free);
 	comps = prepare_computations(*i, ray);
+	ft_lstclear(&intersections, free);
 	c = shade_hit(world, comps);
 	return (c);
 }
