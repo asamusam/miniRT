@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:12:02 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 15:25:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	free_matrix(t_matrix *mat)
 	while (++i < mat->rows)
 		free(mat->data[i]);
 	free(mat->data);
+	free(mat);
 }
 
 void	print_matrix(t_matrix mat)

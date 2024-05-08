@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:17:19 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 15:43:20 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,11 @@ t_color	color_at(t_world world, t_ray ray)
 	intersections = intersect_world(world, ray);
 	i = hit(intersections);
 	if (i == NULL)
+	{
+		ft_lstclear(&intersections, free);
 		return (color(0, 0, 0, 0));
+	}
+	ft_lstclear(&intersections, free);
 	comps = prepare_computations(*i, ray);
 	c = shade_hit(world, comps);
 	return (c);
@@ -165,6 +169,7 @@ t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up)
 	trans_m = translation(-from.x, -from.y, -from.z);
 	res = matrix_multiply(*orientation, *trans_m);
 	free_matrix(trans_m);
+	free_matrix(orientation);
 	return (res);
 
 	// return (matrix_multiply(*orientation,
@@ -207,14 +212,14 @@ void	configure_camera(t_cam *c)
 {
 	float		half_view;
 	float		aspect;
-	t_matrix	*m;
+	// t_matrix	*m;
 
 	c->hsize = WIDTH;
 	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
-	m = init_identitymatrix(4);
+	// m = init_identitymatrix(4);
 	// c->transform = init_identitymatrix(4);
-	c->transform = m;
+	c->transform = init_identitymatrix(4);
 	half_view = tan(c->rfov / 2);
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
