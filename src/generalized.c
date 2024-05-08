@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:30:22 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/08 18:31:46 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/08 22:03:33 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_shape_intersect	*shape_intersection(float t, t_object *object)
 
 t_list	*plane_new_intersect(t_ray *ray, t_object *object)
 {
-	t_plane *plane;
+	t_plane	*plane;
 	float	v[3];
 	float	dot;
 	float	t;
@@ -120,8 +120,8 @@ t_list	*plane_new_intersect(t_ray *ray, t_object *object)
 	if (fabs(dot) < EPSILON)
 		return (NULL);
 	t = (v[0] * plane->normal.x + v[1] * plane->normal.y + v[2] * plane->normal.z) / dot;
-	//if (t < 0)
-	//	return (NULL);
+	if (t < 0)
+		return (NULL);
 	return (ft_lstnew(shape_intersection(t, object)));
 }
 
@@ -150,13 +150,13 @@ t_list	*shape_intersect(t_object *object, t_ray ray)
 	}
 	else if (object->type == PLANE)
 	{
-		if (fabs(ray.direction.y) < EPSILON)
-			return (intersections);
-		t1 = -ray.origin.y / ray.direction.y;
-		ft_lstadd_back(&intersections, ft_lstnew(
-				shape_intersection(t1, object)));
-		// ft_lstadd_back(&intersections,
-		// 	plane_new_intersect(&ray, object));
+		//if (fabs(ray.direction.y) < EPSILON)
+		//	return (intersections);
+		//t1 = -ray.origin.y / ray.direction.y;
+		//ft_lstadd_back(&intersections, ft_lstnew(
+		//		shape_intersection(t1, object)));
+		ft_lstadd_back(&intersections,
+		 	plane_new_intersect(&ray, object));
 	}
 	return (intersections);
 }
