@@ -21,7 +21,7 @@ SRC = src/close.c \
 	  src/parser_range.c \
 	  src/print_scene.c \
 	  src/ft_atof.c \
-	  src/error.c
+	  src/debug.c
 OBJ = $(patsubst src/%c,$(BIN)/%o,$(SRC))
 INCS = includes
 LIBFT_PATH = libft

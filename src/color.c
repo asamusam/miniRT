@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:52:21 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 00:18:11 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:57:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,3 @@ int	get_b(int trgb)
 {
 	return (trgb & 0xFF);
 }
-
-// void	print_color(t_color color)
-// {
-// 	printf("t: %f, r: %f, g: %f, b:%f\n",
-// 		color.transparent, color.red, color.green, color.blue);
-// }

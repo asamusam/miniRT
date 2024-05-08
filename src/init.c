@@ -6,11 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 14:20:30 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:57:51 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include "../includes/image.h"
+#include "../includes/scene.h"
 
 void	allocate_data(t_data **data)
 {
@@ -54,7 +56,6 @@ void	init_data(t_data *data)
 	}
 	data->scene->ambient.color = color(0, 0, 0, 0);
 	data->scene->ambient.intensity = 0.0;
-	// data->scene->camera.distance = 0.0;
 	data->scene->camera.fov = 0;
 	data->scene->camera.position = (t_tuple){0, 0, 0, POINT};
 	data->scene->camera.rotation = (t_tuple){0, 0, 0, VECTOR};

@@ -6,11 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 15:33:50 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/04 14:07:45 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:00:14 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include "../includes/color.h"
+#include "../includes/tuples.h"
 
 int	check_fov(int fov)
 {

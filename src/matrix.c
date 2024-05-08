@@ -6,16 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 19:13:09 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:59:18 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minirt.h"
 #include "../includes/matrix.h"
 #include "../includes/tuples.h"
-#include "../includes/error.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "../includes/debug.h"
 
 // Matrix  is used to represent and manipulate linear transformations 
 // and systems of linear equations. 
@@ -289,14 +287,13 @@ float	cofactor(t_matrix *m, int row, int col)
 	return (-minor_value);
 }
 
-t_matrix	*make_inv(t_matrix m, float det)
+t_matrix	*malloc_invm(t_matrix m)
 {
 	t_matrix	*m_inv;
 	int			i;
-	int			j;
-	float		c;
 
 	m_inv = malloc(sizeof(t_matrix));
+	malloc_errcheck(m_inv);
 	m_inv->rows = m.rows;
 	m_inv->cols = m.cols;
 	m_inv->data = (float **)malloc(m.rows * sizeof(float *));
@@ -307,6 +304,17 @@ t_matrix	*make_inv(t_matrix m, float det)
 		m_inv->data[i] = (float *)malloc(m.cols * sizeof(float));
 		malloc_errcheck(m_inv->data);
 	}
+	return (m_inv);
+}
+
+t_matrix	*make_inv(t_matrix m, float det)
+{
+	t_matrix	*m_inv;
+	int			i;
+	int			j;
+	float		c;
+
+	m_inv = malloc_invm(m);
 	i = -1;
 	while (++i < m.rows)
 	{

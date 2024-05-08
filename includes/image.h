@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 21:35:30 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 14:40:37 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:34:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,10 @@
 
 typedef struct s_img
 {
-	// t_win	win;
 	void	*mlx;
 	void	*win_ptr;
 	void	*img_ptr;
 	char	*addr;
-	// int		h;
-	// int		w;
 	int		bpp;
 	int		endian;
 	int		line_len;

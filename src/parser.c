@@ -6,12 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:07:52 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/07 14:59:46 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:59:41 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parser.h"
 #include "../includes/minirt.h"
+#include "../includes/scene.h"
 
 int	parse_ambient(char *line, t_data *data)
 {

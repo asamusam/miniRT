@@ -6,12 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:02:51 by llai              #+#    #+#             */
-/*   Updated: 2024/05/04 16:30:05 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:57:25 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include "../includes/color.h"
+#include "../includes/image.h"
 
 // Convert x and y to center origin (0,0)
 void	put_pixel(t_img *img, int x, int y, t_color color)

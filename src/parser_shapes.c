@@ -6,11 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/07 15:51:13 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:00:45 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include "../includes/world.h"
+#include "../includes/parser.h"
+#include "../includes/scene.h"
 
 static int	add_node(void *content, t_list **lst)
 {

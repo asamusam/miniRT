@@ -6,19 +6,18 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 20:50:16 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:03:14 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include "../libft/libft.h"
 #include "../includes/world.h"
 #include "../includes/ray.h"
 #include "../includes/matrix.h"
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include "../includes/debug.h"
+#include "../includes/world.h"
+#include "../includes/scene.h"
+#include "../includes/image.h"
 
 void	insert_sorted(t_list **sorted, t_list *node)
 {
@@ -148,61 +147,27 @@ t_matrix	*make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
 // and a vector indicates which direction is up
 t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
-	t_tuple		forward;
-	t_tuple		upn;
-	t_tuple		left;
-	t_tuple		true_up;
+	t_camconfig	config;
 	t_matrix	*orientation;
 	t_matrix	*trans_m;
 	t_matrix	*res;
 
-	forward = normalize(to);
-	if (equal_tuple(forward, vector(0, 1, 0)) || equal_tuple(forward, vector(0, -1, 0)))
+	config.forward = normalize(to);
+	if (equal_tuple(config.forward, vector(0, 1, 0))
+		|| equal_tuple(config.forward, vector(0, -1, 0)))
 	{
 		perror("Invalid orientation vector:gimbal lock");
 		exit(EXIT_FAILURE);
 	}
-	upn = normalize(up);
-	left = cross(forward, upn);
-	true_up = cross(left, forward);
-	orientation = make_orientation(left, true_up, forward);
+	config.upn = normalize(up);
+	config.left = cross(config.forward, config.upn);
+	config.true_up = cross(config.left, config.forward);
+	orientation = make_orientation(config.left, config.true_up, config.forward);
 	trans_m = translation(-from.x, -from.y, -from.z);
 	res = matrix_multiply(*orientation, *trans_m);
 	free_matrix(&trans_m);
 	free_matrix(&orientation);
 	return (res);
-
-	// return (matrix_multiply(*orientation,
-	// 		translation(-from.x, -from.y, -from.z)));
-}
-
-t_cam	camera(float hsize, float vsize, float field_of_view)
-{
-	t_cam		c;
-	float		half_view;
-	float		aspect;
-	t_matrix	*m;
-
-	c.hsize = hsize;
-	c.vsize = vsize;
-	c.rfov = field_of_view;
-	m = init_identitymatrix(4);
-	// c.transform = init_identitymatrix(4);
-	c.transform = m;
-	half_view = tan(c.rfov / 2);
-	aspect = c.hsize / c.vsize;
-	if (aspect >= 1)
-	{
-		c.half_width = half_view;
-		c.half_height = half_view / aspect;
-	}
-	else
-	{
-		c.half_width = half_view * aspect;
-		c.half_height = half_view;
-	}
-	c.pixel_size = (c.half_width * 2) / c.hsize;
-	return (c);
 }
 
 // The camera pixel size is calculated with the horizontal aspect
@@ -212,19 +177,13 @@ void	configure_camera(t_data *data, t_cam *c)
 {
 	float		half_view;
 	float		aspect;
-	t_tuple	from;
-	t_tuple	to;
-	t_tuple	up;
-	// t_matrix	*m;
 
 	c->hsize = WIDTH;
 	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
-	from = data->scene->camera.position;
-	to = data->scene->camera.rotation;
-	up = vector(0, 1, 0);
-	data->scene->camera.transform = view_transform(from, to, up);
-	// c->transform = init_identitymatrix(4);
+	data->scene->camera.transform = view_transform(
+			data->scene->camera.position,
+			data->scene->camera.rotation, vector(0, 1, 0));
 	half_view = tan(c->rfov / 2);
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
@@ -249,18 +208,17 @@ float	calc_offset(t_cam camera, float p)
 // the indicated (x, y) pixel on the canvas
 t_ray	ray_for_pixel(t_cam camera, float px, float py)
 {
-	float	world_x;
-	float	world_y;
-	t_tuple	pixel;
-	t_tuple	origin;
-	t_tuple	direction;
-	t_matrix	*inv_m;
+	t_world_coord	wc;
+	t_tuple			pixel;
+	t_tuple			origin;
+	t_tuple			direction;
+	t_matrix		*inv_m;
 
 	inv_m = inverse(*camera.transform);
-	world_x = camera.half_width - calc_offset(camera, px);
-	world_y = camera.half_height - calc_offset(camera, py);
+	wc.world_x = camera.half_width - calc_offset(camera, px);
+	wc.world_y = camera.half_height - calc_offset(camera, py);
 	pixel = matrix_tuple_multiply(
-			*inv_m, point(world_x, world_y, -1));
+			*inv_m, point(wc.world_x, wc.world_y, -1));
 	origin = matrix_tuple_multiply(
 			*inv_m, point(0, 0, 0));
 	free_matrix(&inv_m);
@@ -289,13 +247,14 @@ void	print_progress(float progress)
 
 void	render(t_data *data, t_cam camera, t_world world)
 {
-	t_ray	r;
-	t_color	color;
-	int		x;
-	int		y;
-	int		total_pixels = camera.vsize * camera.hsize;
-	int		current_pixel = 0;
+	t_ray			r;
+	t_color			color;
+	int				x;
+	int				y;
+	t_progresbar	pb;
 
+	pb.total_pixels = camera.vsize * camera.hsize;
+	pb.current_pixel = 0;
 	y = -1;
 	while (++y < camera.vsize)
 	{
@@ -305,9 +264,9 @@ void	render(t_data *data, t_cam camera, t_world world)
 			r = ray_for_pixel(camera, x, y);
 			color = color_at(world, r);
 			put_pixel2(data->base_image, x, y, color);
-			current_pixel++;
-			float	progress = (float)current_pixel / total_pixels;
-			print_progress(progress);
+			pb.current_pixel++;
+			pb.progress = (float)pb.current_pixel / pb.total_pixels;
+			print_progress(pb.progress);
 		}
 	}
 	mlx_put_image_to_window(data->base_image->mlx,
@@ -317,14 +276,11 @@ void	render(t_data *data, t_cam camera, t_world world)
 void	*sphere_transform(void *content)
 {
 	t_sphere	*sphere;
-	// t_matrix	*trans_m;
 
 	sphere = content;
 	sphere->radius = sphere->diameter / 2;
-	// trans_m = translation(sphere->center.x, sphere->center.y, sphere->center.z);
-	sphere->transform = translation(sphere->center.x, sphere->center.y, sphere->center.z);
-	// sphere->transform = translation(
-	// 		sphere->center.x, sphere->center.y, sphere->center.z);
+	sphere->transform = translation(
+			sphere->center.x, sphere->center.y, sphere->center.z);
 	return (sphere);
 }
 

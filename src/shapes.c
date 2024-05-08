@@ -6,16 +6,15 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 20:38:38 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:02:04 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minirt.h"
 #include "../includes/shapes.h"
-#include "../includes/error.h"
+#include "../includes/debug.h"
 #include "../includes/ray.h"
-#include "../libft/libft.h"
-#include <math.h>
-#include <stdlib.h>
+#include "../includes/matrix.h"
 
 t_sphere	*malloc_sphere(void)
 {
@@ -25,7 +24,6 @@ t_sphere	*malloc_sphere(void)
 	malloc_errcheck(s);
 	s->o_center = point(0, 0, 0);
 	s->radius = 1;
-	// s->transform = init_identitymatrix(4);
 	s->material = material();
 	return (s);
 }
@@ -115,9 +113,9 @@ t_intersection	*hit(t_list *xs)
 // converting is needed.
 t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 {
-	t_tuple	object_pt;
-	t_tuple	object_normal;
-	t_tuple	world_normal;
+	t_tuple		object_pt;
+	t_tuple		object_normal;
+	t_tuple		world_normal;
 	t_matrix	*inv_m;
 	t_matrix	*trans_m;
 

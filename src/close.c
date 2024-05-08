@@ -6,22 +6,23 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 20:50:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:57:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include <stdlib.h>
+#include "../includes/shapes.h"
+#include "../includes/matrix.h"
+#include "../includes/scene.h"
+#include "../includes/image.h"
 
 void	free_object_matrix(void *content)
 {
 	t_sphere	*s;
-	
+
 	s = content;
 	if (s->transform)
-	{
 		free_matrix(&s->transform);
-	}
 }
 
 void	free_data(t_data *data)
@@ -45,11 +46,7 @@ void	free_data(t_data *data)
 			data->scene->camera.transform = NULL;
 		}
 		if (data->scene->world.objects)
-		{
 			free(data->scene->world.objects);
-			// ft_lstiter(data->scene->world.objects, free_object_matrix);
-			// ft_lstclear(&data->scene->world.objects, free);
-		}
 		free(data->scene);
 	}
 	free(data);
