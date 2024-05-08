@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 15:43:20 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 20:41:08 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,8 @@ t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up)
 	orientation = make_orientation(left, true_up, forward);
 	trans_m = translation(-from.x, -from.y, -from.z);
 	res = matrix_multiply(*orientation, *trans_m);
-	free_matrix(trans_m);
-	free_matrix(orientation);
+	free_matrix(&trans_m);
+	free_matrix(&orientation);
 	return (res);
 
 	// return (matrix_multiply(*orientation,
@@ -208,18 +208,23 @@ t_cam	camera(float hsize, float vsize, float field_of_view)
 // The camera pixel size is calculated with the horizontal aspect
 // and vertical aspect
 // t_camera	camera(float hsize, float vsize, float field_of_view)
-void	configure_camera(t_cam *c)
+void	configure_camera(t_data *data, t_cam *c)
 {
 	float		half_view;
 	float		aspect;
+	t_tuple	from;
+	t_tuple	to;
+	t_tuple	up;
 	// t_matrix	*m;
 
 	c->hsize = WIDTH;
 	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
-	// m = init_identitymatrix(4);
+	from = data->scene->camera.position;
+	to = data->scene->camera.rotation;
+	up = vector(0, 1, 0);
+	data->scene->camera.transform = view_transform(from, to, up);
 	// c->transform = init_identitymatrix(4);
-	c->transform = init_identitymatrix(4);
 	half_view = tan(c->rfov / 2);
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
@@ -258,7 +263,7 @@ t_ray	ray_for_pixel(t_cam camera, float px, float py)
 			*inv_m, point(world_x, world_y, -1));
 	origin = matrix_tuple_multiply(
 			*inv_m, point(0, 0, 0));
-	free_matrix(inv_m);
+	free_matrix(&inv_m);
 	direction = normalize(sub_tuples(pixel, origin));
 	return (ray(origin, direction));
 }
@@ -327,7 +332,7 @@ void	init_world(t_data *data)
 {
 	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = data->scene->light;
-	configure_camera(&data->scene->camera);
+	configure_camera(data, &data->scene->camera);
 	data->scene->world.objects = ft_lstmap(
 			data->scene->spheres, sphere_transform, free);
 }

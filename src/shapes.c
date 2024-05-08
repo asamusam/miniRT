@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 19:26:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 20:38:38 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_sphere	*malloc_sphere(void)
 	malloc_errcheck(s);
 	s->o_center = point(0, 0, 0);
 	s->radius = 1;
-	s->transform = init_identitymatrix(4);
+	// s->transform = init_identitymatrix(4);
 	s->material = material();
 	return (s);
 }
@@ -75,7 +75,7 @@ t_list	*intersect(t_sphere *s, t_ray ray)
 
 	inv_m = inverse(*s->transform);
 	ray = transform(ray, *inv_m);
-	free_matrix(inv_m);
+	free_matrix(&inv_m);
 	interections_list = NULL;
 	if (calc_t(*s, ray, &t1, &t2) == -1)
 		return (interections_list);
@@ -128,8 +128,8 @@ t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 	world_normal = matrix_tuple_multiply(
 			*trans_m, object_normal);
 	world_normal.w = 0;
-	free_matrix(inv_m);
-	free_matrix(trans_m);
+	free_matrix(&inv_m);
+	free_matrix(&trans_m);
 	return (normalize(world_normal));
 }
 

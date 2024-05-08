@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:45:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:12:34 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 19:09:43 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ typedef struct s_matrix
 
 // t_matrix	create_matrix(int rows, int cols);
 t_matrix	*create_matrix(int rows, int cols);
-void		free_matrix(t_matrix *mat);
+// void		free_matrix(t_matrix *mat);
+void		free_matrix(t_matrix **mat);
 void		print_matrix(t_matrix mat);
 bool		compare_matrix(t_matrix mat1, t_matrix mat2);
 // t_matrix	matrix_multiply(t_matrix A, t_matrix B);
@@ -36,10 +37,15 @@ t_matrix	*identity_matrix(t_matrix m);
 // t_matrix	init_identitymatrix(int size);
 t_matrix	*init_identitymatrix(int size);
 t_matrix	*transpose(t_matrix A);
-float		determinant(t_matrix M);
-t_matrix	submatrix(t_matrix A, int rowToRemove, int colToRemove);
-float		minor(t_matrix A, int row, int col);
-float		cofactor(t_matrix A, int row, int col);
+// float		determinant(t_matrix M);
+float		determinant(t_matrix *m);
+// t_matrix	submatrix(t_matrix A, int rowToRemove, int colToRemove);
+// t_matrix	*submatrix(t_matrix m, int rowToRemove, int colToRemove);
+t_matrix	*submatrix(t_matrix *m, int rowToRemove, int colToRemove);
+// float		minor(t_matrix A, int row, int col);
+float		minor(t_matrix *m, int row, int col);
+// float		cofactor(t_matrix A, int row, int col);
+float		cofactor(t_matrix *m, int row, int col);
 // t_matrix	inverse(t_matrix M);
 t_matrix	*inverse(t_matrix m);
 
