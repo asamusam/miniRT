@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:51:59 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:44:46 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+#include "generalized.h"
 
 void	insert_sorted(t_list **sorted, t_list *node)
 {
@@ -65,7 +67,7 @@ t_list	*intersect_world(t_world world, t_ray ray)
 	tmp = world.objects;
 	while (tmp)
 	{
-		// ft_lstadd_back(&result, intersect(*(t_sphere *)tmp->content, ray));
+		//ft_lstadd_back(&result, intersect((t_sphere *)tmp->content, ray));
 		ft_lstadd_back(&result, shape_intersect(tmp->content, ray));
 		tmp = tmp->next;
 	}
@@ -294,7 +296,8 @@ void	render(t_data *data, t_cam camera, t_world world)
 		while (++x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
-			color = color_at(world, r);
+			//color = color_at(world, r);
+			color = shape_color_at(world, r);
 			put_pixel2(data->base_image, x, y, color);
 			current_pixel++;
 			float	progress = (float)current_pixel / total_pixels;
@@ -324,6 +327,6 @@ void	init_world(t_data *data)
 	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = data->scene->light;
 	configure_camera(&data->scene->camera);
-	data->scene->world.objects = ft_lstmap(
-			data->scene->spheres, sphere_transform, free);
+	//data->scene->world.objects = ft_lstmap(
+	//		data->scene->spheres, sphere_transform, free);
 }

@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:51:34 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/08 11:16:50 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_plane
 	t_tuple		normal;
 	t_color		color;
 	t_material	material;
-	t_matrix	transform;
+	t_matrix	*transform;
 }	t_plane;
 
 // typedef struct s_sphere

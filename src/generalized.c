@@ -6,115 +6,213 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:30:22 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/07 18:34:16 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:31:46 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
-#include "generalized.h"
+#include "../includes/generalized.h"
+
+int		calc_t(t_sphere s, t_ray ray, float *t1, float *t2);
+t_color	compute_diffuse(t_comps c, t_color effective_color, t_light light);
+void	malloc_errcheck(void *p);
 
 
-int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2);
-
-// sphere_intersect
-t_list	*sphere_intersect(t_sphere *s, t_ray ray)
+t_color	shape_specular(t_shape_comps *c, t_light light)
 {
-	t_list	*interections_list;
-	float	t1;
-	float	t2;
+	t_tuple	lightv;
+	t_tuple	reflectv;
+	float	reflect_dot_eye;
+	float	factor;
 
-	ray = transform(ray, inverse(s->transform));
-	interections_list = NULL;
-	if (calc_t(*s, ray, &t1, &t2) == -1)
-		return (interections_list);
-	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t1, *s)));
-	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t2, *s)));
-	return (interections_list);
+	lightv = normalize(sub_tuples(light.position, c->point));
+	reflectv = reflect(negate_tuple(lightv), c->normalv);
+	reflect_dot_eye = dot(reflectv, c->eyev);
+	if (reflect_dot_eye <= 0)
+		return (color(0, 0, 0, 0));
+	else
+	{
+		factor = pow(reflect_dot_eye, c->object->material.shininess);
+		return (mul_color(mul_color(
+					light.color, c->object->material.specular), factor * 255));
+	}
+}
+
+t_color	shape_diffuse(t_shape_comps *c, t_color eff_color, t_light light)
+{
+	t_tuple	lightv;
+	float	light_dot_normal;
+
+	lightv = normalize(sub_tuples(light.position, c->point));
+	light_dot_normal = dot(lightv, c->normalv);
+	if (light_dot_normal < 0)
+		return (color(0, 0, 0, 0));
+	else
+		return (mul_color(mul_color(
+					eff_color, c->object->material.diffuse),
+				light_dot_normal));
+}
+
+t_tuple	shape_normal_at(t_object *object, t_tuple world_pt)
+{
+	t_tuple		object_pt;
+	t_tuple		object_normal;
+	t_tuple		world_normal;
+	t_matrix	*inv_m;
+	t_matrix	*trans_m;
+
+	inv_m = inverse(*object->transform);
+	object_pt = matrix_tuple_multiply(*inv_m, world_pt);
+	object_normal = sub_tuples(object_pt, point(0, 0, 0));
+	trans_m = transpose(*inv_m);
+	world_normal = matrix_tuple_multiply(
+			*trans_m, object_normal);
+	world_normal.w = 0;
+	free_matrix(inv_m);
+	free_matrix(trans_m);
+	return (normalize(world_normal));
+}
+
+t_shape_comps	prepare_shape_comps(t_shape_intersect *intersect, t_ray *ray)
+{
+	t_shape_comps	comps;
+
+	comps.t = intersect->t;
+	comps.object = intersect->object;
+	comps.point = position(*ray, comps.t);
+	comps.eyev = negate_tuple(ray->direction);
+	comps.normalv = shape_normal_at(intersect->object, comps.point);
+	if (dot(comps.normalv, comps.eyev) < 0)
+	{
+		comps.inside = true;
+		comps.normalv = negate_tuple(comps.normalv);
+	}
+	else
+		comps.inside = false;
+	return (comps);
+}
+
+t_shape_intersect	*shape_intersection(float t, t_object *object)
+{
+	t_shape_intersect	*i;
+
+	i = malloc(sizeof(t_shape_intersect));
+	malloc_errcheck(i);
+	i->t = t;
+	i->object = object;
+	return (i);
+}
+
+t_list	*plane_new_intersect(t_ray *ray, t_object *object)
+{
+	t_plane *plane;
+	float	v[3];
+	float	dot;
+	float	t;
+
+	plane = (t_plane *)object->object;
+	v[0] = ray->origin.x - plane->point.x;
+	v[1] = ray->origin.y - plane->point.y;
+	v[2] = ray->origin.z - plane->point.z;
+
+	dot = ray->direction.x * plane->normal.x \
+		+ ray->direction.x * plane->normal.y \
+		+ ray->direction.z * plane->normal.z;
+	if (fabs(dot) < EPSILON)
+		return (NULL);
+	t = (v[0] * plane->normal.x + v[1] * plane->normal.y + v[2] * plane->normal.z) / dot;
+	//if (t < 0)
+	//	return (NULL);
+	return (ft_lstnew(shape_intersection(t, object)));
 }
 
 // common intersect
-t_list	*shape_intersect(t_object *obj, t_ray ray)
+t_list	*shape_intersect(t_object *object, t_ray ray)
 {
-	t_list	*intersections;
-
-	if (obj->type == SPHERE)
-		intersections = sphere_intersect(obj->object, ray);
-	return (intersections);
-}
-
-void	transform_object(void *content)
-{
+	t_list		*intersections;
+	t_matrix	*inv_m;
+	float		t1;
+	float		t2;
 	t_sphere	*sphere;
-	t_plane		*plane;
-	t_object	*object;
 
-	object = (t_object *)content;
+	inv_m = inverse(*object->transform);
+	ray = transform(ray, *inv_m);
+	free_matrix(inv_m);
+	intersections = NULL;
 	if (object->type == SPHERE)
 	{
-		sphere = content;
-		sphere->radius = sphere->diameter / 2;
-		sphere->transform = translation(
-				sphere->center.x, sphere->center.y, sphere->center.z);
+		sphere = (t_sphere *)object->object;
+		if (calc_t(*sphere, ray, &t1, &t2) == -1)
+			return (intersections);
+		ft_lstadd_back(&intersections, ft_lstnew(
+				shape_intersection(t1, object)));
+		ft_lstadd_back(&intersections, ft_lstnew(
+				shape_intersection(t2, object)));
 	}
 	else if (object->type == PLANE)
 	{
-		plane = content;
-		plane->material = material();
-		plane->transform = translation(
-				plane->point.x, plane->point.y, plane->point.z);
+		if (fabs(ray.direction.y) < EPSILON)
+			return (intersections);
+		t1 = -ray.origin.y / ray.direction.y;
+		ft_lstadd_back(&intersections, ft_lstnew(
+				shape_intersection(t1, object)));
+		// ft_lstadd_back(&intersections,
+		// 	plane_new_intersect(&ray, object));
 	}
+	return (intersections);
 }
 
-void	init_objects(t_data *data)
+t_color	shape_lighting(t_world *w, t_shape_comps *c)
 {
-	t_object	*object;
-	t_list		*i;
+	t_color	effective_color;
+	t_color	ambient;
+	t_color	diffuse;
+	t_color	specular;
 
-	i = data->scene->spheres;
-	while (i)
+	effective_color = hadamard_product(c->object->color, w->light.color);
+	ambient = hadamard_product(
+			effective_color, mul_color(w->ambient.color, w->ambient.intensity));
+	diffuse = shape_diffuse(c, effective_color, w->light);
+	specular = shape_specular(c, w->light);
+	return (add_colors(ambient, mul_color(
+				add_colors(diffuse, specular), w->light.intensity)));
+}
+
+t_shape_intersect	*shape_hit(t_list *xs)
+{
+	t_shape_intersect	*res;
+	t_shape_intersect	*content;
+
+	res = NULL;
+	while (xs)
 	{
-		object = malloc(sizeof(t_object));
-		if (!object)
+		content = xs->content;
+		if (res == NULL)
 		{
-			// free_memory
-			return ;
+			if (content->t > 0)
+				res = content;
 		}
-		object->type = SPHERE;
-		object->object = i->content;
-		i->content = object;
-		i = i->next;
+		else
+		{
+			if (content->t > 0 && content->t < res->t)
+				res = content;
+		}
+		xs = xs->next;
 	}
-	// i = data->scene->planes;
-	// while (i)
-	// {
-	// 	object = malloc(sizeof(t_object));
-	// 	if (!object)
-	// 	{
-	// 		// free_memory
-	// 		return ;
-	// 	}
-	// 	object->type = PLANE;
-	// 	object->object = i->content;
-	// 	i->content = object;
-	// 	i = i->next;
-	// }
-	// i = data->scene->cylinders;
-	// while (i)
-	// {
-	// 	object = malloc(sizeof(t_object));
-	// 	if (!object)
-	// 	{
-	// 		// free_memory
-	// 		return ;
-	// 	}
-	// 	object->type = CYLINDER;
-	// 	object->object = i->content;
-	// 	i->content = object;
-	// 	i = i->next;
-	// }
-	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
-	//ft_lstadd_back(&data->scene->world.objects, data->scene->planes);
-	//ft_lstadd_back(&data->scene->world.objects, data->scene->cylinders);
-	ft_lstiter(data->scene->world.objects, transform_object);
-	// memory needs to be freed in the end
+	return (res);
+}
+
+t_color	shape_color_at(t_world world, t_ray ray)
+{
+	t_list				*intersections;
+	t_shape_intersect	*i;
+	t_shape_comps		comps;
+	t_color				c;
+
+	intersections = intersect_world(world, ray);
+	i = shape_hit(intersections);
+	if (i == NULL)
+		return (color(0, 0, 0, 0));
+	comps = prepare_shape_comps(i, &ray);
+	c = shape_lighting(&world, &comps);
+	return (c);
 }

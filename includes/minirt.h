@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:51:31 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/08 12:22:48 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include "parser.h"
 # include "color.h"
 # include <math.h>
-# include "generalized.h"
 
 # define HEIGHT 400 
 # define WIDTH 400

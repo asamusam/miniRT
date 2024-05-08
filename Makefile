@@ -1,93 +1,60 @@
-BIN = bin
-NAME = miniRT
-CC = cc
-CFLAG = -Wall -Werror -Wextra -g3
-SRC = src/close.c \
-	  src/color.c \
-	  src/image.c \
-	  src/init.c \
-	  src/main.c \
-	  src/matrix.c \
-	  src/matrix_transform.c \
-	  src/ray.c \
-	  src/shapes.c \
-	  src/tuples.c \
-	  src/light.c \
-	  src/world.c \
-	  src/parser.c \
-	  src/parser_utils.c \
-	  src/parser_shapes.c \
-	  src/parser_errors.c \
-	  src/parser_range.c \
-	  src/print_scene.c \
-	  src/ft_atof.c \
-	  src/generalized.c \
-	  src/error.c
+CFLAGS := -Wall -Wextra -Werror
+LFLAGS := -L/usr/lib -lXext -lX11 -lm -lz
+INCLUDE := -Iincludes -Iminilibx-linux -Ilibft
+LIBFT := libft/libft.a
+MINILIBX := minilibx-linux/libmlx_Linux.a
+CFILES := src/close.c \
+		src/color.c \
+		src/image.c \
+		src/init.c \
+		src/main.c \
+		src/matrix.c \
+		src/matrix_transform.c \
+		src/ray.c \
+		src/shapes.c \
+		src/tuples.c \
+		src/light.c \
+		src/world.c \
+		src/parser.c \
+		src/parser_utils.c \
+		src/parser_shapes.c \
+		src/parser_errors.c \
+		src/parser_range.c \
+		src/print_scene.c \
+		src/ft_atof.c \
+		src/generalized.c \
+		src/error.c \
+		src/init_objects.c
+OFILES := $(CFILES:.c=.o)
+NAME := miniRT
 
-OBJ = $(SRC:src/%c=$(BIN)/%o)
-OBJ = $(patsubst src/%c,$(BIN)/%o,$(SRC))
-INCS = includes
-LIBFT_PATH = libft
-LIBFT = $(LIBFT_PATH)
-LFLAGS = -L$(LIBFT) -lft -L$(MLX_PATH)
-IFLAGS = -I$(INCS) -I$(LIBFT_PATH) -I$(MLX_PATH)
-UNAME := $(shell uname)
-MLX_PATH = minilibx-linux
-MLX_NAME = libmlx_Linux.a
-MLX = $(MLX_PATH)$(MLX_NAME)
-RM = rm -rf
+all: $(LIBFT) $(MINILIBX) $(NAME)
 
-ifeq ($(UNAME), Darwin)
-	CC = gcc
-	LFLAGS += -lmlx -framework OpenGL -framework Appkit
-else ifeq ($(UNAME), FreeBDS)
-	CC = clang
-	LFLAGS += -lmlx -lbsd -lXext -lX11 -lm
-else
-	CC = gcc
-	CFLAG += -D Linux
-	LFLAGS += -lmlx_Linux -lbsd -lXext -lX11 -lm
-endif
+$(NAME): $(OFILES)
+	$(CC) $(OFILES) $(LIBFT) $(MINILIBX) $(LFLAGS) -o $(NAME)
 
-all: $(MLX) $(NAME)
-
-$(BIN)/%.o: src/%.c
-	$(CC) -c $< $(CFLAG) $(IFLAGS) -o $@
-
-$(NAME): $(BIN) $(OBJ) | $(LIBFT)
-	$(CC) $(OBJ) $(LFLAGS) -o $(NAME)
-
-$(MLX):
-	@git submodule init
-	@git submodule update
-	@make -sC $(MLX_PATH)
-
-$(BIN):
-	mkdir -p $(BIN)
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(INCLUDE) $^ -o $@ -g
 
 $(LIBFT):
-	@make all -C $(LIBFT_PATH) --no-print-directory
+	@make -C libft
+
+$(MINILIBX):
+	@make -C minilibx-linux
 
 clean:
-	$(RM) $(BIN)
+	@make -C libft clean
+	@make -C minilibx-linux clean
+	rm -f $(OFILES)
 
 fclean: clean
-	$(RM) $(NAME)
-	@make fclean -C $(LIBFT_PATH) --no-print-directory
+	rm -f $(LIBFT)
+	rm -f $(MINILIBX)
+	rm -f $(NAME)
 
 re: fclean all
 
-test:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) ./scenes/sphere_scene.rt
+.PHONY: clean fclean re
 
-show:
-	@printf "UNAME		: $(UNAME)\n"
-	@printf "NAME		: $(NAME)\n"
-	@printf "CC			: $(CC)\n"
-	@printf "CFLAG		: $(CFLAG)\n"
-	@printf "LFLAGS		: $(LFLAGS)\n"
-	@printf "IFLAGS		: $(IFLAGS)\n"
-	@printf "SRC		: $(SRC)\n"
-	@printf "OBJS		: $(OBJS)\n"
 
-.PHONY: all clean fclean re $(LIBFT)
+

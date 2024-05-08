@@ -6,12 +6,13 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:51:37 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:12:07 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <stdio.h>
+#include "generalized.h"
 
 void	draw_scene(t_data *data);
 
