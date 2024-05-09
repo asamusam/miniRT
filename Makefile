@@ -2,14 +2,27 @@ BIN = bin
 NAME = miniRT
 CC = cc
 CFLAG = -Wall -Werror -Wextra -g3
-#SRC_PATH = ./src/
-# SRC = $(wildcard $(SRC_PATH)*.c)
 SRC = src/close.c \
 	  src/color.c \
 	  src/image.c \
 	  src/init.c \
-	  src/main.c
-OBJ = $(SRC:src/%c=$(BIN)/%o)
+	  src/main.c \
+	  src/matrix.c \
+	  src/matrix_transform.c \
+	  src/ray.c \
+	  src/shapes.c \
+	  src/tuples.c \
+	  src/light.c \
+	  src/world.c \
+	  src/parser.c \
+	  src/parser_utils.c \
+	  src/parser_shapes.c \
+	  src/parser_errors.c \
+	  src/parser_range.c \
+	  src/print_scene.c \
+	  src/ft_atof.c \
+	  src/debug.c
+OBJ = $(patsubst src/%c,$(BIN)/%o,$(SRC))
 INCS = includes
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)
@@ -62,7 +75,7 @@ fclean: clean
 re: fclean all
 
 test:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) ./map/map.ber
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) ./scenes/sphere_scene.rt
 
 show:
 	@printf "UNAME		: $(UNAME)\n"

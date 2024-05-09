@@ -6,25 +6,34 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/04/29 13:37:03 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 17:04:54 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../includes/minirt.h"
+#include "../includes/world.h"
+#include "../includes/scene.h"
+#include "../includes/image.h"
 
-int	main(void)
+void	sphere_scene(t_data *data)
 {
-	t_data	data;
-	t_win	win;
+	render(data, data->scene->camera, data->scene->world);
+	printf("\ndone\n");
+}
 
-	data.base_image.win = new_window(WIDTH, HEIGHT, "miniRT");
-	win = data.base_image.win;
-	data.base_image = new_img(WIDTH, HEIGHT, data.base_image.win);
+int	main(int ac, char **av)
+{
+	t_data	*data;
 
-	put_pixel(data.base_image, 0, 0, 0x0000FF00);
-	mlx_put_image_to_window(data.base_image.win.mlx,
-		data.base_image.win.win_ptr, data.base_image.img_ptr, 0, 0);
-
-	mlx_hook(win.win_ptr, 2, 1L << 0, esc_close_win, &data);
-	mlx_hook(win.win_ptr, 17, 0, cross_close_win, &data);
-	mlx_loop(data. base_image.win.mlx);
+	if (ac == 2)
+	{
+		allocate_data(&data);
+		init_data(data);
+		parse(data, av[1]);
+		init_world(data);
+		// print_scene(data);
+		init_mlx(data);
+		printf("render\n");
+		sphere_scene(data);
+		mlx_loop(data->base_image->mlx);
+	}
 }

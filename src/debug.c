@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 13:14:09 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:57:01 by llai             ###   ########.fr       */
+/*   Created: 2024/05/07 15:32:16 by llai              #+#    #+#             */
+/*   Updated: 2024/05/08 21:23:26 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/debug.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-/*
- * 	Description:
- * 	It appends a new node to the end of the list.
- *
- * 	Return value;
- * 	None.
- */
-
-void	ft_lstadd_back(t_list **lst, t_list *new_node)
+void	malloc_errcheck(void *p)
 {
-	t_list	*temp;
-
-	if (!new_node)
-		return ;
-	if (!*lst)
+	if (!p)
 	{
-		*lst = new_node;
-		return ;
+		perror("Malloc error");
+		exit(EXIT_FAILURE);
 	}
-	temp = ft_lstlast(*lst);
-	temp -> next = new_node;
-	return ;
 }

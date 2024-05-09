@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 13:14:09 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:57:01 by llai             ###   ########.fr       */
+/*   Created: 2024/05/07 15:33:59 by llai              #+#    #+#             */
+/*   Updated: 2024/05/08 21:25:00 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef DEBUG_H
+# define DEBUG_H
 
-/*
- * 	Description:
- * 	It appends a new node to the end of the list.
- *
- * 	Return value;
- * 	None.
- */
-
-void	ft_lstadd_back(t_list **lst, t_list *new_node)
+typedef struct s_progressbar
 {
-	t_list	*temp;
+	int		total_pixels;
+	int		current_pixel;
+	float	progress;
+}	t_progresbar;
 
-	if (!new_node)
-		return ;
-	if (!*lst)
-	{
-		*lst = new_node;
-		return ;
-	}
-	temp = ft_lstlast(*lst);
-	temp -> next = new_node;
-	return ;
-}
+void	malloc_errcheck(void *p);
+
+#endif // DEBUG

@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   image.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 13:14:09 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:57:01 by llai             ###   ########.fr       */
+/*   Created: 2024/04/30 21:35:30 by llai              #+#    #+#             */
+/*   Updated: 2024/05/08 21:34:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef IMAGE_H
+# define IMAGE_H
 
-/*
- * 	Description:
- * 	It appends a new node to the end of the list.
- *
- * 	Return value;
- * 	None.
- */
+# include "color.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new_node)
+typedef struct s_img
 {
-	t_list	*temp;
+	void	*mlx;
+	void	*win_ptr;
+	void	*img_ptr;
+	char	*addr;
+	int		bpp;
+	int		endian;
+	int		line_len;
+}	t_img;
 
-	if (!new_node)
-		return ;
-	if (!*lst)
-	{
-		*lst = new_node;
-		return ;
-	}
-	temp = ft_lstlast(*lst);
-	temp -> next = new_node;
-	return ;
-}
+void	put_pixel(t_img *img, int x, int y, t_color color);
+void	put_pixel2(t_img *img, int x, int y, t_color color);
+void	put_pixel_img(t_img *img, int x, int y, int color);
+
+#endif // !IMAGE_H

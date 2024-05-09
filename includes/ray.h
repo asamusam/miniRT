@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   ray.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/08 13:14:09 by llai              #+#    #+#             */
-/*   Updated: 2024/05/02 19:57:01 by llai             ###   ########.fr       */
+/*   Created: 2024/04/29 22:31:07 by llai              #+#    #+#             */
+/*   Updated: 2024/05/08 22:03:56 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef RAY_H
+# define RAY_H
 
-/*
- * 	Description:
- * 	It appends a new node to the end of the list.
- *
- * 	Return value;
- * 	None.
- */
+# include "tuples.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new_node)
+typedef struct s_matrix	t_matrix;
+
+typedef struct s_ray
 {
-	t_list	*temp;
+	t_tuple	origin;
+	t_tuple	direction;
+}	t_ray;
 
-	if (!new_node)
-		return ;
-	if (!*lst)
-	{
-		*lst = new_node;
-		return ;
-	}
-	temp = ft_lstlast(*lst);
-	temp -> next = new_node;
-	return ;
-}
+t_ray	ray(t_tuple origin, t_tuple direction);
+t_tuple	position(t_ray ray, float t);
+t_ray	transform(t_ray r, t_matrix m);
+
+#endif // !RAY_H
