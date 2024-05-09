@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/08 22:00:45 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 22:47:02 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../includes/world.h"
 #include "../includes/parser.h"
 #include "../includes/scene.h"
+#include "../includes/matrix.h"
 
 static int	add_node(void *content, t_list **lst)
 {
@@ -49,6 +50,9 @@ int	parse_sphere(char *line, t_data *data)
 	skip_space(&line[i], &i, NOT_REQUIRED);
 	if (line[i])
 		return (free_shape_fail(SP, NULL, EXTRA_ERR, sphere));
+	sphere->radius = sphere->diameter / 2;
+	sphere->transform = translation(
+			sphere->center.x, sphere->center.y, sphere->center.z);
 	if (add_node(sphere, &data->scene->spheres) == FAIL)
 		return (free_shape_fail(SP, NULL, strerror(errno), sphere));
 	return (SUCCESS);

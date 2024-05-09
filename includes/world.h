@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 22:04:56 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 17:50:55 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_comps
 	t_tuple		point;
 	t_tuple		eyev;
 	t_tuple		normalv;
+	t_tuple		over_point;
 	bool		inside;
 }	t_comps;
 
@@ -57,7 +58,6 @@ typedef struct s_world_coord
 	float	world_y;
 }	t_world_coord;
 
-t_world		world(void);
 t_world		default_world(void);
 void		init_world(t_data *data);
 t_list		*intersect_world(t_world world, t_ray ray);

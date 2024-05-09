@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 16:43:03 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 18:05:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../includes/shapes.h"
 #include "../includes/world.h"
 #include "../includes/ray.h"
+#include "../includes/minirt.h"
 #include <math.h>
 
 t_light	point_light(t_tuple position, float intensity, t_color color)
@@ -112,7 +113,13 @@ bool	is_shadowed(t_world world, t_tuple point)
 	intersections = intersect_world(world, r);
 	h = hit(intersections);
 	if (h && h->t < distance)
+	{
+		ft_lstclear(&intersections, free);
 		return (true);
+	}
 	else
+	{
+		ft_lstclear(&intersections, free);
 		return (false);
+	}
 }

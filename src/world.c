@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 22:03:14 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 22:47:35 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "../includes/world.h"
 #include "../includes/scene.h"
 #include "../includes/image.h"
+#include <stdbool.h>
 
 void	insert_sorted(t_list **sorted, t_list *node)
 {
@@ -82,6 +83,7 @@ t_comps	prepare_computations(t_intersection intersection, t_ray ray)
 	comps.point = position(ray, comps.t);
 	comps.eyev = negate_tuple(ray.direction);
 	comps.normalv = normal_at(comps.sphere, comps.point);
+	comps.over_point = add_tuples(comps.point, scalar_mul_tuple(EPSILON, comps.normalv));
 	if (dot(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = true;
@@ -94,7 +96,10 @@ t_comps	prepare_computations(t_intersection intersection, t_ray ray)
 
 t_color	shade_hit(t_world world, t_comps comps)
 {
-	return (lighting(world, comps));
+	bool	shadowed;
+
+	shadowed = is_shadowed(world, comps.over_point);
+	return (lighting(world, comps, shadowed));
 }
 
 t_color	color_at(t_world world, t_ray ray)
@@ -289,6 +294,7 @@ void	init_world(t_data *data)
 	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = data->scene->light;
 	configure_camera(data, &data->scene->camera);
-	data->scene->world.objects = ft_lstmap(
-			data->scene->spheres, sphere_transform, free);
+	// data->scene->world.objects = ft_lstmap(
+	// 		data->scene->spheres, sphere_transform, free);
+	data->scene->world.objects = data->scene->spheres;
 }
