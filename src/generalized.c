@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:30:22 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/08 22:03:33 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:39:29 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,18 @@ t_color	shape_diffuse(t_shape_comps *c, t_color eff_color, t_light light)
 				light_dot_normal));
 }
 
+
+t_tuple	local_normal_at(t_object *object, t_tuple local_point)
+{
+	t_tuple normal;
+	
+	if (object->type == SPHERE)
+		normal = sub_tuples(local_point, point(0, 0, 0));
+	else if (object->type == PLANE)
+		normal = (t_tuple){0, 1, 0, VECTOR};
+	return (normalize(normal));
+}
+
 t_tuple	shape_normal_at(t_object *object, t_tuple world_pt)
 {
 	t_tuple		object_pt;
@@ -62,7 +74,7 @@ t_tuple	shape_normal_at(t_object *object, t_tuple world_pt)
 
 	inv_m = inverse(*object->transform);
 	object_pt = matrix_tuple_multiply(*inv_m, world_pt);
-	object_normal = sub_tuples(object_pt, point(0, 0, 0));
+	object_normal = local_normal_at(object, object_pt);
 	trans_m = transpose(*inv_m);
 	world_normal = matrix_tuple_multiply(
 			*trans_m, object_normal);
@@ -102,28 +114,6 @@ t_shape_intersect	*shape_intersection(float t, t_object *object)
 	return (i);
 }
 
-t_list	*plane_new_intersect(t_ray *ray, t_object *object)
-{
-	t_plane	*plane;
-	float	v[3];
-	float	dot;
-	float	t;
-
-	plane = (t_plane *)object->object;
-	v[0] = ray->origin.x - plane->point.x;
-	v[1] = ray->origin.y - plane->point.y;
-	v[2] = ray->origin.z - plane->point.z;
-
-	dot = ray->direction.x * plane->normal.x \
-		+ ray->direction.x * plane->normal.y \
-		+ ray->direction.z * plane->normal.z;
-	if (fabs(dot) < EPSILON)
-		return (NULL);
-	t = (v[0] * plane->normal.x + v[1] * plane->normal.y + v[2] * plane->normal.z) / dot;
-	if (t < 0)
-		return (NULL);
-	return (ft_lstnew(shape_intersection(t, object)));
-}
 
 // common intersect
 t_list	*shape_intersect(t_object *object, t_ray ray)
@@ -150,13 +140,11 @@ t_list	*shape_intersect(t_object *object, t_ray ray)
 	}
 	else if (object->type == PLANE)
 	{
-		//if (fabs(ray.direction.y) < EPSILON)
-		//	return (intersections);
-		//t1 = -ray.origin.y / ray.direction.y;
-		//ft_lstadd_back(&intersections, ft_lstnew(
-		//		shape_intersection(t1, object)));
-		ft_lstadd_back(&intersections,
-		 	plane_new_intersect(&ray, object));
+		if (fabs(ray.direction.y) < EPSILON)
+			return (intersections);
+		t1 = -ray.origin.y / ray.direction.y;
+		ft_lstadd_back(&intersections, ft_lstnew(
+				shape_intersection(t1, object)));
 	}
 	return (intersections);
 }

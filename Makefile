@@ -1,3 +1,4 @@
+CC := gcc
 CFLAGS := -Wall -Wextra -Werror
 LFLAGS := -L/usr/lib -lXext -lX11 -lm -lz
 INCLUDE := -Iincludes -Iminilibx-linux -Ilibft
