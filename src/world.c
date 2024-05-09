@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 22:47:35 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:17:08 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ t_comps	prepare_computations(t_intersection intersection, t_ray ray)
 	comps.point = position(ray, comps.t);
 	comps.eyev = negate_tuple(ray.direction);
 	comps.normalv = normal_at(comps.sphere, comps.point);
-	comps.over_point = add_tuples(comps.point, scalar_mul_tuple(EPSILON, comps.normalv));
+	comps.over_point = add_tuples(comps.point,
+			scalar_mul_tuple(EPSILON, comps.normalv));
 	if (dot(comps.normalv, comps.eyev) < 0)
 	{
 		comps.inside = true;
@@ -294,7 +295,5 @@ void	init_world(t_data *data)
 	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = data->scene->light;
 	configure_camera(data, &data->scene->camera);
-	// data->scene->world.objects = ft_lstmap(
-	// 		data->scene->spheres, sphere_transform, free);
 	data->scene->world.objects = data->scene->spheres;
 }

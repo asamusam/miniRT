@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 18:05:10 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:14:19 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,18 @@ t_color	lighting(t_world w, t_comps c, bool in_shadow)
 
 bool	is_shadowed(t_world world, t_tuple point)
 {
-	t_tuple	v;
-	t_tuple	direction;
-	float	distance;
-	t_ray	r;
-	t_list	*intersections;
+	t_shadow		shadow;
+	t_ray			r;
+	t_list			*intersections;
 	t_intersection	*h;
 
-	v = sub_tuples(world.light.position, point);
-	distance = magnitude(v);
-	direction = normalize(v);
-	r = ray(point, direction);
+	shadow.v = sub_tuples(world.light.position, point);
+	shadow.distance = magnitude(shadow.v);
+	shadow.direction = normalize(shadow.v);
+	r = ray(point, shadow.direction);
 	intersections = intersect_world(world, r);
 	h = hit(intersections);
-	if (h && h->t < distance)
+	if (h && h->t < shadow.distance)
 	{
 		ft_lstclear(&intersections, free);
 		return (true);

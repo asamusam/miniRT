@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 16:43:28 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:13:51 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ typedef struct s_material
 	double	specular;
 	double	shininess;
 }	t_material;
+
+typedef struct s_shadow
+{
+	t_tuple			v;
+	t_tuple			direction;
+	float			distance;
+}	t_shadow;
 
 t_light		point_light(t_tuple position, float intensity, t_color color);
 t_material	material(void);
