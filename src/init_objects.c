@@ -6,19 +6,47 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/09 18:45:34 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/09 21:03:21 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "generalized.h"
 #define _USE_MATH_DEFINES
 
+t_matrix	*rotate_plane(t_plane *plane)
+{
+	t_matrix	*m;
+	t_tuple		normal;
+	float		angle;
+	t_tuple		axis;
+	float		c;
+	float		s;
+
+	m = init_identitymatrix(4);
+	normal = (t_tuple){0, 1, 0, VECTOR};
+	angle = acos(dot(normal, plane->normal));
+	axis = normalize(cross(normal, plane->normal));
+	s = sin(angle);
+    c = cos(angle);
+	m->data[0][0] = c + pow(axis.x, 2) * (1 - c);
+    m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
+	m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
+	m->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
+    m->data[1][1] = c + pow(axis.y, 2) * (1 - c);
+	m->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
+	m->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
+    m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
+	m->data[2][2] = c + pow(axis.y, 2) * (1 - c);
+	return (m);
+}
+
 t_matrix	*plane_transform(t_plane *plane)
 {
 	t_matrix	*m;
 
 	m = translation(plane->point.x, plane->point.y, plane->point.z);
-	m = matrix_multiply(*m, *rotation_x(M_PI / 2));
+	m = matrix_multiply(*m, *rotate_plane(plane));
+	//m = matrix_multiply(*m, *rotation_x(M_PI / 2));
 	return (m);
 }
 
@@ -83,5 +111,5 @@ void	init_plane_objects(t_data *data)
 void	init_objects(t_data *data)
 {
 	init_plane_objects(data);
-	//init_sphere_objects(data);
+	init_sphere_objects(data);
 }
