@@ -6,13 +6,15 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/05 02:25:05 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:14:19 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/light.h"
 #include "../includes/shapes.h"
 #include "../includes/world.h"
+#include "../includes/ray.h"
+#include "../includes/minirt.h"
 #include <math.h>
 
 t_light	point_light(t_tuple position, float intensity, t_color color)
@@ -78,7 +80,7 @@ t_color	compute_specular(t_comps c, t_light light)
 
 // First it finds the surface color with light's color 
 // then it adds up with ambient, diffuse and specular.
-t_color	lighting(t_world w, t_comps c)
+t_color	lighting(t_world w, t_comps c, bool in_shadow)
 {
 	t_color	effective_color;
 	t_color	ambient;
@@ -89,6 +91,33 @@ t_color	lighting(t_world w, t_comps c)
 	ambient = compute_ambient(w, effective_color);
 	diffuse = compute_diffuse(c, effective_color, w.light);
 	specular = compute_specular(c, w.light);
+	if (in_shadow)
+		return (ambient);
 	return (add_colors(ambient, mul_color(
 				add_colors(diffuse, specular), w.light.intensity)));
+}
+
+bool	is_shadowed(t_world world, t_tuple point)
+{
+	t_shadow		shadow;
+	t_ray			r;
+	t_list			*intersections;
+	t_intersection	*h;
+
+	shadow.v = sub_tuples(world.light.position, point);
+	shadow.distance = magnitude(shadow.v);
+	shadow.direction = normalize(shadow.v);
+	r = ray(point, shadow.direction);
+	intersections = intersect_world(world, r);
+	h = hit(intersections);
+	if (h && h->t < shadow.distance)
+	{
+		ft_lstclear(&intersections, free);
+		return (true);
+	}
+	else
+	{
+		ft_lstclear(&intersections, free);
+		return (false);
+	}
 }

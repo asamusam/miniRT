@@ -6,16 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:47:43 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:12:02 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 21:06:12 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minirt.h"
 #include "../includes/matrix.h"
 #include "../includes/tuples.h"
-#include "../includes/error.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "../includes/debug.h"
 
 // Matrix  is used to represent and manipulate linear transformations 
 // and systems of linear equations. 
@@ -38,14 +36,23 @@ t_matrix	*create_matrix(int rows, int cols)
 	return (mat);
 }
 
-void	free_matrix(t_matrix *mat)
+void	free_matrix(t_matrix **mat)
 {
 	int	i;
 
 	i = -1;
-	while (++i < mat->rows)
-		free(mat->data[i]);
-	free(mat->data);
+	if (mat && (*mat)->data)
+	{
+		while (++i < (*mat)->rows)
+		{
+			free((*mat)->data[i]);
+			(*mat)->data[i] = NULL;
+		}
+		free((*mat)->data);
+		(*mat)->data = NULL;
+		free(*mat);
+		*mat = NULL;
+	}
 }
 
 void	print_matrix(t_matrix mat)
@@ -177,42 +184,44 @@ t_matrix	*transpose(t_matrix A)
 // Determinant is used to determine whether or not the system has a solution.
 // It the determinant is zero, then the corresponding system of equations has
 // no solution.
-float	determinant(t_matrix m)
+float	determinant(t_matrix *m)
 {
 	float	det;
 	int		column;
 
 	det = 0;
-	if (m.rows == 2 && m.cols == 2)
-		det = m.data[0][0] * m.data[1][1] - m.data[0][1] * m.data[1][0];
+	if (m->rows == 2 && m->cols == 2)
+		det = m->data[0][0] * m->data[1][1] - m->data[0][1] * m->data[1][0];
 	else
 	{
 		column = -1;
-		while (++column < m.cols)
-			det += m.data[0][column] * cofactor(m, 0, column);
+		while (++column < m->cols)
+			det += m->data[0][column] * cofactor(m, 0, column);
 	}
 	return (det);
 }
 
-t_matrix	init_submatrix(t_matrix m)
+t_matrix	*init_submatrix(t_matrix *m)
 {
-	t_matrix	sub;
+	t_matrix	*sub;
 	int			i;
 
-	sub.rows = m.rows - 1;
-	sub.cols = m.cols - 1;
-	sub.data = (float **)malloc(sub.rows * sizeof(float *));
-	malloc_errcheck(sub.data);
+	sub = malloc(sizeof(t_matrix));
+	malloc_errcheck(sub);
+	sub->rows = m->rows - 1;
+	sub->cols = m->cols - 1;
+	sub->data = (float **)malloc(sub->rows * sizeof(float *));
+	malloc_errcheck(sub->data);
 	i = -1;
-	while (++i < sub.rows)
+	while (++i < sub->rows)
 	{
-		sub.data[i] = (float *)malloc(sub.cols * sizeof(float));
-		malloc_errcheck(sub.data[i]);
+		sub->data[i] = (float *)malloc(sub->cols * sizeof(float));
+		malloc_errcheck(sub->data[i]);
 	}
 	return (sub);
 }
 
-void	assign_sub(t_matrix *sub, t_matrix m, int rowToRemove, int colToRemove)
+void	assign_sub(t_matrix *sub, t_matrix *m, int rowToRemove, int colToRemove)
 {
 	int			i;
 	int			j;
@@ -222,16 +231,16 @@ void	assign_sub(t_matrix *sub, t_matrix m, int rowToRemove, int colToRemove)
 	sub_row = 0;
 	sub_col = 0;
 	i = -1;
-	while (++i < m.rows)
+	while (++i < m->rows)
 	{
 		if (i == rowToRemove)
 			continue ;
 		j = -1;
-		while (++j < m.cols)
+		while (++j < m->cols)
 		{
 			if (j == colToRemove)
 				continue ;
-			sub->data[sub_row][sub_col++] = m.data[i][j];
+			sub->data[sub_row][sub_col++] = m->data[i][j];
 		}
 		sub_row++;
 		sub_col = 0;
@@ -240,25 +249,25 @@ void	assign_sub(t_matrix *sub, t_matrix m, int rowToRemove, int colToRemove)
 
 // A submatrix is what is left when deleting a single row and column
 // from a matrix.
-t_matrix	submatrix(t_matrix m, int rowToRemove, int colToRemove)
+t_matrix	*submatrix(t_matrix *m, int rowToRemove, int colToRemove)
 {
-	t_matrix	sub;
+	t_matrix	*sub;
 
-	if (m.rows <= 1 || m.cols <= 1)
+	if (m->rows <= 1 || m->cols <= 1)
 	{
 		printf("Error: Matrix should have at least 2 rows and 2 columns.\n");
 		exit(1);
 	}
 	sub = init_submatrix(m);
-	assign_sub(&sub, m, rowToRemove, colToRemove);
+	assign_sub(sub, m, rowToRemove, colToRemove);
 	return (sub);
 }
 
 // The minor of an element at row i and col j is the determinant of 
 // the submatrix at (i, j).
-float	minor(t_matrix m, int row, int col)
+float	minor(t_matrix *m, int row, int col)
 {
-	t_matrix	sub;
+	t_matrix	*sub;
 	float		det;
 
 	sub = submatrix(m, row, col);
@@ -268,7 +277,7 @@ float	minor(t_matrix m, int row, int col)
 }
 
 // Cofactor is to check if the minors that have had their sign changed.
-float	cofactor(t_matrix m, int row, int col)
+float	cofactor(t_matrix *m, int row, int col)
 {
 	float	minor_value;
 
@@ -278,14 +287,13 @@ float	cofactor(t_matrix m, int row, int col)
 	return (-minor_value);
 }
 
-t_matrix	*make_inv(t_matrix m, float det)
+t_matrix	*malloc_invm(t_matrix m)
 {
 	t_matrix	*m_inv;
 	int			i;
-	int			j;
-	float		c;
 
 	m_inv = malloc(sizeof(t_matrix));
+	malloc_errcheck(m_inv);
 	m_inv->rows = m.rows;
 	m_inv->cols = m.cols;
 	m_inv->data = (float **)malloc(m.rows * sizeof(float *));
@@ -296,13 +304,24 @@ t_matrix	*make_inv(t_matrix m, float det)
 		m_inv->data[i] = (float *)malloc(m.cols * sizeof(float));
 		malloc_errcheck(m_inv->data);
 	}
+	return (m_inv);
+}
+
+t_matrix	*make_inv(t_matrix m, float det)
+{
+	t_matrix	*m_inv;
+	int			i;
+	int			j;
+	float		c;
+
+	m_inv = malloc_invm(m);
 	i = -1;
 	while (++i < m.rows)
 	{
 		j = -1;
 		while (++j < m.cols)
 		{
-			c = cofactor(m, i, j);
+			c = cofactor(&m, i, j);
 			m_inv->data[j][i] = c / det;
 		}
 	}
@@ -316,7 +335,7 @@ t_matrix	*inverse(t_matrix m)
 	t_matrix	*m_inv;
 	float		det;
 
-	det = determinant(m);
+	det = determinant(&m);
 	if (det == 0)
 	{
 		printf("Error: Matrix is not invertible.\n");

@@ -6,11 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:38:51 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/04 14:10:01 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:03:32 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include "../includes/parser.h"
+#include "../includes/tuples.h"
+#include "../includes/color.h"
 
 static int	skip_digits(const char *line, int *i, int flag)
 {

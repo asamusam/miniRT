@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:23:08 by llai              #+#    #+#             */
-/*   Updated: 2023/11/08 15:00:15 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 18:57:10 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *))
 	if (!lst)
 		return ;
 	if (del)
+	{
 		del(lst -> content);
-	free(lst);
+		lst->content = NULL;
+	}
+	del(lst);
 }

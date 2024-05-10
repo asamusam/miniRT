@@ -6,12 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 13:10:35 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/04 14:12:12 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:01:32 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
-#include <stdio.h>
+#include "../includes/tuples.h"
+#include "../includes/shapes.h"
+#include "../includes/scene.h"
 
 void	print_tuple(t_tuple *tuple)
 {

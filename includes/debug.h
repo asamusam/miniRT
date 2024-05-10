@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/07 15:32:16 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 15:48:36 by llai             ###   ########.fr       */
+/*   Created: 2024/05/07 15:33:59 by llai              #+#    #+#             */
+/*   Updated: 2024/05/08 21:25:00 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/error.h"
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef DEBUG_H
+# define DEBUG_H
 
-void	malloc_errcheck(void *p)
+typedef struct s_progressbar
 {
-	if (!p)
-	{
-		perror("Malloc error");
-		exit(EXIT_FAILURE);
-	}
-}
+	int		total_pixels;
+	int		current_pixel;
+	float	progress;
+}	t_progresbar;
+
+void	malloc_errcheck(void *p);
+
+#endif // DEBUG

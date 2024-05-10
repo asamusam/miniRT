@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:31:07 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:12:27 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:03:56 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define RAY_H
 
 # include "tuples.h"
-# include "matrix.h"
+
+typedef struct s_matrix	t_matrix;
 
 typedef struct s_ray
 {

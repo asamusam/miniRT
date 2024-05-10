@@ -6,21 +6,26 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:23:30 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/07 17:36:17 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:04:16 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCENE_H
 # define SCENE_H
-# include "shapes.h"
+
+# include "tuples.h"
 # include "light.h"
 # include "world.h"
+
+typedef struct s_matrix		t_matrix;
+typedef struct s_light		t_light;
+typedef struct s_list		t_list;
+typedef struct s_ambient	t_ambient;
 
 typedef struct s_cam
 {
 	t_tuple		position;
 	t_tuple		rotation;
-	// float		distance;
 	float		fov;
 	float		hsize;
 	float		vsize;

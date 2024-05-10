@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:39:50 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/07 14:39:30 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:38:21 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define SP "Sphere"
 # define PL "Plane"
 # define CY "Cylinder"
-// # include "minirt.h"
 # include "fcntl.h"
 # include "unistd.h"
 # include "errno.h"

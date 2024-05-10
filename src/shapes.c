@@ -6,16 +6,15 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:13:46 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:14:52 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minirt.h"
 #include "../includes/shapes.h"
-#include "../includes/error.h"
+#include "../includes/debug.h"
 #include "../includes/ray.h"
-#include "../libft/libft.h"
-#include <math.h>
-#include <stdlib.h>
+#include "../includes/matrix.h"
 
 t_sphere	*malloc_sphere(void)
 {
@@ -25,7 +24,6 @@ t_sphere	*malloc_sphere(void)
 	malloc_errcheck(s);
 	s->o_center = point(0, 0, 0);
 	s->radius = 1;
-	s->transform = init_identitymatrix(4);
 	s->material = material();
 	return (s);
 }
@@ -75,7 +73,7 @@ t_list	*intersect(t_sphere *s, t_ray ray)
 
 	inv_m = inverse(*s->transform);
 	ray = transform(ray, *inv_m);
-	free_matrix(inv_m);
+	free_matrix(&inv_m);
 	interections_list = NULL;
 	if (calc_t(*s, ray, &t1, &t2) == -1)
 		return (interections_list);
@@ -115,9 +113,9 @@ t_intersection	*hit(t_list *xs)
 // converting is needed.
 t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 {
-	t_tuple	object_pt;
-	t_tuple	object_normal;
-	t_tuple	world_normal;
+	t_tuple		object_pt;
+	t_tuple		object_normal;
+	t_tuple		world_normal;
 	t_matrix	*inv_m;
 	t_matrix	*trans_m;
 
@@ -128,8 +126,8 @@ t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 	world_normal = matrix_tuple_multiply(
 			*trans_m, object_normal);
 	world_normal.w = 0;
-	free_matrix(inv_m);
-	free_matrix(trans_m);
+	free_matrix(&inv_m);
+	free_matrix(&trans_m);
 	return (normalize(world_normal));
 }
 
@@ -140,4 +138,11 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	in_dot_norm = dot(in, normal);
 	return (sub_tuples(in, scalar_mul_tuple(
 				in_dot_norm, scalar_mul_tuple(2, normal))));
+}
+
+void	calc_sphere(t_sphere **sphere)
+{
+	(*sphere)->radius = (*sphere)->diameter / 2;
+	(*sphere)->transform = translation(
+			(*sphere)->center.x, (*sphere)->center.y, (*sphere)->center.z);
 }

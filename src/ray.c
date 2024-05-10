@@ -6,11 +6,12 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:32:54 by llai              #+#    #+#             */
-/*   Updated: 2024/05/03 17:15:33 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 22:01:39 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ray.h"
+#include "../includes/matrix.h"
 
 t_ray	ray(t_tuple origin, t_tuple direction)
 {

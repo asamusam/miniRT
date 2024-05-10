@@ -6,11 +6,12 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:44:32 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/04 14:07:22 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/08 21:59:57 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
+#include "../includes/parser.h"
 
 int	free_shape_fail(char *object, char *part, char *error, void *shape)
 {

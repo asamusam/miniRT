@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 12:22:48 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/10 16:55:38 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,23 @@
 
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
-# include "image.h"
-# include "shapes.h"
-# include "matrix.h"
-# include "world.h"
-# include "scene.h"
-# include "parser.h"
-# include "color.h"
 # include <math.h>
+# include <stdbool.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <errno.h>
+# include <string.h>
 
 # define HEIGHT 400 
 # define WIDTH 400
 # define BG_COLOR 0x000000
 # define FAIL 1
 # define SUCCESS 0
+
+typedef struct s_img	t_img;
+typedef struct s_scene	t_scene;
 
 typedef enum e_keycode
 {
