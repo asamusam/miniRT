@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 22:02:04 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:14:52 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,11 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	in_dot_norm = dot(in, normal);
 	return (sub_tuples(in, scalar_mul_tuple(
 				in_dot_norm, scalar_mul_tuple(2, normal))));
+}
+
+void	calc_sphere(t_sphere **sphere)
+{
+	(*sphere)->radius = (*sphere)->diameter / 2;
+	(*sphere)->transform = translation(
+			(*sphere)->center.x, (*sphere)->center.y, (*sphere)->center.z);
 }

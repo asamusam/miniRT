@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 22:04:33 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 23:07:55 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ t_list			*intersect(t_sphere *sphere, t_ray ray);
 t_intersection	*hit(t_list *xs);
 t_tuple			normal_at(t_sphere s, t_tuple p);
 t_tuple			reflect(t_tuple in, t_tuple normal);
+void			calc_sphere(t_sphere **sphere);
 
 #endif // !SHAPES_H
