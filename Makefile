@@ -23,8 +23,8 @@ CFILES := src/close.c \
 		src/parser_range.c \
 		src/print_scene.c \
 		src/ft_atof.c \
-		src/generalized.c \
-		src/error.c \
+		src/intersections.c \
+		src/debug.c \
 		src/init_objects.c
 OFILES := $(CFILES:.c=.o)
 NAME := miniRT

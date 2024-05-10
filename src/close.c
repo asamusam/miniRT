@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 23:16:04 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 20:37:15 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,21 @@
 
 void	free_object_matrix(void *content)
 {
-	t_sphere	*s;
+	t_object	*o;
 
-	s = content;
-	if (s->transform)
-		free_matrix(&s->transform);
+	o = content;
+	if (o->transform)
+		free_matrix(&o->transform);
+}
+
+void	free_object(void *content)
+{
+	t_object	*object;
+
+	object = (t_object *)content;
+	free_object_matrix(object->transform);
+	free(object->object);
+	free(object);
 }
 
 void	free_data(t_data *data)
@@ -31,15 +41,17 @@ void	free_data(t_data *data)
 		free(data->base_image);
 	if (data->scene)
 	{
-		if (data->scene->spheres)
-		{
-			ft_lstiter(data->scene->spheres, free_object_matrix);
-			ft_lstclear(&data->scene->spheres, free);
-		}
+		if (data->scene->world.objects)
+			ft_lstclear(&data->scene->world.objects, free_object);
+		// if (data->scene->spheres)
+		// {
+		// 	ft_lstiter(data->scene->spheres, free_object_matrix);
+		// 	ft_lstclear(&data->scene->spheres, free);
+		// }
 		if (data->scene->cylinders)
 			ft_lstclear(&data->scene->cylinders, free);
-		if (data->scene->planes)
-			ft_lstclear(&data->scene->planes, free);
+		// if (data->scene->planes)
+		// 	ft_lstclear(&data->scene->planes, free);
 		free(data->scene);
 	}
 	free(data);

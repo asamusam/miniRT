@@ -6,48 +6,89 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/09 21:03:21 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/10 20:34:32 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "generalized.h"
-#define _USE_MATH_DEFINES
+#include "../includes/minirt.h"
+#include "../includes/scene.h"
+#include "../includes/matrix.h"
+#include "../includes/shapes.h"
+#include "../includes/debug.h"
+#include <math.h>
 
-t_matrix	*rotate_plane(t_plane *plane)
+static t_matrix	*rotate_plane(t_plane *plane)
 {
 	t_matrix	*m;
-	t_tuple		normal;
 	float		angle;
 	t_tuple		axis;
 	float		c;
 	float		s;
 
 	m = init_identitymatrix(4);
-	normal = (t_tuple){0, 1, 0, VECTOR};
-	angle = acos(dot(normal, plane->normal));
-	axis = normalize(cross(normal, plane->normal));
+	angle = acos(dot((t_tuple){0, 1, 0, VECTOR}, plane->normal));
+	axis = normalize(cross((t_tuple){0, 1, 0, VECTOR}, plane->normal));
 	s = sin(angle);
-    c = cos(angle);
+	c = cos(angle);
 	m->data[0][0] = c + pow(axis.x, 2) * (1 - c);
-    m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
+	m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
 	m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
 	m->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
-    m->data[1][1] = c + pow(axis.y, 2) * (1 - c);
+	m->data[1][1] = c + pow(axis.y, 2) * (1 - c);
 	m->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
 	m->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
-    m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
+	m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
 	m->data[2][2] = c + pow(axis.y, 2) * (1 - c);
 	return (m);
 }
 
-t_matrix	*plane_transform(t_plane *plane)
+static t_matrix	*plane_transform(t_plane *plane)
 {
 	t_matrix	*m;
 
 	m = translation(plane->point.x, plane->point.y, plane->point.z);
 	m = matrix_multiply(*m, *rotate_plane(plane));
-	//m = matrix_multiply(*m, *rotation_x(M_PI / 2));
 	return (m);
+}
+
+static t_matrix	*sphere_transform(t_sphere *sphere)
+{
+	t_matrix	*m;
+	float		radius;
+
+	radius = sphere->diameter / 2;
+	m = translation(sphere->center.x, sphere->center.y, sphere->center.z);
+	m = matrix_multiply(*m, *scaling(radius, radius, radius));
+	return (m);
+}
+
+void	calc_sphere(t_sphere *sphere, t_data *data)
+{
+	t_object	*object;
+
+	object = malloc(sizeof(t_object));
+	malloc_errcheck(object);
+	object->type = SPHERE;
+	sphere->radius = 1;
+	object->transform = sphere_transform(sphere);
+	object->color = sphere->color;
+	object->material = material();
+	object->object = sphere;
+	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
+}
+
+void	calc_plane(t_plane *plane, t_data *data)
+{
+	t_object	*object;
+
+	object = malloc(sizeof(t_object));
+	malloc_errcheck(object);
+	object->type = PLANE;
+	object->transform = plane_transform(plane);
+	object->color = plane->color;
+	object->material = material();
+	object->object = plane;
+	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
 }
 
 void	init_sphere_objects(t_data *data)
@@ -67,9 +108,8 @@ void	init_sphere_objects(t_data *data)
 			return ;
 		}
 		object->type = SPHERE;
-		sphere->radius = sphere->diameter / 2;
-		object->transform = translation(
-				sphere->center.x, sphere->center.y, sphere->center.z);
+		sphere->radius = 1;
+		object->transform = sphere_transform(sphere);
 		object->color = sphere->color;
 		object->material = sphere->material;
 		object->object = i->content;
@@ -108,8 +148,3 @@ void	init_plane_objects(t_data *data)
 	// memory needs to be freed in the end
 }
 
-void	init_objects(t_data *data)
-{
-	init_plane_objects(data);
-	init_sphere_objects(data);
-}

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:45:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 22:04:22 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 17:15:45 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATRIX_H
 # define MATRIX_H
+# define EPSILON 0.00001
 
 # include "stdbool.h"
 

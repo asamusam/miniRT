@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 16:56:24 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/10 20:34:03 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,35 @@ typedef struct s_sphere
 	t_material	material;
 }	t_sphere;
 
-typedef struct s_intersection
+typedef enum e_object_type
+{
+	PLANE,
+	SPHERE,
+	CYLINDER
+}	t_object_type;
+
+typedef struct s_object
+{
+	int			type;
+	t_color		color;
+	t_material	material;
+	t_matrix	*transform;
+	void		*object;
+}	t_object;
+
+typedef struct s_shape_intersect
 {
 	float		t;
-	t_sphere	object;
-}	t_intersection;
+	t_object	*object;
+}	t_shape_intersect;
 
-t_sphere		sphere(t_tuple center, float radius);
-t_sphere		*malloc_sphere(void);
-void			set_transform(t_sphere *shpere, t_matrix t);
-t_intersection	*intersection(float t, t_sphere object);
-t_list			*intersect(t_sphere *sphere, t_ray ray);
-t_intersection	*hit(t_list *xs);
-t_tuple			normal_at(t_sphere s, t_tuple p);
-t_tuple			reflect(t_tuple in, t_tuple normal);
-void			calc_sphere(t_sphere **sphere);
+t_sphere			*malloc_sphere(void);
+t_shape_intersect	*hit(t_list *xs);
+t_tuple				normal_at(t_object *object, t_tuple world_pt);
+t_tuple				reflect(t_tuple in, t_tuple normal);
+t_list				*intersect(t_object *object, t_ray ray);
+int					calc_t(t_sphere s, t_ray ray, float *t1, float *t2);
+void				calc_sphere(t_sphere *sphere, t_data *data);
+void				calc_plane(t_plane *plane, t_data *data);
 
 #endif // !SHAPES_H
