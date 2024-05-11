@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 19:12:42 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:13:02 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,10 +234,14 @@ t_color	color_at(t_world world, t_ray ray)
 	intersections = intersect_world(world, ray);
 	i = hit(intersections);
 	if (i == NULL)
+	{
+		ft_lstclear(&intersections, free);
 		return (color(0, 0, 0, 0));
+	}
 	comps = prepare_comps(i, &ray);
 	shadowed = is_shadowed(world, comps.over_point);
 	c = lighting(&world, &comps, shadowed);
+	ft_lstclear(&intersections, free);
 	return (c);
 }
 
@@ -274,6 +278,4 @@ void	init_world(t_data *data)
 	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = data->scene->light;
 	configure_camera(data, &data->scene->camera);
-	init_plane_objects(data);
-	init_sphere_objects(data);
 }

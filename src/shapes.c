@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 20:20:12 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/10 23:56:56 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ t_shape_intersect	*hit(t_list *xs)
 
 t_tuple	local_normal_at(t_object *object, t_tuple local_point)
 {
-	t_tuple	normal;
-
 	if (object->type == SPHERE)
-		normal = sub_tuples(local_point, point(0, 0, 0));
+		return (normalize(
+				sub_tuples(local_point, point(0, 0, 0))));
 	else if (object->type == PLANE)
-		normal = (t_tuple){0, 1, 0, VECTOR};
-	return (normalize(normal));
+		return ((t_tuple){0, 1, 0, VECTOR});
+	else
+		return ((t_tuple){0, 0, 0, VECTOR});
 }
 
 // For a sphere, an arrow from origin to the point is perpendicular 

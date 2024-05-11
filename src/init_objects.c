@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/10 20:34:32 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/11 00:49:47 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,30 @@ static t_matrix	*rotate_plane(t_plane *plane)
 static t_matrix	*plane_transform(t_plane *plane)
 {
 	t_matrix	*m;
+	t_matrix	*t;
+	t_matrix	*r;
 
-	m = translation(plane->point.x, plane->point.y, plane->point.z);
-	m = matrix_multiply(*m, *rotate_plane(plane));
+	t = translation(plane->point.x, plane->point.y, plane->point.z);
+	r = rotate_plane(plane);
+	m = matrix_multiply(*t, *r);
+	free_matrix(&t);
+	free_matrix(&r);
 	return (m);
 }
 
 static t_matrix	*sphere_transform(t_sphere *sphere)
 {
 	t_matrix	*m;
+	t_matrix	*t;
+	t_matrix	*s;
 	float		radius;
 
 	radius = sphere->diameter / 2;
-	m = translation(sphere->center.x, sphere->center.y, sphere->center.z);
-	m = matrix_multiply(*m, *scaling(radius, radius, radius));
+	t = translation(sphere->center.x, sphere->center.y, sphere->center.z);
+	s = scaling(radius, radius, radius);
+	m = matrix_multiply(*t, *s);
+	free_matrix(&t);
+	free_matrix(&s);
 	return (m);
 }
 
@@ -90,61 +100,3 @@ void	calc_plane(t_plane *plane, t_data *data)
 	object->object = plane;
 	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
 }
-
-void	init_sphere_objects(t_data *data)
-{
-	t_object	*object;
-	t_sphere	*sphere;
-	t_list		*i;
-
-	i = data->scene->spheres;
-	while (i)
-	{
-		sphere = (t_sphere *)i->content;
-		object = malloc(sizeof(t_object));
-		if (!object)
-		{
-			// free_memory
-			return ;
-		}
-		object->type = SPHERE;
-		sphere->radius = 1;
-		object->transform = sphere_transform(sphere);
-		object->color = sphere->color;
-		object->material = sphere->material;
-		object->object = i->content;
-		i->content = object;
-		i = i->next;
-	}
-	ft_lstadd_back(&data->scene->world.objects, data->scene->spheres);
-	// memory needs to be freed in the end
-}
-
-void	init_plane_objects(t_data *data)
-{
-	t_object	*object;
-	t_plane		*plane;
-	t_list		*i;
-
-	i = data->scene->planes;
-	while (i)
-	{
-		plane = (t_plane *)i->content;
-		object = malloc(sizeof(t_object));
-		if (!object)
-		{
-			// free_memory
-			return ;
-		}
-		object->type = PLANE;
-		object->transform = plane_transform(plane);
-		object->color = plane->color;
-		object->material = material();
-		object->object = i->content;
-		i->content = object;
-		i = i->next;
-	}
-	ft_lstadd_back(&data->scene->world.objects, data->scene->planes);
-	// memory needs to be freed in the end
-}
-
