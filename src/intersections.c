@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 18:38:10 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/13 16:20:53 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 17:28:41 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../includes/ray.h"
 #include "../includes/matrix.h"
 #include "../includes/debug.h"
+#include "../includes/tuples.h"
 #include "../libft/libft.h"
 #include <stdlib.h>
 #include <math.h>
@@ -104,6 +105,7 @@ static void	cylinder_intersect(
 	cylinder = (t_cylinder *)object->object;
 	if (calc_cylinder_t(*cylinder, *ray, &t1, &t2) == -1)
 		return ;
+	// printf("here: %f %f \n", t1, t2);
 	if (t1 > t2)
 	{
 		tmp = t1;
@@ -135,6 +137,11 @@ t_list	*intersect(t_object *object, t_ray ray)
 	t_ray		nray;
 
 	inv_m = inverse(*object->transform);
+	// if (object->type == CYLINDER)
+	// {
+	// 	printf("out ray in intersect: ");
+	// 	print_tuple2(ray.origin);
+	// }
 	ray = transform(ray, *inv_m);
 	free_matrix(&inv_m);
 	intersections = NULL;
@@ -145,6 +152,8 @@ t_list	*intersect(t_object *object, t_ray ray)
 	else if (object->type == CYLINDER)
 	{
 		nray.origin = ray.origin;
+		// printf("ray in intersect: ");
+		// print_tuple2(ray.origin);
 		nray.direction = normalize(ray.direction);
 		cylinder_intersect(object, &intersections, &nray);
 	}

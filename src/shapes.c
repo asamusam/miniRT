@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 16:21:21 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 17:26:37 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "../includes/debug.h"
 #include "../includes/ray.h"
 #include "../includes/matrix.h"
+#include <stdio.h>
 
 t_sphere	*malloc_sphere(void)
 {
@@ -58,16 +59,23 @@ int	calc_cylinder_t(t_cylinder cy, t_ray ray, float *t1, float *t2)
 	float	discriminant;
 
 	(void)cy;
+	// printf("ray in calc: ");
+	// print_tuple2(ray.origin);
 	a = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z;
 	if (fabs(a) < EPSILON)
 		return (-1);
 	b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
 	c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
 	discriminant = b * b - 4 * a * c;
+	// printf("ray: ");
+	// print_tuple2(ray.direction);
+	// print_tuple2(ray.origin);
+	// printf("there:%f %f %f %f\n", discriminant, a, b, c);
 	if (discriminant < 0)
 		return (-1);
 	*t1 = (-b - sqrt(discriminant)) / (2 * a);
 	*t2 = (-b + sqrt(discriminant)) / (2 * a);
+	// printf("here:%f %f %f \n", discriminant, *t1, *t2);
 	return (0);
 }
 

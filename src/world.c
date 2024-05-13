@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 15:59:55 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 17:25:43 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ t_color	color_at(t_world world, t_ray ray)
 	shadowed = is_shadowed(world, comps.over_point);
 	c = lighting(&world, &comps, shadowed);
 	ft_lstclear(&intersections, free);
+	// print_color(&c);
 	return (c);
 }
 
@@ -262,11 +263,15 @@ void	render(t_data *data, t_cam camera, t_world world)
 		while (++x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
+			// printf("YO: ");
+			// print_tuple2(r.origin);
+			// print_tuple2(r.direction);
 			color = color_at(world, r);
 			put_pixel2(data->base_image, x, y, color);
 			pb.current_pixel++;
 			pb.progress = (float)pb.current_pixel / pb.total_pixels;
-			print_progress(pb.progress);
+			// print_progress(pb.progress);
+			(void)pb.progress;
 		}
 	}
 	mlx_put_image_to_window(data->base_image->mlx,
