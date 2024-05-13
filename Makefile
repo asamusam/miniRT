@@ -1,10 +1,8 @@
-CC := gcc
-CFLAGS := -Wall -Wextra -Werror
-LFLAGS := -L/usr/lib -lXext -lX11 -lm -lz
-INCLUDE := -Iincludes -Iminilibx-linux -Ilibft
-LIBFT := libft/libft.a
-MINILIBX := minilibx-linux/libmlx_Linux.a
-CFILES := src/close.c \
+BIN = bin
+NAME = miniRT
+CC = cc
+CFLAG = -Wall -Werror -Wextra -g3
+SRC := src/close.c \
 		src/color.c \
 		src/image.c \
 		src/init.c \
@@ -26,36 +24,69 @@ CFILES := src/close.c \
 		src/intersections.c \
 		src/debug.c \
 		src/init_objects.c
-OFILES := $(CFILES:.c=.o)
-NAME := miniRT
+OBJ = $(patsubst src/%c,$(BIN)/%o,$(SRC))
+INCS = includes
+LIBFT_PATH = libft
+LIBFT = $(LIBFT_PATH)
+LFLAGS = -L$(LIBFT) -lft -L$(MLX_PATH)
+IFLAGS = -I$(INCS) -I$(LIBFT_PATH) -I$(MLX_PATH)
+UNAME := $(shell uname)
+MLX_PATH = minilibx-linux
+MLX_NAME = libmlx_Linux.a
+MLX = $(MLX_PATH)$(MLX_NAME)
+RM = rm -rf
 
-all: $(LIBFT) $(MINILIBX) $(NAME)
+ifeq ($(UNAME), Darwin)
+	CC = gcc
+	LFLAGS += -lmlx -framework OpenGL -framework Appkit
+else ifeq ($(UNAME), FreeBDS)
+	CC = clang
+	LFLAGS += -lmlx -lbsd -lXext -lX11 -lm
+else
+	CC = gcc
+	CFLAG += -D Linux
+	LFLAGS += -lmlx_Linux -lbsd -lXext -lX11 -lm
+endif
 
-$(NAME): $(OFILES)
-	$(CC) $(OFILES) $(LIBFT) $(MINILIBX) $(LFLAGS) -o $(NAME)
+all: $(MLX) $(NAME)
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) $(INCLUDE) $^ -o $@ -g
+$(BIN)/%.o: src/%.c
+	$(CC) -c $< $(CFLAG) $(IFLAGS) -o $@
+
+$(NAME): $(BIN) $(OBJ) | $(LIBFT)
+	$(CC) $(OBJ) $(LFLAGS) -o $(NAME)
+
+$(MLX):
+	@git submodule init
+	@git submodule update
+	@make -sC $(MLX_PATH)
+
+$(BIN):
+	mkdir -p $(BIN)
 
 $(LIBFT):
-	@make -C libft
-
-$(MINILIBX):
-	@make -C minilibx-linux
+	@make all -C $(LIBFT_PATH) --no-print-directory
 
 clean:
-	@make -C libft clean
-	@make -C minilibx-linux clean
-	rm -f $(OFILES)
+	$(RM) $(BIN)
 
 fclean: clean
-	rm -f $(LIBFT)
-	rm -f $(MINILIBX)
-	rm -f $(NAME)
+	$(RM) $(NAME)
+	@make fclean -C $(LIBFT_PATH) --no-print-directory
 
 re: fclean all
 
-.PHONY: clean fclean re
+test:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) ./scenes/sphere_scene2.rt
 
+show:
+	@printf "UNAME		: $(UNAME)\n"
+	@printf "NAME		: $(NAME)\n"
+	@printf "CC			: $(CC)\n"
+	@printf "CFLAG		: $(CFLAG)\n"
+	@printf "LFLAGS		: $(LFLAGS)\n"
+	@printf "IFLAGS		: $(IFLAGS)\n"
+	@printf "SRC		: $(SRC)\n"
+	@printf "OBJS		: $(OBJS)\n"
 
-
+.PHONY: all clean fclean re $(LIBFT)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/11 00:49:47 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:14:30 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,22 @@ static t_matrix	*sphere_transform(t_sphere *sphere)
 	return (m);
 }
 
+static t_matrix	*cylinder_transform(t_cylinder *cylinder)
+{
+	t_matrix	*m;
+	t_matrix	*t;
+	t_matrix	*s;
+	float		radius;
+
+	radius = cylinder->diameter / 2;
+	t = translation(cylinder->center.x, cylinder->center.y, cylinder->center.z);
+	s = scaling(radius, radius, radius);
+	m = matrix_multiply(*t, *s);
+	free_matrix(&t);
+	free_matrix(&s);
+	return (m);
+}
+
 void	calc_sphere(t_sphere *sphere, t_data *data)
 {
 	t_object	*object;
@@ -98,5 +114,23 @@ void	calc_plane(t_plane *plane, t_data *data)
 	object->color = plane->color;
 	object->material = material();
 	object->object = plane;
+	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
+}
+
+void	calc_cylinder(t_cylinder *cylinder, t_data *data)
+{
+	t_object	*object;
+
+	object = malloc(sizeof(t_object));
+	malloc_errcheck(object);
+	object->type = CYLINDER;
+	object->transform = cylinder_transform(cylinder);
+	object->transform = init_identitymatrix(4);
+	object->color = cylinder->color;
+	object->material = material();
+	cylinder->minimum = 0;
+	cylinder->maximum = cylinder->height;
+	cylinder->closed = false;
+	object->object = cylinder;
 	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 23:56:56 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:21:21 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_sphere	*malloc_sphere(void)
 
 // Calculate the ray and sphere intersecting points t1 & t2.
 // Negative number means the point is behind the ray origin
-int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
+int	calc_sphere_t(t_sphere s, t_ray ray, float *t1, float *t2)
 {
 	t_tuple	sphere_to_ray;
 	float	a;
@@ -42,6 +42,27 @@ int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
 	a = dot(ray.direction, ray.direction);
 	b = 2 * dot(ray.direction, sphere_to_ray);
 	c = dot(sphere_to_ray, sphere_to_ray) - (s.radius * s.radius);
+	discriminant = b * b - 4 * a * c;
+	if (discriminant < 0)
+		return (-1);
+	*t1 = (-b - sqrt(discriminant)) / (2 * a);
+	*t2 = (-b + sqrt(discriminant)) / (2 * a);
+	return (0);
+}
+
+int	calc_cylinder_t(t_cylinder cy, t_ray ray, float *t1, float *t2)
+{
+	float	a;
+	float	b;
+	float	c;
+	float	discriminant;
+
+	(void)cy;
+	a = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z;
+	if (fabs(a) < EPSILON)
+		return (-1);
+	b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
+	c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
 		return (-1);
