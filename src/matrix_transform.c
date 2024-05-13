@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transform.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 21:15:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/07 18:23:15 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/09 18:44:24 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,11 @@ t_matrix	*rotation_x(float theta)
 
 	rot_x = init_identitymatrix(4);
 	cos_theta = cos(theta);
+	if (cos_theta < EPSILON)
+		cos_theta = 0; 
 	sin_theta = sin(theta);
+	if (sin_theta < EPSILON)
+		sin_theta = 0;
 	rot_x->data[1][1] = cos_theta;
 	rot_x->data[1][2] = -sin_theta;
 	rot_x->data[2][1] = sin_theta;
@@ -95,7 +99,11 @@ t_matrix	*rotation_y(float theta)
 
 	rot_y = init_identitymatrix(4);
 	cos_theta = cos(theta);
+	if (cos_theta < EPSILON)
+		cos_theta = 0; 
 	sin_theta = sin(theta);
+	if (sin_theta < EPSILON)
+		sin_theta = 0;
 	rot_y->data[0][0] = cos_theta;
 	rot_y->data[0][2] = sin_theta;
 	rot_y->data[2][0] = -sin_theta;
@@ -111,7 +119,11 @@ t_matrix	*rotation_z(float theta)
 
 	rot_z = init_identitymatrix(4);
 	cos_theta = cos(theta);
+	if (cos_theta < EPSILON)
+		cos_theta = 0; 
 	sin_theta = sin(theta);
+	if (sin_theta < EPSILON)
+		sin_theta = 0;
 	rot_z->data[0][0] = cos_theta;
 	rot_z->data[0][1] = -sin_theta;
 	rot_z->data[1][0] = sin_theta;

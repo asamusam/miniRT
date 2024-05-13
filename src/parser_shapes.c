@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_shapes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/09 23:08:51 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 20:29:17 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int	parse_sphere(char *line, t_data *data)
 		return (free_shape_fail(SP, "Color", FORMAT_ERR, sphere));
 	if (check_color(&sphere->color) == FAIL)
 		return (free_shape_fail(SP, "Color", RANGE_ERR, sphere));
-	calc_sphere(&sphere);
 	skip_space(&line[i], &i, NOT_REQUIRED);
 	if (line[i])
 		return (free_shape_fail(SP, NULL, EXTRA_ERR, sphere));
-	if (add_node(sphere, &data->scene->spheres) == FAIL)
-		return (free_shape_fail(SP, NULL, strerror(errno), sphere));
+	calc_sphere(sphere, data);
+	// if (add_node(sphere, &data->scene->world.objects) == FAIL)
+	// 	return (free_shape_fail(SP, NULL, strerror(errno), sphere));
 	return (SUCCESS);
 }
 
@@ -81,8 +81,9 @@ int	parse_plane(char *line, t_data *data)
 		return (free_shape_fail(PL, "Color", RANGE_ERR, plane));
 	if (skip_space(&line[i], &i, NOT_REQUIRED) && line[i])
 		return (free_shape_fail(PL, NULL, EXTRA_ERR, plane));
-	if (add_node(plane, &data->scene->planes) == FAIL)
-		return (free_shape_fail(PL, NULL, strerror(errno), plane));
+	calc_plane(plane, data);
+	// if (add_node(plane, &data->scene->planes) == FAIL)
+	// 	return (free_shape_fail(PL, NULL, strerror(errno), plane));
 	return (SUCCESS);
 }
 

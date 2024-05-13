@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 23:16:04 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/11 00:48:01 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 #include "../includes/scene.h"
 #include "../includes/image.h"
 
-void	free_object_matrix(void *content)
+void	free_object(void *content)
 {
-	t_sphere	*s;
+	t_object	*object;
 
-	s = content;
-	if (s->transform)
-		free_matrix(&s->transform);
+	object = (t_object *)content;
+	free_matrix(&object->transform);
+	free(object->object);
+	free(object);
 }
 
 void	free_data(t_data *data)
@@ -31,15 +32,10 @@ void	free_data(t_data *data)
 		free(data->base_image);
 	if (data->scene)
 	{
-		if (data->scene->spheres)
-		{
-			ft_lstiter(data->scene->spheres, free_object_matrix);
-			ft_lstclear(&data->scene->spheres, free);
-		}
+		if (data->scene->world.objects)
+			ft_lstclear(&data->scene->world.objects, free_object);
 		if (data->scene->cylinders)
 			ft_lstclear(&data->scene->cylinders, free);
-		if (data->scene->planes)
-			ft_lstclear(&data->scene->planes, free);
 		free(data->scene);
 	}
 	free(data);

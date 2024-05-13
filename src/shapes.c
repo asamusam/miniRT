@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 23:14:52 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 23:56:56 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@ t_sphere	*malloc_sphere(void)
 	s->radius = 1;
 	s->material = material();
 	return (s);
-}
-
-t_intersection	*intersection(float t, t_sphere object)
-{
-	t_intersection	*i;
-
-	i = malloc(sizeof(t_intersection));
-	malloc_errcheck(i);
-	i->t = t;
-	i->object = object;
-	return (i);
 }
 
 // Calculate the ray and sphere intersecting points t1 & t2.
@@ -61,32 +50,11 @@ int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
 	return (0);
 }
 
-// Create a list for the ray intersecting spheres and its t1 & t2
-// Instead of moving the sphere, apply the inverse of that transformation
-// to the ray.
-t_list	*intersect(t_sphere *s, t_ray ray)
-{
-	t_list		*interections_list;
-	float		t1;
-	float		t2;
-	t_matrix	*inv_m;
-
-	inv_m = inverse(*s->transform);
-	ray = transform(ray, *inv_m);
-	free_matrix(&inv_m);
-	interections_list = NULL;
-	if (calc_t(*s, ray, &t1, &t2) == -1)
-		return (interections_list);
-	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t1, *s)));
-	ft_lstadd_back(&interections_list, ft_lstnew(intersection(t2, *s)));
-	return (interections_list);
-}
-
 // Idetify which one of all the intersections is visible from the ray's origin
-t_intersection	*hit(t_list *xs)
+t_shape_intersect	*hit(t_list *xs)
 {
-	t_intersection	*res;
-	t_intersection	*content;
+	t_shape_intersect	*res;
+	t_shape_intersect	*content;
 
 	res = NULL;
 	while (xs)
@@ -107,11 +75,22 @@ t_intersection	*hit(t_list *xs)
 	return (res);
 }
 
+t_tuple	local_normal_at(t_object *object, t_tuple local_point)
+{
+	if (object->type == SPHERE)
+		return (normalize(
+				sub_tuples(local_point, point(0, 0, 0))));
+	else if (object->type == PLANE)
+		return ((t_tuple){0, 1, 0, VECTOR});
+	else
+		return ((t_tuple){0, 0, 0, VECTOR});
+}
+
 // For a sphere, an arrow from origin to the point is perpendicular 
 // to the surface of the circle at the point where it intersects.
 // Since object is assumed always at world origin and radii is 1,
 // converting is needed.
-t_tuple	normal_at(t_sphere s, t_tuple world_pt)
+t_tuple	normal_at(t_object *object, t_tuple world_pt)
 {
 	t_tuple		object_pt;
 	t_tuple		object_normal;
@@ -119,9 +98,9 @@ t_tuple	normal_at(t_sphere s, t_tuple world_pt)
 	t_matrix	*inv_m;
 	t_matrix	*trans_m;
 
-	inv_m = inverse(*s.transform);
+	inv_m = inverse(*object->transform);
 	object_pt = matrix_tuple_multiply(*inv_m, world_pt);
-	object_normal = sub_tuples(object_pt, point(0, 0, 0));
+	object_normal = local_normal_at(object, object_pt);
 	trans_m = transpose(*inv_m);
 	world_normal = matrix_tuple_multiply(
 			*trans_m, object_normal);
@@ -140,9 +119,3 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 				in_dot_norm, scalar_mul_tuple(2, normal))));
 }
 
-void	calc_sphere(t_sphere **sphere)
-{
-	(*sphere)->radius = (*sphere)->diameter / 2;
-	(*sphere)->transform = translation(
-			(*sphere)->center.x, (*sphere)->center.y, (*sphere)->center.z);
-}

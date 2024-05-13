@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 23:07:55 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 23:57:48 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "color.h"
 # include "light.h"
 
+typedef struct s_data		t_data;
 typedef struct s_matrix		t_matrix;
 typedef struct s_material	t_material;
 typedef struct s_list		t_list;
@@ -43,6 +44,8 @@ typedef struct s_plane
 	t_tuple		point;
 	t_tuple		normal;
 	t_color		color;
+	t_material	material;
+	t_matrix	*transform;
 }	t_plane;
 
 typedef struct s_sphere
@@ -56,20 +59,35 @@ typedef struct s_sphere
 	t_material	material;
 }	t_sphere;
 
-typedef struct s_intersection
+typedef enum e_object_type
+{
+	PLANE,
+	SPHERE,
+	CYLINDER
+}	t_object_type;
+
+typedef struct s_object
+{
+	int			type;
+	t_color		color;
+	t_material	material;
+	t_matrix	*transform;
+	void		*object;
+}	t_object;
+
+typedef struct s_shape_intersect
 {
 	float		t;
-	t_sphere	object;
-}	t_intersection;
+	t_object	*object;
+}	t_shape_intersect;
 
-t_sphere		sphere(t_tuple center, float radius);
-t_sphere		*malloc_sphere(void);
-void			set_transform(t_sphere *shpere, t_matrix t);
-t_intersection	*intersection(float t, t_sphere object);
-t_list			*intersect(t_sphere *sphere, t_ray ray);
-t_intersection	*hit(t_list *xs);
-t_tuple			normal_at(t_sphere s, t_tuple p);
-t_tuple			reflect(t_tuple in, t_tuple normal);
-void			calc_sphere(t_sphere **sphere);
+t_sphere			*malloc_sphere(void);
+t_shape_intersect	*hit(t_list *xs);
+t_tuple				normal_at(t_object *object, t_tuple world_pt);
+t_tuple				reflect(t_tuple in, t_tuple normal);
+t_list				*intersect(t_object *object, t_ray ray);
+int					calc_t(t_sphere s, t_ray ray, float *t1, float *t2);
+void				calc_sphere(t_sphere *sphere, t_data *data);
+void				calc_plane(t_plane *plane, t_data *data);
 
 #endif // !SHAPES_H

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 23:17:08 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/11 00:13:02 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_list	*intersect_world(t_world world, t_ray ray)
 	tmp = world.objects;
 	while (tmp)
 	{
-		ft_lstadd_back(&result, intersect((t_sphere *)tmp->content, ray));
+		ft_lstadd_back(&result, intersect(tmp->content, ray));
 		tmp = tmp->next;
 	}
 	insertion_sortlist(&result);
@@ -74,15 +74,15 @@ t_list	*intersect_world(t_world world, t_ray ray)
 
 // It precomputes the point in the world space where the intersection 
 // occurred, the eye veector, and the normal vector
-t_comps	prepare_computations(t_intersection intersection, t_ray ray)
+t_shape_comps	prepare_comps(t_shape_intersect *intersect, t_ray *ray)
 {
-	t_comps	comps;
+	t_shape_comps	comps;
 
-	comps.t = intersection.t;
-	comps.sphere = intersection.object;
-	comps.point = position(ray, comps.t);
-	comps.eyev = negate_tuple(ray.direction);
-	comps.normalv = normal_at(comps.sphere, comps.point);
+	comps.t = intersect->t;
+	comps.object = intersect->object;
+	comps.point = position(*ray, comps.t);
+	comps.eyev = negate_tuple(ray->direction);
+	comps.normalv = normal_at(intersect->object, comps.point);
 	comps.over_point = add_tuples(comps.point,
 			scalar_mul_tuple(EPSILON, comps.normalv));
 	if (dot(comps.normalv, comps.eyev) < 0)
@@ -93,34 +93,6 @@ t_comps	prepare_computations(t_intersection intersection, t_ray ray)
 	else
 		comps.inside = false;
 	return (comps);
-}
-
-t_color	shade_hit(t_world world, t_comps comps)
-{
-	bool	shadowed;
-
-	shadowed = is_shadowed(world, comps.over_point);
-	return (lighting(world, comps, shadowed));
-}
-
-t_color	color_at(t_world world, t_ray ray)
-{
-	t_list			*intersections;
-	t_intersection	*i;
-	t_comps			comps;
-	t_color			c;
-
-	intersections = intersect_world(world, ray);
-	i = hit(intersections);
-	if (i == NULL)
-	{
-		ft_lstclear(&intersections, free);
-		return (color(0, 0, 0, 0));
-	}
-	comps = prepare_computations(*i, ray);
-	ft_lstclear(&intersections, free);
-	c = shade_hit(world, comps);
-	return (c);
 }
 
 t_matrix	*make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
@@ -251,6 +223,28 @@ void	print_progress(float progress)
 	fflush(stdout);
 }
 
+t_color	color_at(t_world world, t_ray ray)
+{
+	t_list				*intersections;
+	t_shape_intersect	*i;
+	t_shape_comps		comps;
+	t_color				c;
+	bool				shadowed;
+
+	intersections = intersect_world(world, ray);
+	i = hit(intersections);
+	if (i == NULL)
+	{
+		ft_lstclear(&intersections, free);
+		return (color(0, 0, 0, 0));
+	}
+	comps = prepare_comps(i, &ray);
+	shadowed = is_shadowed(world, comps.over_point);
+	c = lighting(&world, &comps, shadowed);
+	ft_lstclear(&intersections, free);
+	return (c);
+}
+
 void	render(t_data *data, t_cam camera, t_world world)
 {
 	t_ray			r;
@@ -279,21 +273,9 @@ void	render(t_data *data, t_cam camera, t_world world)
 		data->base_image->win_ptr, data->base_image->img_ptr, 0, 0);
 }
 
-void	*sphere_transform(void *content)
-{
-	t_sphere	*sphere;
-
-	sphere = content;
-	sphere->radius = sphere->diameter / 2;
-	sphere->transform = translation(
-			sphere->center.x, sphere->center.y, sphere->center.z);
-	return (sphere);
-}
-
 void	init_world(t_data *data)
 {
 	data->scene->world.ambient = data->scene->ambient;
 	data->scene->world.light = data->scene->light;
 	configure_camera(data, &data->scene->camera);
-	data->scene->world.objects = data->scene->spheres;
 }

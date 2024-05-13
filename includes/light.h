@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 23:13:51 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 19:07:12 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "color.h"
 # include "tuples.h"
 
-typedef struct s_world	t_world;
-typedef struct s_comps	t_comps;
+typedef struct s_world			t_world;
+typedef struct s_shape_comps	t_shape_comps;
 
 typedef struct s_ambient
 {
@@ -50,8 +50,7 @@ typedef struct s_shadow
 
 t_light		point_light(t_tuple position, float intensity, t_color color);
 t_material	material(void);
-// t_color		lighting(t_world w, t_comps c);
-t_color		lighting(t_world w, t_comps c, bool in_shadow);
+t_color		lighting(t_world *w, t_shape_comps *c, bool in_shadow);
 bool		is_shadowed(t_world world, t_tuple point);
 
 #endif // !LIGHT_H

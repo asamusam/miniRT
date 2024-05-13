@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/09 17:50:55 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/10 19:11:21 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ typedef struct s_world
 	t_ambient	ambient;
 }	t_world;
 
-typedef struct s_comps
+typedef struct s_shape_comps
 {
 	float		t;
-	t_sphere	sphere;
+	t_object	*object;
 	t_tuple		point;
 	t_tuple		eyev;
 	t_tuple		normalv;
 	t_tuple		over_point;
 	bool		inside;
-}	t_comps;
+}	t_shape_comps;
 
 typedef struct s_camconfig
 {
@@ -58,16 +58,13 @@ typedef struct s_world_coord
 	float	world_y;
 }	t_world_coord;
 
-t_world		default_world(void);
-void		init_world(t_data *data);
-t_list		*intersect_world(t_world world, t_ray ray);
-t_comps		prepare_computations(t_intersection intersection, t_ray ray);
-t_color		shade_hit(t_world world, t_comps comps);
-t_color		color_at(t_world world, t_ray ray);
-t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up);
-t_cam		camera(float hsize, float vsize, float field_of_view);
-void		configure_camera(t_data *data, t_cam *c);
-t_ray		ray_for_pixel(t_cam camera, float px, float py);
-void		render(t_data *data, t_cam camera, t_world world);
+void			init_world(t_data *data);
+t_list			*intersect_world(t_world world, t_ray ray);
+t_shape_comps	prepare_comps(t_shape_intersect *intersect, t_ray *ray);
+t_color			color_at(t_world world, t_ray ray);
+t_matrix		*view_transform(t_tuple from, t_tuple to, t_tuple up);
+void			configure_camera(t_data *data, t_cam *c);
+t_ray			ray_for_pixel(t_cam camera, float px, float py);
+void			render(t_data *data, t_cam camera, t_world world);
 
 #endif // !WORLD_H
