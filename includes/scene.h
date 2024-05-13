@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 14:23:30 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/08 22:04:16 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 16:33:52 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_cam
 	float		half_width;
 	float		half_height;
 	float		pixel_size;
-	t_matrix	*transform;
+	t_matrix	transform;
 }	t_cam;
 
 typedef struct s_scene

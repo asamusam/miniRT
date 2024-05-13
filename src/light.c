@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 19:04:55 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:24:10 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,19 @@ t_color	lighting(t_world *w, t_shape_comps *c, bool in_shadow)
 				add_colors(diffuse, specular), w->light.intensity)));
 }
 
-bool	is_shadowed(t_world world, t_tuple point)
+bool	is_shadowed(t_world *world, t_tuple point)
 {
 	t_shadow			shadow;
 	t_ray				r;
 	t_list				*intersections;
 	t_shape_intersect	*h;
 
-	shadow.v = sub_tuples(world.light.position, point);
+	shadow.v = sub_tuples(world->light.position, point);
 	shadow.distance = magnitude(shadow.v);
 	shadow.direction = normalize(shadow.v);
-	r = ray(point, shadow.direction);
-	intersections = intersect_world(world, r);
+	r.origin = point;
+	r.direction = shadow.direction;
+	intersections = intersect_world(world, &r);
 	h = hit(intersections);
 	if (h && h->t < shadow.distance)
 	{

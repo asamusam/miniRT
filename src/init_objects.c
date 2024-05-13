@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_objects.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/11 00:49:47 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:47:03 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,59 +17,57 @@
 #include "../includes/debug.h"
 #include <math.h>
 
-static t_matrix	*rotate_plane(t_plane *plane)
+static void	rotate_plane(t_plane *plane, t_matrix *r)
 {
-	t_matrix	*m;
-	float		angle;
+	t_tuple		default_normal;
 	t_tuple		axis;
+	float		angle;
 	float		c;
 	float		s;
 
-	m = init_identitymatrix(4);
-	angle = acos(dot((t_tuple){0, 1, 0, VECTOR}, plane->normal));
-	axis = normalize(cross((t_tuple){0, 1, 0, VECTOR}, plane->normal));
+	init_identitymatrix(r);
+	default_normal = vector(0, 1, 0);
+	angle = acos(dot(default_normal, plane->normal));
+	axis = normalize(cross(default_normal, plane->normal));
 	s = sin(angle);
 	c = cos(angle);
-	m->data[0][0] = c + pow(axis.x, 2) * (1 - c);
-	m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
-	m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
-	m->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
-	m->data[1][1] = c + pow(axis.y, 2) * (1 - c);
-	m->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
-	m->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
-	m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
-	m->data[2][2] = c + pow(axis.y, 2) * (1 - c);
-	return (m);
+	r->data[0][0] = c + pow(axis.x, 2) * (1 - c);
+	r->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
+	r->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
+	r->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
+	r->data[1][1] = c + pow(axis.y, 2) * (1 - c);
+	r->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
+	r->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
+	r->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
+	r->data[2][2] = c + pow(axis.y, 2) * (1 - c);
 }
 
-static t_matrix	*plane_transform(t_plane *plane)
+static void	plane_transform(t_plane *plane, t_matrix *m)
 {
-	t_matrix	*m;
-	t_matrix	*t;
-	t_matrix	*r;
+	t_matrix	t;
+	t_matrix	r;
 
-	t = translation(plane->point.x, plane->point.y, plane->point.z);
-	r = rotate_plane(plane);
-	m = matrix_multiply(*t, *r);
-	free_matrix(&t);
-	free_matrix(&r);
-	return (m);
+	m->size = 4;
+	t.size = 4;
+	r.size = 4;
+	translation(plane->point.x, plane->point.y, plane->point.z, &t);
+	rotate_plane(plane, &r);
+	matrix_multiply(&t, &r, m);
 }
 
-static t_matrix	*sphere_transform(t_sphere *sphere)
+static void	sphere_transform(t_sphere *sphere, t_matrix *m)
 {
-	t_matrix	*m;
-	t_matrix	*t;
-	t_matrix	*s;
-	float		radius;
+	t_matrix	t;
+	t_matrix	s;
+	float		real_radius;
 
-	radius = sphere->diameter / 2;
-	t = translation(sphere->center.x, sphere->center.y, sphere->center.z);
-	s = scaling(radius, radius, radius);
-	m = matrix_multiply(*t, *s);
-	free_matrix(&t);
-	free_matrix(&s);
-	return (m);
+	m->size = 4;
+	t.size = 4;
+	s.size = 4;
+	real_radius = sphere->diameter / 2;
+	translation(sphere->center.x, sphere->center.y, sphere->center.z, &t);
+	scaling(real_radius, real_radius, real_radius, &s);
+	matrix_multiply(&t, &s, m);
 }
 
 void	calc_sphere(t_sphere *sphere, t_data *data)
@@ -79,8 +77,8 @@ void	calc_sphere(t_sphere *sphere, t_data *data)
 	object = malloc(sizeof(t_object));
 	malloc_errcheck(object);
 	object->type = SPHERE;
-	sphere->radius = 1;
-	object->transform = sphere_transform(sphere);
+	sphere->default_radius = 1;
+	sphere_transform(sphere, &object->transform);
 	object->color = sphere->color;
 	object->material = material();
 	object->object = sphere;
@@ -94,7 +92,7 @@ void	calc_plane(t_plane *plane, t_data *data)
 	object = malloc(sizeof(t_object));
 	malloc_errcheck(object);
 	object->type = PLANE;
-	object->transform = plane_transform(plane);
+	plane_transform(plane, &object->transform);
 	object->color = plane->color;
 	object->material = material();
 	object->object = plane;

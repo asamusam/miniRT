@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 23:56:56 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:25:53 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,6 @@
 #include "../includes/debug.h"
 #include "../includes/ray.h"
 #include "../includes/matrix.h"
-
-t_sphere	*malloc_sphere(void)
-{
-	t_sphere	*s;
-
-	s = malloc(sizeof(t_sphere));
-	malloc_errcheck(s);
-	s->o_center = point(0, 0, 0);
-	s->radius = 1;
-	s->material = material();
-	return (s);
-}
 
 // Calculate the ray and sphere intersecting points t1 & t2.
 // Negative number means the point is behind the ray origin
@@ -38,10 +26,10 @@ int	calc_t(t_sphere s, t_ray ray, float *t1, float *t2)
 	float	c;
 	float	discriminant;
 
-	sphere_to_ray = sub_tuples(ray.origin, s.o_center);
+	sphere_to_ray = sub_tuples(ray.origin, point(0, 0, 0));
 	a = dot(ray.direction, ray.direction);
 	b = 2 * dot(ray.direction, sphere_to_ray);
-	c = dot(sphere_to_ray, sphere_to_ray) - (s.radius * s.radius);
+	c = dot(sphere_to_ray, sphere_to_ray) - s.default_radius;
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
 		return (-1);
@@ -95,18 +83,15 @@ t_tuple	normal_at(t_object *object, t_tuple world_pt)
 	t_tuple		object_pt;
 	t_tuple		object_normal;
 	t_tuple		world_normal;
-	t_matrix	*inv_m;
-	t_matrix	*trans_m;
+	t_matrix	inv_m;
+	t_matrix	trans_m;
 
-	inv_m = inverse(*object->transform);
-	object_pt = matrix_tuple_multiply(*inv_m, world_pt);
+	inverse(&object->transform, &inv_m);
+	matrix_tuple_multiply(&inv_m, world_pt, &object_pt);
 	object_normal = local_normal_at(object, object_pt);
-	trans_m = transpose(*inv_m);
-	world_normal = matrix_tuple_multiply(
-			*trans_m, object_normal);
+	transpose(&inv_m, &trans_m);
+	matrix_tuple_multiply(&trans_m, object_normal, &world_normal);
 	world_normal.w = 0;
-	free_matrix(&inv_m);
-	free_matrix(&trans_m);
 	return (normalize(world_normal));
 }
 
@@ -118,4 +103,3 @@ t_tuple	reflect(t_tuple in, t_tuple normal)
 	return (sub_tuples(in, scalar_mul_tuple(
 				in_dot_norm, scalar_mul_tuple(2, normal))));
 }
-

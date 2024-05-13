@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/11 00:13:02 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:24:18 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ void	insertion_sortlist(t_list **head)
 	*head = sorted;
 }
 
-t_list	*intersect_world(t_world world, t_ray ray)
+t_list	*intersect_world(t_world *world, t_ray *ray)
 {
 	t_list	*result;
 	t_list	*tmp;
 
 	result = NULL;
-	tmp = world.objects;
+	tmp = world->objects;
 	while (tmp)
 	{
 		ft_lstadd_back(&result, intersect(tmp->content, ray));
@@ -74,32 +74,29 @@ t_list	*intersect_world(t_world world, t_ray ray)
 
 // It precomputes the point in the world space where the intersection 
 // occurred, the eye veector, and the normal vector
-t_shape_comps	prepare_comps(t_shape_intersect *intersect, t_ray *ray)
+void	prepare_comps(
+	t_shape_intersect *intersect, t_ray *ray, t_shape_comps *comps)
 {
-	t_shape_comps	comps;
-
-	comps.t = intersect->t;
-	comps.object = intersect->object;
-	comps.point = position(*ray, comps.t);
-	comps.eyev = negate_tuple(ray->direction);
-	comps.normalv = normal_at(intersect->object, comps.point);
-	comps.over_point = add_tuples(comps.point,
-			scalar_mul_tuple(EPSILON, comps.normalv));
-	if (dot(comps.normalv, comps.eyev) < 0)
+	comps->t = intersect->t;
+	comps->object = intersect->object;
+	comps->point = position(*ray, comps->t);
+	comps->eyev = negate_tuple(ray->direction);
+	comps->normalv = normal_at(intersect->object, comps->point);
+	comps->over_point = add_tuples(comps->point,
+			scalar_mul_tuple(EPSILON, comps->normalv));
+	if (dot(comps->normalv, comps->eyev) < 0)
 	{
-		comps.inside = true;
-		comps.normalv = negate_tuple(comps.normalv);
+		comps->inside = true;
+		comps->normalv = negate_tuple(comps->normalv);
 	}
 	else
-		comps.inside = false;
-	return (comps);
+		comps->inside = false;
 }
 
-t_matrix	*make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
+void	make_orientation(
+	t_tuple left, t_tuple true_up, t_tuple forward, t_matrix *orientation)
 {
-	t_matrix	*orientation;
-
-	orientation = create_matrix(4, 4);
+	orientation->size = 4;
 	orientation->data[0][0] = left.x;
 	orientation->data[0][1] = left.y;
 	orientation->data[0][2] = left.z;
@@ -116,19 +113,17 @@ t_matrix	*make_orientation(t_tuple left, t_tuple true_up, t_tuple forward)
 	orientation->data[3][1] = 0;
 	orientation->data[3][2] = 0;
 	orientation->data[3][3] = 1;
-	return (orientation);
 }
 
 // It mimics the eye/camera moves instead of the world
 // from where the eye in the scene
 // to where you want to look at
 // and a vector indicates which direction is up
-t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up)
+void	view_transform(t_tuple from, t_tuple to, t_tuple up, t_matrix *res)
 {
 	t_camconfig	config;
-	t_matrix	*orientation;
-	t_matrix	*trans_m;
-	t_matrix	*res;
+	t_matrix	orientation;
+	t_matrix	trans_m;
 
 	config.forward = normalize(to);
 	if (equal_tuple(config.forward, vector(0, 1, 0))
@@ -140,12 +135,11 @@ t_matrix	*view_transform(t_tuple from, t_tuple to, t_tuple up)
 	config.upn = normalize(up);
 	config.left = cross(config.forward, config.upn);
 	config.true_up = cross(config.left, config.forward);
-	orientation = make_orientation(config.left, config.true_up, config.forward);
-	trans_m = translation(-from.x, -from.y, -from.z);
-	res = matrix_multiply(*orientation, *trans_m);
-	free_matrix(&trans_m);
-	free_matrix(&orientation);
-	return (res);
+	trans_m.size = 4;
+	res->size = 4;
+	make_orientation(config.left, config.true_up, config.forward, &orientation);
+	translation(-from.x, -from.y, -from.z, &trans_m);
+	matrix_multiply(&orientation, &trans_m, res);
 }
 
 // The camera pixel size is calculated with the horizontal aspect
@@ -159,9 +153,11 @@ void	configure_camera(t_data *data, t_cam *c)
 	c->hsize = WIDTH;
 	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
-	data->scene->camera.transform = view_transform(
-			data->scene->camera.position,
-			data->scene->camera.rotation, vector(0, 1, 0));
+	view_transform(
+		data->scene->camera.position,
+		data->scene->camera.rotation,
+		vector(0, 1, 0),
+		&c->transform);
 	half_view = tan(c->rfov / 2);
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
@@ -177,31 +173,29 @@ void	configure_camera(t_data *data, t_cam *c)
 	c->pixel_size = (c->half_width * 2) / c->hsize;
 }
 
-float	calc_offset(t_cam camera, float p)
+static float	calc_offset(t_cam *camera, float p)
 {
-	return ((p + 0.5) * camera.pixel_size);
+	return ((p + 0.5) * camera->pixel_size);
 }
 
 // It returns new ray from the camera and passes through 
 // the indicated (x, y) pixel on the canvas
-t_ray	ray_for_pixel(t_cam camera, float px, float py)
+void	ray_for_pixel(t_cam *camera, float px, float py, t_ray *r)
 {
 	t_world_coord	wc;
 	t_tuple			pixel;
 	t_tuple			origin;
 	t_tuple			direction;
-	t_matrix		*inv_m;
+	t_matrix		inv_m;
 
-	inv_m = inverse(*camera.transform);
-	wc.world_x = camera.half_width - calc_offset(camera, px);
-	wc.world_y = camera.half_height - calc_offset(camera, py);
-	pixel = matrix_tuple_multiply(
-			*inv_m, point(wc.world_x, wc.world_y, -1));
-	origin = matrix_tuple_multiply(
-			*inv_m, point(0, 0, 0));
-	free_matrix(&inv_m);
+	inverse(&camera->transform, &inv_m);
+	wc.world_x = camera->half_width - calc_offset(camera, px);
+	wc.world_y = camera->half_height - calc_offset(camera, py);
+	matrix_tuple_multiply(&inv_m, point(wc.world_x, wc.world_y, -1), &pixel);
+	matrix_tuple_multiply(&inv_m, point(0, 0, 0), &origin);
 	direction = normalize(sub_tuples(pixel, origin));
-	return (ray(origin, direction));
+	r->origin = origin;
+	r->direction = direction;
 }
 
 void	print_progress(float progress)
@@ -223,12 +217,11 @@ void	print_progress(float progress)
 	fflush(stdout);
 }
 
-t_color	color_at(t_world world, t_ray ray)
+void	color_at(t_world *world, t_ray *ray, t_color *c)
 {
 	t_list				*intersections;
 	t_shape_intersect	*i;
 	t_shape_comps		comps;
-	t_color				c;
 	bool				shadowed;
 
 	intersections = intersect_world(world, ray);
@@ -236,16 +229,16 @@ t_color	color_at(t_world world, t_ray ray)
 	if (i == NULL)
 	{
 		ft_lstclear(&intersections, free);
-		return (color(0, 0, 0, 0));
+		*c = color(0, 0, 0, 0);
+		return ;
 	}
-	comps = prepare_comps(i, &ray);
+	prepare_comps(i, ray, &comps);
 	shadowed = is_shadowed(world, comps.over_point);
-	c = lighting(&world, &comps, shadowed);
+	*c = lighting(world, &comps, shadowed);
 	ft_lstclear(&intersections, free);
-	return (c);
 }
 
-void	render(t_data *data, t_cam camera, t_world world)
+void	render(t_data *data)
 {
 	t_ray			r;
 	t_color			color;
@@ -253,16 +246,16 @@ void	render(t_data *data, t_cam camera, t_world world)
 	int				y;
 	t_progresbar	pb;
 
-	pb.total_pixels = camera.vsize * camera.hsize;
+	pb.total_pixels = data->scene->camera.vsize * data->scene->camera.hsize;
 	pb.current_pixel = 0;
 	y = -1;
-	while (++y < camera.vsize)
+	while (++y < data->scene->camera.vsize)
 	{
 		x = -1;
-		while (++x < camera.hsize)
+		while (++x < data->scene->camera.hsize)
 		{
-			r = ray_for_pixel(camera, x, y);
-			color = color_at(world, r);
+			ray_for_pixel(&data->scene->camera, x, y, &r);
+			color_at(&data->scene->world, &r, &color);
 			put_pixel2(data->base_image, x, y, color);
 			pb.current_pixel++;
 			pb.progress = (float)pb.current_pixel / pb.total_pixels;
