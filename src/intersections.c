@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 18:38:10 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/13 17:28:41 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 17:59:08 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,6 @@ t_list	*intersect(t_object *object, t_ray ray)
 	t_ray		nray;
 
 	inv_m = inverse(*object->transform);
-	// if (object->type == CYLINDER)
-	// {
-	// 	printf("out ray in intersect: ");
-	// 	print_tuple2(ray.origin);
-	// }
 	ray = transform(ray, *inv_m);
 	free_matrix(&inv_m);
 	intersections = NULL;
@@ -152,8 +147,6 @@ t_list	*intersect(t_object *object, t_ray ray)
 	else if (object->type == CYLINDER)
 	{
 		nray.origin = ray.origin;
-		// printf("ray in intersect: ");
-		// print_tuple2(ray.origin);
 		nray.direction = normalize(ray.direction);
 		cylinder_intersect(object, &intersections, &nray);
 	}

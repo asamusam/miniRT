@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/13 16:38:20 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 18:26:04 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,13 @@ void	calc_cylinder(t_cylinder *cylinder, t_data *data)
 	malloc_errcheck(object);
 	object->type = CYLINDER;
 	object->transform = cylinder_transform(cylinder);
+	// object->transform = matrix_multiply(*init_identitymatrix(4), *rotation_x(M_PI / 3));
 	object->transform = init_identitymatrix(4);
 	object->color = cylinder->color;
 	object->material = material();
 	cylinder->minimum = 0;
 	cylinder->maximum = cylinder->height;
-	cylinder->closed = false;
+	cylinder->closed = true;
 	object->object = cylinder;
 	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
 }

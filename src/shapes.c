@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 17:26:37 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 18:19:34 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,16 @@ int	calc_cylinder_t(t_cylinder cy, t_ray ray, float *t1, float *t2)
 	float	discriminant;
 
 	(void)cy;
-	// printf("ray in calc: ");
-	// print_tuple2(ray.origin);
 	a = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z;
 	if (fabs(a) < EPSILON)
 		return (-1);
 	b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
 	c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
 	discriminant = b * b - 4 * a * c;
-	// printf("ray: ");
-	// print_tuple2(ray.direction);
-	// print_tuple2(ray.origin);
-	// printf("there:%f %f %f %f\n", discriminant, a, b, c);
 	if (discriminant < 0)
 		return (-1);
 	*t1 = (-b - sqrt(discriminant)) / (2 * a);
 	*t2 = (-b + sqrt(discriminant)) / (2 * a);
-	// printf("here:%f %f %f \n", discriminant, *t1, *t2);
 	return (0);
 }
 
@@ -106,11 +99,24 @@ t_shape_intersect	*hit(t_list *xs)
 
 t_tuple	local_normal_at(t_object *object, t_tuple local_point)
 {
+	float		distance;
+	t_cylinder	*cylinder;
+
 	if (object->type == SPHERE)
 		return (normalize(
 				sub_tuples(local_point, point(0, 0, 0))));
 	else if (object->type == PLANE)
 		return ((t_tuple){0, 1, 0, VECTOR});
+	else if (object->type == CYLINDER)
+	{
+		cylinder = object->object;
+		distance = local_point.x * local_point.x + local_point.z * local_point.z;
+		if (distance < 1 && local_point.y >= (cylinder->maximum - EPSILON))
+			return (vector(0, 1, 0));
+		else if (distance < 1 && local_point.y <= (cylinder->minimum + EPSILON))
+			return (vector(0, -1, 0));
+		return ((t_tuple){local_point.x, 0, local_point.z, VECTOR});
+	}
 	else
 		return ((t_tuple){0, 0, 0, VECTOR});
 }

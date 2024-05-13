@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 17:25:43 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 17:58:09 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../includes/scene.h"
 #include "../includes/image.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 void	insert_sorted(t_list **sorted, t_list *node)
 {
@@ -263,15 +264,11 @@ void	render(t_data *data, t_cam camera, t_world world)
 		while (++x < camera.hsize)
 		{
 			r = ray_for_pixel(camera, x, y);
-			// printf("YO: ");
-			// print_tuple2(r.origin);
-			// print_tuple2(r.direction);
 			color = color_at(world, r);
 			put_pixel2(data->base_image, x, y, color);
 			pb.current_pixel++;
 			pb.progress = (float)pb.current_pixel / pb.total_pixels;
-			// print_progress(pb.progress);
-			(void)pb.progress;
+			print_progress(pb.progress);
 		}
 	}
 	mlx_put_image_to_window(data->base_image->mlx,
