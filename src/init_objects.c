@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/13 18:26:04 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 19:55:42 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,62 @@ static t_matrix	*sphere_transform(t_sphere *sphere)
 	return (m);
 }
 
-static t_matrix	*cylinder_transform(t_cylinder *cylinder)
+static t_matrix	*rotate_cylinder(t_cylinder *cylinder)
 {
 	t_matrix	*m;
-	t_matrix	*t;
-	t_matrix	*s;
-	float		radius;
+	float		angle;
+	t_tuple		axis;
+	float		c;
+	float		s;
 
-	radius = cylinder->diameter / 2;
+	m = init_identitymatrix(4);
+	angle = acos(dot((t_tuple){0, 1, 0, VECTOR}, normalize(cylinder->axis)));
+	axis = normalize(cross((t_tuple){0, 1, 0, VECTOR}, normalize(cylinder->axis)));
+	s = sin(angle);
+	c = cos(angle);
+	// m->data[0][0] = c + pow(axis.x, 2) * (1 - c);
+	// m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
+	// m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
+	// m->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
+	// m->data[1][1] = c + pow(axis.y, 2) * (1 - c);
+	// m->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
+	// m->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
+	// m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
+	// m->data[2][2] = c + pow(axis.y, 2) * (1 - c);
+	m->data[0][0] = c + axis.x * axis.x * (1 - c);
+    m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
+    m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
+    m->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
+    m->data[1][1] = c + axis.y * axis.y * (1 - c);
+    m->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
+    m->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
+    m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
+    m->data[2][2] = c + axis.z * axis.z * (1 - c);
+	return (m);
+}
+
+static t_matrix	*cylinder_transform(t_cylinder *cylinder)
+{
+	t_matrix	*i;
+	t_matrix	*t;
+	t_matrix	*r;
+	// t_matrix	*s;
+	t_matrix	*m;
+	// float		radius;
+	//
+	// radius = cylinder->diameter / 2;
+	i = init_identitymatrix(4);
 	t = translation(cylinder->center.x, cylinder->center.y, cylinder->center.z);
-	s = scaling(radius, radius, radius);
-	m = matrix_multiply(*t, *s);
+	r = rotate_cylinder(cylinder);
+	// s = scaling(radius, radius, 1);
+	// m = matrix_multiply(*i, *t);
+	// m = matrix_multiply(*i, *s);
+	// m = matrix_multiply(*m, *t);
+	m = matrix_multiply(*t, *r);
+	// m = matrix_multiply(*i, *t);
+	free_matrix(&i);
 	free_matrix(&t);
-	free_matrix(&s);
+	free_matrix(&r);
 	return (m);
 }
 
@@ -126,7 +169,7 @@ void	calc_cylinder(t_cylinder *cylinder, t_data *data)
 	object->type = CYLINDER;
 	object->transform = cylinder_transform(cylinder);
 	// object->transform = matrix_multiply(*init_identitymatrix(4), *rotation_x(M_PI / 3));
-	object->transform = init_identitymatrix(4);
+	// object->transform = init_identitymatrix(4);
 	object->color = cylinder->color;
 	object->material = material();
 	cylinder->minimum = 0;
