@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/13 19:55:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/13 20:38:51 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,11 @@ static t_matrix	*rotate_cylinder(t_cylinder *cylinder)
 
 	m = init_identitymatrix(4);
 	angle = acos(dot((t_tuple){0, 1, 0, VECTOR}, normalize(cylinder->axis)));
+	if (angle == 0)
+		return (m);
 	axis = normalize(cross((t_tuple){0, 1, 0, VECTOR}, normalize(cylinder->axis)));
 	s = sin(angle);
 	c = cos(angle);
-	// m->data[0][0] = c + pow(axis.x, 2) * (1 - c);
-	// m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
-	// m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
-	// m->data[1][0] = axis.y * axis.x * (1 - c) + axis.z * s;
-	// m->data[1][1] = c + pow(axis.y, 2) * (1 - c);
-	// m->data[1][2] = axis.y * axis.z * (1 - c) - axis.x * s;
-	// m->data[2][0] = axis.z * axis.x * (1 - c) - axis.y * s;
-	// m->data[2][1] = axis.z * axis.y * (1 - c) + axis.x * s;
-	// m->data[2][2] = c + pow(axis.y, 2) * (1 - c);
 	m->data[0][0] = c + axis.x * axis.x * (1 - c);
     m->data[0][1] = axis.x * axis.y * (1 - c) - axis.z * s;
     m->data[0][2] = axis.x * axis.z * (1 - c) + axis.y * s;
