@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/14 15:45:52 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:23:16 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ void	rotate_cylinder(t_cylinder *cylinder, t_matrix *r)
 	init_identitymatrix(r);
 	default_normal = vector(0, 1, 0);
 	angle = acos(dot(default_normal, normalize(cylinder->axis)));
-	if (angle == 0)
-		return ;
 	axis = normalize(cross(default_normal, normalize(cylinder->axis)));
 	s = sin(angle);
 	c = cos(angle);
@@ -101,19 +99,21 @@ void	cylinder_transform(t_cylinder *cylinder, t_matrix *m)
 {
 	t_matrix	t;
 	t_matrix	s;
+	t_matrix	ts;
 	t_matrix	r;
 	float		real_radius;
 
 	m->size = 4;
 	t.size = 4;
 	s.size = 4;
+	ts.size = 4;
 	r.size = 4;
 	real_radius = cylinder->diameter / 2;
 	translation(cylinder->center.x, cylinder->center.y, cylinder->center.z, &t);
 	scaling(real_radius, 1, real_radius, &s);
 	rotate_cylinder(cylinder, &r);
-	matrix_multiply(&t, &s, m);
-	matrix_multiply(&m, &r, m);
+	matrix_multiply(&t, &s, &ts);
+	matrix_multiply(&ts, &r, m);
 }
 
 void	calc_sphere(t_sphere *sphere, t_data *data)

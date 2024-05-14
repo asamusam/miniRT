@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 18:38:10 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/14 15:48:14 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:26:49 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,8 @@ t_list	*intersect(t_object *object, t_ray *ray)
 	if (object->type == SPHERE)
 		sphere_intersect(object, &intersections, &t_ray);
 	else if (object->type == PLANE)
-		plane_intersect(object, &intersections, &ray);
+		plane_intersect(object, &intersections, &t_ray);
 	else if (object->type == CYLINDER)
-	{
-		//t_ray.origin = ray.origin;
-		//t_ray.direction = normalize(ray.direction);
 		cylinder_intersect(object, &intersections, &t_ray);
-	}
 	return (intersections);
 }
