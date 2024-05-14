@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 19:26:47 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:26:31 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "../includes/world.h"
 #include "../includes/scene.h"
 #include "../includes/image.h"
-
-void	sphere_scene(t_data *data)
-{
-	render(data, data->scene->camera, data->scene->world);
-	printf("\ndone\n");
-}
 
 int	main(int ac, char **av)
 {
@@ -31,10 +25,10 @@ int	main(int ac, char **av)
 		init_data(data);
 		parse(data, av[1]);
 		init_world(data);
-		// print_scene(data);
 		init_mlx(data);
 		printf("render\n");
-		sphere_scene(data);
+		render(data);
+		printf("\ndone\n");
 		mlx_loop(data->base_image->mlx);
 	}
 }

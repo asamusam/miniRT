@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/10 20:29:17 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:31:04 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 #include "../includes/shapes.h"
 #include "../includes/matrix.h"
 
-static int	add_node(void *content, t_list **lst)
-{
-	t_list	*node;
-
-	node = ft_lstnew(content);
-	if (!node)
-		return (FAIL);
-	ft_lstadd_back(lst, node);
-	return (SUCCESS);
-}
+// static int	add_node(void *content, t_list **lst)
+// {
+// 	t_list	*node;
+//
+// 	node = ft_lstnew(content);
+// 	if (!node)
+// 		return (FAIL);
+// 	ft_lstadd_back(lst, node);
+// 	return (SUCCESS);
+// }
 
 int	parse_sphere(char *line, t_data *data)
 {
@@ -34,7 +34,7 @@ int	parse_sphere(char *line, t_data *data)
 	t_sphere	*sphere;
 
 	i = 0;
-	sphere = malloc_sphere();
+	sphere = malloc(sizeof(t_sphere));
 	if (!sphere)
 		return (error_and_fail(SP, NULL, strerror(errno)));
 	skip_space(&line[i], &i, NOT_REQUIRED);
@@ -52,8 +52,6 @@ int	parse_sphere(char *line, t_data *data)
 	if (line[i])
 		return (free_shape_fail(SP, NULL, EXTRA_ERR, sphere));
 	calc_sphere(sphere, data);
-	// if (add_node(sphere, &data->scene->world.objects) == FAIL)
-	// 	return (free_shape_fail(SP, NULL, strerror(errno), sphere));
 	return (SUCCESS);
 }
 
@@ -82,8 +80,6 @@ int	parse_plane(char *line, t_data *data)
 	if (skip_space(&line[i], &i, NOT_REQUIRED) && line[i])
 		return (free_shape_fail(PL, NULL, EXTRA_ERR, plane));
 	calc_plane(plane, data);
-	// if (add_node(plane, &data->scene->planes) == FAIL)
-	// 	return (free_shape_fail(PL, NULL, strerror(errno), plane));
 	return (SUCCESS);
 }
 
@@ -124,7 +120,8 @@ int	parse_cylinder(char *line, t_data *data)
 		return (FAIL);
 	if (line[i])
 		return (free_shape_fail(CY, NULL, EXTRA_ERR, cylinder));
-	if (add_node(cylinder, &data->scene->cylinders) == FAIL)
-		return (free_shape_fail(CY, NULL, strerror(errno), cylinder));
+	calc_cylinder(cylinder, data);
+	// if (add_node(cylinder, &data->scene->cylinders) == FAIL)
+	// 	return (free_shape_fail(CY, NULL, strerror(errno), cylinder));
 	return (SUCCESS);
 }

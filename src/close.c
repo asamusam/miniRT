@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/11 00:48:01 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/13 17:20:08 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	free_object(void *content)
 	t_object	*object;
 
 	object = (t_object *)content;
-	free_matrix(&object->transform);
 	free(object->object);
 	free(object);
 }
@@ -53,22 +52,12 @@ void	print_sphere_list(t_list *lst)
 	}
 }
 
-void	free_world(t_data *data)
-{
-	if (data->scene->camera.transform)
-	{
-		free_matrix(&data->scene->camera.transform);
-		data->scene->camera.transform = NULL;
-	}
-}
-
 int	destroy_window(t_data *data)
 {
 	mlx_destroy_image(data->base_image->mlx, data->base_image->img_ptr);
 	mlx_destroy_window(data->base_image->mlx, data->base_image->win_ptr);
 	mlx_destroy_display(data->base_image->mlx);
 	free(data->base_image->mlx);
-	free_world(data);
 	free_data(data);
 	exit(EXIT_SUCCESS);
 }
