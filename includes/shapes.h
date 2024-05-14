@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 16:18:47 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:28:29 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ typedef struct s_cylinder
 	float		diameter;
 	float		height;
 	t_color		color;
+	bool		closed;
+	float		minimum;
+	float		maximum;
 }	t_cylinder;
 
 typedef struct s_plane
@@ -82,8 +85,10 @@ t_shape_intersect	*hit(t_list *xs);
 t_tuple				normal_at(t_object *object, t_tuple world_pt);
 t_tuple				reflect(t_tuple in, t_tuple normal);
 t_list				*intersect(t_object *object, t_ray *ray);
-int					calc_t(t_sphere s, t_ray ray, float *t1, float *t2);
+int					calc_sphere_t(t_sphere s, t_ray ray, float *t1, float *t2);
+int					calc_cylinder_t(t_cylinder cy, t_ray ray, float *t1, float *t2);
 void				calc_sphere(t_sphere *sphere, t_data *data);
 void				calc_plane(t_plane *plane, t_data *data);
+void				calc_cylinder(t_cylinder *cylinder, t_data *data);
 
 #endif // !SHAPES_H

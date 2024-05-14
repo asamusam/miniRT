@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/13 17:25:07 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:31:04 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 #include "../includes/shapes.h"
 #include "../includes/matrix.h"
 
-static int	add_node(void *content, t_list **lst)
-{
-	t_list	*node;
-
-	node = ft_lstnew(content);
-	if (!node)
-		return (FAIL);
-	ft_lstadd_back(lst, node);
-	return (SUCCESS);
-}
+// static int	add_node(void *content, t_list **lst)
+// {
+// 	t_list	*node;
+//
+// 	node = ft_lstnew(content);
+// 	if (!node)
+// 		return (FAIL);
+// 	ft_lstadd_back(lst, node);
+// 	return (SUCCESS);
+// }
 
 int	parse_sphere(char *line, t_data *data)
 {
@@ -120,7 +120,8 @@ int	parse_cylinder(char *line, t_data *data)
 		return (FAIL);
 	if (line[i])
 		return (free_shape_fail(CY, NULL, EXTRA_ERR, cylinder));
-	if (add_node(cylinder, &data->scene->cylinders) == FAIL)
-		return (free_shape_fail(CY, NULL, strerror(errno), cylinder));
+	calc_cylinder(cylinder, data);
+	// if (add_node(cylinder, &data->scene->cylinders) == FAIL)
+	// 	return (free_shape_fail(CY, NULL, strerror(errno), cylinder));
 	return (SUCCESS);
 }

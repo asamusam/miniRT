@@ -6,7 +6,7 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:10:46 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 17:24:18 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:31:45 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "../includes/scene.h"
 #include "../includes/image.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 void	insert_sorted(t_list **sorted, t_list *node)
 {
