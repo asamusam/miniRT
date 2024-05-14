@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 16:45:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 16:04:01 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:53:34 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_tuple	t_tuple;
 typedef struct s_matrix
 {
 	int		size;
-	float 	data[4][4];
+	float	data[4][4];
 }	t_matrix;
 
 void		print_matrix(t_matrix *mat);

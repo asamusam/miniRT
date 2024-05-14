@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 15:28:29 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:53:54 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ t_tuple				normal_at(t_object *object, t_tuple world_pt);
 t_tuple				reflect(t_tuple in, t_tuple normal);
 t_list				*intersect(t_object *object, t_ray *ray);
 int					calc_sphere_t(t_sphere s, t_ray ray, float *t1, float *t2);
-int					calc_cylinder_t(t_cylinder cy, t_ray ray, float *t1, float *t2);
+int					calc_cylinder_t(t_cylinder cy, t_ray ray,
+						float *t1, float *t2);
 void				calc_sphere(t_sphere *sphere, t_data *data);
 void				calc_plane(t_plane *plane, t_data *data);
 void				calc_cylinder(t_cylinder *cylinder, t_data *data);

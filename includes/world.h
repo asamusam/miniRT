@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   world.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 16:22:10 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:54:22 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,11 @@ typedef struct s_world_coord
 
 void			init_world(t_data *data);
 t_list			*intersect_world(t_world *world, t_ray *ray);
-void			prepare_comps(t_shape_intersect *intersect, t_ray *ray, t_shape_comps *comps);
+void			prepare_comps(t_shape_intersect *intersect,
+					t_ray *ray, t_shape_comps *comps);
 void			color_at(t_world *world, t_ray *ray, t_color *c);
-void			view_transform(t_tuple from, t_tuple to, t_tuple up, t_matrix *res);
+void			view_transform(t_tuple from, t_tuple to,
+					t_tuple up, t_matrix *res);
 void			configure_camera(t_data *data, t_cam *c);
 void			ray_for_pixel(t_cam *camera, float px, float py, t_ray *r);
 void			render(t_data *data);

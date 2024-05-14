@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 16:24:36 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:52:52 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,5 @@ t_light		point_light(t_tuple position, float intensity, t_color color);
 t_material	material(void);
 t_color		lighting(t_world *w, t_shape_comps *c, bool in_shadow);
 bool		is_shadowed(t_world *world, t_tuple point);
-
 
 #endif // !LIGHT_H
