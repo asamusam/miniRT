@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:11:32 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 17:39:33 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 17:56:15 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	view_transform(t_data *data, t_tuple up, t_matrix *res)
 	if (equal_tuple(config.forward, normalize(vector(0, 1, 0)))
 		|| equal_tuple(config.forward, normalize(vector(0, -1, 0))))
 	{
-		printf("Invalid orientation vector: gimbal lock");
+		printf("Invalid orientation vector: gimbal lock\n");
 		free_data(data);
 		exit(EXIT_FAILURE);
 	}
