@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/15 13:43:58 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 14:16:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	calc_cylinder(t_cylinder *cylinder, t_data *data)
 	cylinder_transform(cylinder, &object->transform);
 	object->color = cylinder->color;
 	object->material = material();
-	cylinder->minimum = 0;
-	cylinder->maximum = cylinder->height;
+	cylinder->minimum = 0 - cylinder->height /2;
+	cylinder->maximum = cylinder->height / 2;
 	cylinder->closed = true;
 	object->object = cylinder;
 	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
