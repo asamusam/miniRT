@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 13:49:48 by llai              #+#    #+#             */
-/*   Updated: 2024/05/10 20:33:48 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:54:38 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <errno.h>
 # include <string.h>
 
-# define HEIGHT 400 
-# define WIDTH 400
+# define HEIGHT 1080
+# define WIDTH 1920
 # define BG_COLOR 0x000000
 # define FAIL 1
 # define SUCCESS 0
