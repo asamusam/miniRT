@@ -6,16 +6,14 @@
 /*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:51:05 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/15 13:15:36 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 14:17:01 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include "../includes/world.h"
 #include "../includes/parser.h"
-#include "../includes/scene.h"
 #include "../includes/shapes.h"
-#include "../includes/matrix.h"
 
 int	parse_sphere(char *line, t_data *data)
 {

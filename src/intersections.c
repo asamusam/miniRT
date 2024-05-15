@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/10 18:38:10 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/14 16:26:49 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:00:17 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-static t_shape_intersect	*shape_intersection(float t, t_object *object)
+t_shape_intersect	*shape_intersection(float t, t_object *object)
 {
 	t_shape_intersect	*i;
 
@@ -58,60 +58,19 @@ static void	plane_intersect(
 			shape_intersection(t, object)));
 }
 
-// Check if the intersection at t is within a radius of 1 from y axis
-static bool	check_cap(t_ray *r, float t)
-{
-	float	x;
-	float	z;
-
-	x = r->origin.x + t * r->direction.x;
-	z = r->origin.z + t * r->direction.z;
-	if ((x * x + z * z) <= 1)
-		return (true);
-	return (false);
-}
-
-void	intersect_caps(t_object *object, t_ray *ray, t_list **intersections)
-{
-	t_cylinder	*cy;
-	float		t;
-
-	cy = object->object;
-	if (cy->closed == false || fabs(ray->direction.y) < EPSILON)
-		return ;
-	t = (cy->minimum - ray->origin.y) / ray->direction.y;
-	if (check_cap(ray, t))
-	{
-		ft_lstadd_back(intersections, ft_lstnew(
-				shape_intersection(t, object)));
-	}
-	t = (cy->maximum - ray->origin.y) / ray->direction.y;
-	if (check_cap(ray, t))
-	{
-		ft_lstadd_back(intersections, ft_lstnew(
-				shape_intersection(t, object)));
-	}
-}
-
 static void	cylinder_intersect(
 	t_object *object, t_list **intersections, t_ray *ray)
 {
 	t_cylinder	*cylinder;
 	float		t1;
 	float		t2;
-	float		tmp;
 	float		y;
 
 	cylinder = (t_cylinder *)object->object;
 	if (calc_cylinder_t(*cylinder, *ray, &t1, &t2) == -1)
 		return ;
-	// printf("here: %f %f \n", t1, t2);
 	if (t1 > t2)
-	{
-		tmp = t1;
-		t1 = t2;
-		t2 = tmp;
-	}
+		swap(&t1, &t2);
 	y = ray->origin.y + t1 * ray->direction.y;
 	if (cylinder->minimum < y && y < cylinder->maximum)
 	{

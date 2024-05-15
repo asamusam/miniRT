@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 21:17:45 by llai             ###   ########.fr       */
+/*   Created: 2024/05/15 13:14:31 by llai              #+#    #+#             */
+/*   Updated: 2024/05/15 13:14:46 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <math.h>
 
-#include "../includes/minirt.h"
-#include "../includes/world.h"
-#include "../includes/image.h"
-
-int	main(int ac, char **av)
+float	radians(float deg)
 {
-	t_data	*data;
+	float	res;
 
-	if (ac == 2)
-	{
-		allocate_data(&data);
-		init_data(data);
-		parse(data, av[1]);
-		init_world(data);
-		init_mlx(data);
-		printf("render\n");
-		render(data);
-		printf("\ndone\n");
-		mlx_loop(data->base_image->mlx);
-	}
+	res = deg / 180 * M_PI;
+	return (res);
 }

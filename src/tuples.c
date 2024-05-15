@@ -6,86 +6,13 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 13:55:55 by llai              #+#    #+#             */
-/*   Updated: 2024/05/08 22:02:27 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 13:30:19 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include <math.h>
 #include "../includes/tuples.h"
-
-bool	equal(float a, float b)
-{
-	if (fabs(a - b) < EPSILON)
-		return (true);
-	else
-		return (false);
-}
-
-t_tuple	point(float x, float y, float z)
-{
-	return ((t_tuple){x, y, z, POINT});
-}
-
-t_tuple	vector(float x, float y, float z)
-{
-	return ((t_tuple){x, y, z, VECTOR});
-}
-
-t_tuple	add_tuples(t_tuple lhs, t_tuple rhs)
-{
-	t_tuple	res;
-
-	res.x = lhs.x + rhs.x;
-	res.y = lhs.y + rhs.y;
-	res.z = lhs.z + rhs.z;
-	res.w = lhs.w + rhs.w;
-	return (res);
-}
-
-t_tuple	sub_tuples(t_tuple lhs, t_tuple rhs)
-{
-	t_tuple	res;
-
-	res.x = lhs.x - rhs.x;
-	res.y = lhs.y - rhs.y;
-	res.z = lhs.z - rhs.z;
-	res.w = lhs.w - rhs.w;
-	return (res);
-}
-
-t_tuple	negate_tuple(t_tuple tup)
-{
-	t_tuple	res;
-
-	res.x = -tup.x;
-	res.y = -tup.y;
-	res.z = -tup.z;
-	res.w = -tup.w;
-	return (res);
-}
-
-t_tuple	scalar_mul_tuple(float lhs, t_tuple rhs)
-{
-	t_tuple	res;
-
-	res.x = lhs * rhs.x;
-	res.y = lhs * rhs.y;
-	res.z = lhs * rhs.z;
-	res.w = lhs * rhs.w;
-	return (res);
-}
-
-t_tuple	scalar_dev_tuple(t_tuple lhs, float rhs)
-{
-	t_tuple	res;
-
-	res.x = lhs.x / rhs;
-	res.y = lhs.y / rhs;
-	res.z = lhs.z / rhs;
-	res.w = lhs.w / rhs;
-	return (res);
-}
 
 // Magnitude, or length, is the distance represented by a vector.
 // It's how far you would travel in a straight line if you were
@@ -136,15 +63,4 @@ t_tuple	cross(t_tuple v1, t_tuple v2)
 	res.z = v1.x * v2.y - v1.y * v2.x;
 	res.w = VECTOR;
 	return (res);
-}
-
-void	print_tuple2(t_tuple t)
-{
-	printf("tuple: x:%.2f y:%.2f z:%.2f w:%d\n", t.x, t.y, t.z, t.w);
-}
-
-bool	equal_tuple(t_tuple a, t_tuple b)
-{
-	return (equal(a.x, a.y) && equal(a.y, b.y)
-		&& equal(a.z, b.z) && equal(a.w, b.w));
 }
