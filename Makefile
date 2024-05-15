@@ -4,26 +4,38 @@ CC = cc
 CFLAG = -Wall -Werror -Wextra -g3
 SRC := src/close.c \
 		src/color.c \
+		src/color_calc.c \
+		src/color_utils.c \
+		src/cylinder_utils.c \
+		src/debug.c \
+		src/ft_atof.c \
 		src/image.c \
 		src/init.c \
+		src/init_cylinder.c \
+		src/init_plane.c \
+		src/init_sphere.c \
+		src/init_world.c \
+		src/intersections.c \
+		src/light.c \
+		src/light_utils.c \
 		src/main.c \
+		src/math_utils.c \
 		src/matrix.c \
 		src/matrix_transform.c \
-		src/ray.c \
-		src/shapes.c \
-		src/tuples.c \
-		src/light.c \
-		src/world.c \
+		src/matrix_utils.c \
 		src/parser.c \
-		src/parser_utils.c \
-		src/parser_shapes.c \
 		src/parser_errors.c \
 		src/parser_range.c \
+		src/parser_shapes.c \
+		src/parser_utils.c \
 		src/print_scene.c \
-		src/ft_atof.c \
-		src/intersections.c \
-		src/debug.c \
-		src/init_objects.c
+		src/ray.c \
+		src/render.c \
+		src/shapes.c \
+		src/tuples.c \
+		src/tuple_calc.c \
+		src/tuples_utils.c \
+		src/world_utils.c
 OBJ = $(patsubst src/%c,$(BIN)/%o,$(SRC))
 INCS = includes
 LIBFT_PATH = libft

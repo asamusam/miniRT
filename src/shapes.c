@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:57:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 15:31:14 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:02:38 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,6 @@ int	calc_sphere_t(t_sphere s, t_ray ray, float *t1, float *t2)
 	a = dot(ray.direction, ray.direction);
 	b = 2 * dot(ray.direction, sphere_to_ray);
 	c = dot(sphere_to_ray, sphere_to_ray) - s.default_radius;
-	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
-		return (-1);
-	*t1 = (-b - sqrt(discriminant)) / (2 * a);
-	*t2 = (-b + sqrt(discriminant)) / (2 * a);
-	return (0);
-}
-
-int	calc_cylinder_t(t_cylinder cy, t_ray ray, float *t1, float *t2)
-{
-	float	a;
-	float	b;
-	float	c;
-	float	discriminant;
-
-	(void)cy;
-	a = ray.direction.x * ray.direction.x + ray.direction.z * ray.direction.z;
-	if (fabs(a) < EPSILON)
-		return (-1);
-	b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
-	c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
 	discriminant = b * b - 4 * a * c;
 	if (discriminant < 0)
 		return (-1);
@@ -98,7 +77,8 @@ t_tuple	local_normal_at(t_object *object, t_tuple local_point)
 	else if (object->type == CYLINDER)
 	{
 		cylinder = object->object;
-		distance = local_point.x * local_point.x + local_point.z * local_point.z;
+		distance = local_point.x * local_point.x
+			+ local_point.z * local_point.z;
 		if (distance < 1 && local_point.y >= (cylinder->maximum - EPSILON))
 			return (vector(0, 1, 0));
 		else if (distance < 1 && local_point.y <= (cylinder->minimum + EPSILON))

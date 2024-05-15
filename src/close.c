@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 14:05:03 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 17:20:08 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 12:51:35 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minirt.h"
 #include "../includes/shapes.h"
-#include "../includes/matrix.h"
 #include "../includes/scene.h"
 #include "../includes/image.h"
 
@@ -38,18 +37,6 @@ void	free_data(t_data *data)
 		free(data->scene);
 	}
 	free(data);
-}
-
-void	print_sphere_list(t_list *lst)
-{
-	t_sphere	*s;
-
-	while (lst)
-	{
-		s = lst->content;
-		print_tuple2(s->center);
-		lst = lst -> next;
-	}
 }
 
 int	destroy_window(t_data *data)

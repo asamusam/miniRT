@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:22:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 15:30:54 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:23:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,6 @@
 #include "../includes/ray.h"
 #include "../includes/minirt.h"
 #include <math.h>
-
-t_light	point_light(t_tuple position, float intensity, t_color color)
-{
-	return ((t_light){position, intensity, color});
-}
-
-t_material	material(void)
-{
-	t_material	m;
-
-	m.color = color(0, 1, 1, 1);
-	m.ambient = 0.1;
-	m.diffuse = 0.9;
-	m.specular = 0.9;
-	m.shininess = 200.0;
-	return (m);
-}
 
 // t_color	compute_ambient(t_comps c, t_color effective_color)
 t_color	compute_ambient(t_world w, t_color effective_color)
