@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:11:32 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 13:16:11 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 14:03:56 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,20 @@ void	make_orientation(
 // from where the eye in the scene
 // to where you want to look at
 // and a vector indicates which direction is up
-void	view_transform(t_tuple from, t_tuple to, t_tuple up, t_matrix *res)
+void	view_transform(t_data *data, t_tuple up, t_matrix *res)
 {
+	t_tuple		from;
 	t_camconfig	config;
 	t_matrix	orientation;
 	t_matrix	trans_m;
 
-	config.forward = normalize(to);
-	if (equal_tuple(config.forward, vector(-1, 1, 0))
-		|| equal_tuple(config.forward, vector(0, -1, 0)))
+	from = data->scene->camera.position;
+	config.forward = normalize(data->scene->camera.rotation);
+	if (equal_tuple(config.forward, normalize(vector(0, 1, 0)))
+		|| equal_tuple(config.forward, normalize(vector(0, -1, 0))))
 	{
-		perror("Invalid orientation vector:gimbal lock");
+		perror("Invalid orientation vector: gimbal lock");
+		free_data(data);
 		exit(EXIT_FAILURE);
 	}
 	config.upn = normalize(up);
@@ -89,8 +92,7 @@ void	configure_camera(t_data *data, t_cam *c)
 	c->vsize = HEIGHT;
 	c->rfov = radians(c->fov);
 	view_transform(
-		data->scene->camera.position,
-		data->scene->camera.rotation,
+		data,
 		vector(0, 1, 0),
 		&c->transform);
 	half_view = tan(c->rfov / 2);

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:28:30 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 13:30:27 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 14:52:02 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ bool	equal(float a, float b)
 		return (false);
 }
 
-void	print_tuple1(t_tuple t)
+void	print_tuple2(t_tuple t)
 {
 	printf("tuple: x:%.2f y:%.2f z:%.2f w:%d\n", t.x, t.y, t.z, t.w);
 }
 
 bool	equal_tuple(t_tuple a, t_tuple b)
 {
-	return (equal(a.x, a.y) && equal(a.y, b.y)
+	return (equal(a.x, b.x) && equal(a.y, b.y)
 		&& equal(a.z, b.z) && equal(a.w, b.w));
 }

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 17:07:58 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 13:17:54 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 14:01:55 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ typedef struct s_world_coord
 
 // init_world.c
 void			init_world(t_data *data);
-void			view_transform(t_tuple from, t_tuple to,
-					t_tuple up, t_matrix *res);
+// void			view_transform(t_tuple from, t_tuple to,
+// 					t_tuple up, t_matrix *res);
+void			view_transform(t_data *data, t_tuple up, t_matrix *res);
 void			configure_camera(t_data *data, t_cam *c);
 
 // world_utils.c
