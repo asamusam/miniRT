@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 12:22:26 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/15 13:27:55 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 14:16:01 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	rotate_cylinder(t_cylinder *cylinder, t_matrix *r)
 	default_normal = vector(0, 1, 0);
 	angle = acos(dot(default_normal, normalize(cylinder->axis)));
 	axis = normalize(cross(default_normal, normalize(cylinder->axis)));
+	if (fabs(angle) < EPSILON)
+		return ;
 	s = sin(angle);
 	c = cos(angle);
 	r->data[0][0] = c + axis.x * axis.x * (1 - c);
@@ -73,8 +75,8 @@ void	calc_cylinder(t_cylinder *cylinder, t_data *data)
 	cylinder_transform(cylinder, &object->transform);
 	object->color = cylinder->color;
 	object->material = material();
-	cylinder->minimum = 0;
-	cylinder->maximum = cylinder->height;
+	cylinder->minimum = 0 - cylinder->height /2;
+	cylinder->maximum = cylinder->height / 2;
 	cylinder->closed = true;
 	object->object = cylinder;
 	ft_lstadd_back(&data->scene->world.objects, ft_lstnew(object));
