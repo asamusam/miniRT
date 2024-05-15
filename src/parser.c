@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 13:07:52 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/09 23:08:42 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 12:39:24 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void	parse(t_data *data, char *scene_file)
 	char	*line;
 	int		fd;
 
+	check_extension(data, scene_file);
 	fd = open(scene_file, O_RDONLY);
 	if (fd == -1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:44:32 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/08 21:59:57 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 12:41:28 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,19 @@ int	unknown_identifier(char *line)
 	line[i] = 0;
 	printf("Unknown identifier: %s\n", line);
 	return (FAIL);
+}
+
+void	check_extension(t_data *data, char *file)
+{
+	char	*tmp;
+
+	tmp = ft_strrchr(file, '.');
+	if (tmp && tmp[1] == 'r' && tmp[2] == 't' && !tmp[3])
+		return ;
+	else
+	{
+		error_and_fail("Configuration file", NULL, "Invalid extension");
+		free_data(data);
+		exit(EXIT_FAILURE);
+	}
 }
