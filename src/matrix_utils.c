@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:20:08 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 13:21:51 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 17:42:56 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ void	inverse(t_matrix *m, t_matrix *m_inv)
 	if (det == 0)
 	{
 		printf("Error: Matrix is not invertible.\n");
-		exit(EXIT_FAILURE);
+		init_identitymatrix(m_inv);
+		return ;
 	}
 	i = -1;
 	m_inv->size = m->size;
