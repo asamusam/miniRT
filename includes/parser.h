@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
+/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:39:50 by asamuilk          #+#    #+#             */
-/*   Updated: 2024/05/08 21:38:21 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 12:38:05 by asamuilk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		parse_tuple(t_tuple *t, int type, char *line, int *i);
 int		free_shape_fail(char *object, char *part, char *error, void *shape);
 int		error_and_fail(char *object, char *part, char *error);
 int		unknown_identifier(char *line);
+void	check_extension(t_data *data, char *file);
 
 // parser_shapes.c
 
