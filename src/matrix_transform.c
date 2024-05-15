@@ -3,23 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   matrix_transform.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asamuilk <asamuilk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 21:15:41 by llai              #+#    #+#             */
-/*   Updated: 2024/05/13 17:25:46 by asamuilk         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:14:22 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/matrix.h"
 #include <math.h>
-
-float	radians(float deg)
-{
-	float	res;
-
-	res = deg / 180 * M_PI;
-	return (res);
-}
 
 void	translation(float x, float y, float z, t_matrix *trans)
 {

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 22:55:50 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 19:53:54 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 13:25:35 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,31 @@ typedef struct s_shape_intersect
 	t_object	*object;
 }	t_shape_intersect;
 
+// shape.c
 t_shape_intersect	*hit(t_list *xs);
 t_tuple				normal_at(t_object *object, t_tuple world_pt);
 t_tuple				reflect(t_tuple in, t_tuple normal);
-t_list				*intersect(t_object *object, t_ray *ray);
 int					calc_sphere_t(t_sphere s, t_ray ray, float *t1, float *t2);
-int					calc_cylinder_t(t_cylinder cy, t_ray ray,
-						float *t1, float *t2);
+
+// intersection.c
+t_shape_intersect	*shape_intersection(float t, t_object *object);
+t_list				*intersect(t_object *object, t_ray *ray);
+
+// cylinder_utils.c
+bool				check_cap(t_ray *r, float t);
+void				intersect_caps(t_object *object,
+						t_ray *ray, t_list **intersections);
+void				swap(float *a, float *b);
+int					calc_cylinder_t(t_cylinder cy,
+						t_ray ray, float *t1, float *t2);
+
+// init_sphere.c
 void				calc_sphere(t_sphere *sphere, t_data *data);
+
+// init_plane.c
 void				calc_plane(t_plane *plane, t_data *data);
+
+// init_cylinder.c
 void				calc_cylinder(t_cylinder *cylinder, t_data *data);
 
 #endif // !SHAPES_H

@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   light_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 13:43:24 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 21:17:45 by llai             ###   ########.fr       */
+/*   Created: 2024/05/15 13:22:30 by llai              #+#    #+#             */
+/*   Updated: 2024/05/15 13:22:49 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "../includes/light.h"
+#include "../includes/shapes.h"
 #include "../includes/world.h"
-#include "../includes/image.h"
 
-int	main(int ac, char **av)
+t_light	point_light(t_tuple position, float intensity, t_color color)
 {
-	t_data	*data;
+	return ((t_light){position, intensity, color});
+}
 
-	if (ac == 2)
-	{
-		allocate_data(&data);
-		init_data(data);
-		parse(data, av[1]);
-		init_world(data);
-		init_mlx(data);
-		printf("render\n");
-		render(data);
-		printf("\ndone\n");
-		mlx_loop(data->base_image->mlx);
-	}
+t_material	material(void)
+{
+	t_material	m;
+
+	m.color = color(0, 1, 1, 1);
+	m.ambient = 0.1;
+	m.diffuse = 0.9;
+	m.specular = 0.9;
+	m.shininess = 200.0;
+	return (m);
 }

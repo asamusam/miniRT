@@ -1,29 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.h                                            :+:      :+:    :+:   */
+/*   color_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/07 15:33:59 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 13:19:33 by llai             ###   ########.fr       */
+/*   Created: 2024/05/15 12:53:46 by llai              #+#    #+#             */
+/*   Updated: 2024/05/15 12:54:23 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEBUG_H
-# define DEBUG_H
+#include "../includes/color.h"
+#include <stdio.h>
 
-typedef struct s_progressbar
+void	print_color(t_color *color)
 {
-	int		total_pixels;
-	int		current_pixel;
-	float	progress;
-}	t_progresbar;
+	printf("t - %f, r - %f, g - %f, b - %f\n", \
+			color->transparent, color->red, color->green, color->blue);
+}
 
-typedef struct s_matrix	t_matrix;
+int	get_t(int trgb)
+{
+	return ((trgb >> 24) & 0xFF);
+}
 
-void	malloc_errcheck(void *p);
-void	print_progress(float progress);
-void	print_matrix(t_matrix *mat);
+int	get_r(int trgb)
+{
+	return ((trgb >> 16) & 0xFF);
+}
 
-#endif // DEBUG
+int	get_g(int trgb)
+{
+	return ((trgb >> 8) & 0xFF);
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
+}

@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:21:20 by llai              #+#    #+#             */
-/*   Updated: 2024/05/14 19:52:52 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/15 13:23:18 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,11 @@ typedef struct s_shadow
 	float			distance;
 }	t_shadow;
 
+// light_utils.c
 t_light		point_light(t_tuple position, float intensity, t_color color);
 t_material	material(void);
+
+// light.c
 t_color		lighting(t_world *w, t_shape_comps *c, bool in_shadow);
 bool		is_shadowed(t_world *world, t_tuple point);
 
