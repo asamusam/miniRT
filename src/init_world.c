@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:11:32 by llai              #+#    #+#             */
-/*   Updated: 2024/05/16 14:23:49 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/16 14:46:44 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	configure_camera(t_data *data, t_cam *c)
 		data,
 		vector(0, 1, 0),
 		&c->transform);
-	half_view = tan((c->rfov / 2));
+	half_view = tan(c->rfov / 2);
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
 	{
