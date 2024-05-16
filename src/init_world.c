@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 13:11:32 by llai              #+#    #+#             */
-/*   Updated: 2024/05/15 17:56:15 by llai             ###   ########.fr       */
+/*   Updated: 2024/05/16 14:23:49 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@
 #include "../includes/debug.h"
 #include "../includes/world.h"
 #include "../includes/scene.h"
-#include "../includes/image.h"
+#include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
 
 void	init_world(t_data *data)
 {
@@ -65,11 +64,7 @@ void	view_transform(t_data *data, t_tuple up, t_matrix *res)
 	config.forward = normalize(data->scene->camera.rotation);
 	if (equal_tuple(config.forward, normalize(vector(0, 1, 0)))
 		|| equal_tuple(config.forward, normalize(vector(0, -1, 0))))
-	{
-		printf("Invalid orientation vector: gimbal lock\n");
-		free_data(data);
-		exit(EXIT_FAILURE);
-	}
+		config.forward.z = 0.1;
 	config.upn = normalize(up);
 	config.left = cross(config.forward, config.upn);
 	config.true_up = cross(config.left, config.forward);
@@ -90,12 +85,14 @@ void	configure_camera(t_data *data, t_cam *c)
 
 	c->hsize = WIDTH;
 	c->vsize = HEIGHT;
+	if (equal(c->fov, 180))
+		c->fov = 179.9;
 	c->rfov = radians(c->fov);
 	view_transform(
 		data,
 		vector(0, 1, 0),
 		&c->transform);
-	half_view = tan(c->rfov / 2);
+	half_view = tan((c->rfov / 2));
 	aspect = c->hsize / c->vsize;
 	if (aspect >= 1)
 	{
