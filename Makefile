@@ -51,13 +51,13 @@ RM = rm -rf
 ifeq ($(UNAME), Darwin)
 	CC = gcc
 	LFLAGS += -lmlx -framework OpenGL -framework Appkit
-else ifeq ($(UNAME), FreeBDS)
+else ifeq ($(UNAME), FreeBSD)
 	CC = clang
 	LFLAGS += -lmlx -lbsd -lXext -lX11 -lm
 else
 	CC = gcc
 	CFLAG += -D Linux
-	LFLAGS += -lmlx_Linux -lbsd -lXext -lX11 -lm
+	LFLAGS += -lmlx_Linux -lXext -lX11 -lm
 endif
 
 all: $(MLX) $(NAME)
@@ -71,7 +71,7 @@ $(NAME): $(BIN) $(OBJ) | $(LIBFT)
 $(MLX):
 	@git submodule init
 	@git submodule update
-	@make -sC $(MLX_PATH)
+	-@make -C $(MLX_PATH)
 
 $(BIN):
 	mkdir -p $(BIN)
